@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HBT · PENTA.GRAM</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <header><h1>HBT</h1></header>
+  <main>
+    <button id="navToggle" class="nav-toggle" type="button"
+      aria-controls="nav" aria-expanded="false">☰ Menü</button>
+    <nav id="nav" class="navbar" aria-label="Hauptnavigation"></nav>
+
+    <section class="card" aria-labelledby="hbt-title">
+      <h2 id="hbt-title">03 · HALT · BEWERTUNG · TIEFE</h2>
+
+      <label class="check-row">
+        <input id="halt" type="checkbox">
+        Halt bestätigt
+      </label>
+
+      <label for="bewertung">
+        Bewertung: <output id="bewertungOut">100</output>%
+      </label>
+      <input id="bewertung" type="range" min="0" max="100" value="100">
+
+      <label for="tiefe">Tiefe (0–100)</label>
+      <input id="tiefe" type="number" min="0" max="100" value="81">
+
+      <p id="liveStatus" aria-live="polite" aria-label="Live-Systemstatus"></p>
+      <pre id="report" aria-label="Validierungsbericht"></pre>
+    </section>
+
+    <div id="pager"></div>
+  </main>
+  <script type="module" src="js/page.js"></script>
+  <script type="module" src="js/hbt.js"></script>
+</body>
+</html>

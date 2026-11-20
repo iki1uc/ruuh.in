@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PENTAGRAMMED · PRISMATIKUM · VECTORING — v3 mit Sicht</title>
+<style>
+:root{--bg:#050505;--card:#111;--line:#333;--green:#00ff66;--yellow:#ffd166;--red:#ff5555;--blue:#66ccff;--violet:#c77dff;--text:#f5f5f5}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,Consolas,monospace}
+header,main{width:min(100% - 32px,980px);margin-inline:auto}
+header{padding:28px 0 8px;text-align:center;border-bottom:2px solid var(--green)}
+h1{margin:0;color:var(--green);letter-spacing:.08em} .sub{color:#999}
+.flow{text-align:center;padding:16px;color:var(--yellow)}
+.grid{display:grid;gap:16px;grid-template-columns:1fr 1fr} @media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.card.ready{border-left:6px solid var(--green)}
+.slider-row{display:flex;gap:10px;align-items:center;margin:8px 0} .slider-row label{min-width:110px} .slider-row input{flex:1;min-width:0}
+.status{padding:6px 10px;border-radius:6px;display:inline-block;font-weight:700;margin:6px 0}
+.status-konsens{background:#153622;color:#61f58f} .status-teil{background:#3d310d;color:#ffd27a} .status-offen{background:#401919;color:#ff8a80}
+.build{color:#61f58f;font-weight:700} .wait{color:#ffd27a;font-weight:700}
+button{padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:#222;color:#fff;font:inherit;cursor:pointer} button:hover{border-color:var(--green)} button.macht{background:var(--green);color:#000;font-weight:700}
+select{padding:10px;border:1px solid var(--line);border-radius:8px;background:#111;color:#fff;font:inherit}
+pre{background:#111;border:1px solid var(--line);padding:12px;overflow:auto;white-space:pre-wrap;color:#ccc}
+.prisma{display:flex;gap:8px;flex-wrap:wrap} .prisma span{padding:6px 10px;border-radius:20px;border:1px solid var(--line)}
+.p1{color:#ff5555} .p2{color:#ffd166} .p3{color:#00ff66} .p4{color:#66ccff} .p5{color:#c77dff}
+.unraum{color:var(--yellow)} .sicht{color:var(--green)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+</style>
+</head>
+<body>
+<header><h1>PENTAGRAMMED</h1><div class="sub">PRISMATIKUM · VECTORING · ohne Vol.1 / Vol.2 · nur ATOM + ELEMENT · v3 mit Sicht</div></header>
+<main>
+<div class="flow">BOOT ↓ ID ↓ HBT ↓ PULSE · PENTA = 5 · PRISMA = Licht bricht · VECTOR = Richtung + Betrag</div>
+<section class="card ready"><h2>PRISMATIKUM — 5 Spitzen, 1 Mitte</h2>
+<div class="prisma"><span class="p1">● BOOT — Rot</span><span class="p2">● ID — Gelb</span><span class="p3">● HBT — Grün</span><span class="p4">● PULSE — Blau</span><span class="p5">● ATOM — Violett</span><span>◉ MITTE = ELEMENT</span></div>
+<svg viewBox="0 0 400 400" width="100%" style="max-width:520px;display:block;margin:12px auto" role="img" aria-label="Pentagramm-Prisma mit fünf Spitzen und drei Vektorachsen">
+<polygon points="200,20 360,300 40,300" fill="none" stroke="#66ccff" stroke-width="1.5" opacity="0.7"/>
+<polygon points="200,20 320,150 270,330 130,330 80,150" fill="none" stroke="#00ff66" stroke-width="2"/>
+<polyline points="200,20 130,330 360,300 80,150 320,150 200,20" fill="none" stroke="#ffd166" stroke-width="2"/>
+<circle cx="200" cy="200" r="8" fill="#c77dff"/><text x="200" y="225" fill="#fff" text-anchor="middle" font-size="12">ELEMENT</text>
+<text x="200" y="14" fill="#ff5555" text-anchor="middle">BOOT</text><text x="360" y="315" fill="#66ccff" text-anchor="middle">PULSE</text><text x="40" y="315" fill="#ffd166" text-anchor="middle">ID</text><text x="80" y="140" fill="#c77dff" text-anchor="middle">ATOM</text><text x="320" y="140" fill="#00ff66" text-anchor="middle">HBT</text>
+<line id="vx" x1="200" y1="200" x2="200" y2="200" stroke="#ff5555" stroke-width="3"/>
+<line id="vy" x1="200" y1="200" x2="200" y2="200" stroke="#ffd166" stroke-width="3"/>
+<line id="vz" x1="200" y1="200" x2="200" y2="200" stroke="#66ccff" stroke-width="3" stroke-dasharray="6 4"/>
+</svg>
+<p><small>Pentagramm = 5 Punkte verbunden. Prisma = Weiss wird zu 5 Farben gebrochen. Vectoring = ATOM gibt Richtung, ELEMENT gibt WAS.</small></p>
+</section>
+<div class="grid">
+<section class="card"><h2>VECTORING — ATOM + ELEMENT</h2>
+<div class="slider-row"><label for="ax">X · BREITE</label><input id="ax" type="range" min="0" max="1" step="0.01" value="0.9"><span id="axv">0.90</span></div>
+<div class="slider-row"><label for="ay">Y · HÖHE</label><input id="ay" type="range" min="0" max="1" step="0.01" value="0.5"><span id="ayv">0.50</span></div>
+<div class="slider-row"><label for="az">Z · TIEFE</label><input id="az" type="range" min="0" max="1" step="0.01" value="0.7"><span id="azv">0.70</span></div>
+<pre id="vecOut" aria-live="polite"></pre>
+<p><small>Python: <code>python atom_element.py server</code> → <code>python client_atom.py</code> → POST /atom</small></p></section>
+<section class="card"><h2>AXIOM — M1 / M2 / M3</h2>
+<div class="slider-row"><label for="m1">M1</label><input id="m1" type="range" min="0" max="10" value="8"><span id="m1v">8</span></div>
+<div class="slider-row"><label for="m2">M2</label><input id="m2" type="range" min="0" max="10" value="7"><span id="m2v">7</span></div>
+<div class="slider-row"><label for="m3">M3</label><input id="m3" type="range" min="0" max="10" value="9"><span id="m3v">9</span></div>
+<div id="avg">Ø 8.0 · P100 80</div><div class="status status-teil" id="konsens">TEILKONSENS</div><div class="gate build" id="gate">KOMPETENZ 3/3 · VERBAUEN</div>
+<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="macht" id="macht" type="button">Macht — freigeben</button><button id="unmacht" type="button">Unmacht — konstellieren zur neuen Macht</button></div>
+<p id="liveStatus" aria-live="polite">Systemstatus: READY</p><pre id="report">Keine Fehler.</pre><p><small>Tastatur: M = Macht, U = Unmacht</small></p></section>
+</div>
+
+<!-- VEKTOR-SICHT — deine Karte, korrigiert auf /atom, synced mit Vectoring -->
+<section class="card ready" id="vektor-sicht">
+<h2>Mehr Sicht — Vektor-Sicht / Unraum</h2>
+<label>Achse <select id="achse"><option value="X">X · BREITE</option><option value="Y">Y · HÖHE</option><option value="Z">Z · TIEFE</option></select></label>
+<label style="display:block;margin:10px 0">Betrag <span id="betragV">0.50</span><input id="betrag" type="range" min="0" max="1" step="0.01" value="0.5" style="width:100%"></label>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="ausloesen" class="macht" type="button">Sicht auslösen</button><button id="ausloesenLokal" type="button">Lokal rechnen (ohne Server)</button></div>
+<pre id="sicht-ausgabe">Unraum: noch nicht erkundet</pre>
+<p><small>POST /atom · Fallback lokal wenn Server nicht läuft · Unraum = Achsen ≤ 0.005 (deine Schwelle) · Sicht = Achsen &gt; 0.005</small></p>
+</section>
+
+<section class="card"><h2>LEGEND — PRISMA</h2><p><span style="color:#ff5555">● ROT = BOOT</span> · <span style="color:#ffd166">● GELB = ID</span> · <span style="color:#00ff66">● GRÜN = HBT</span> · <span style="color:#66ccff">● BLAU = PULSE</span> · <span style="color:#c77dff">● VIOLETT = ATOM</span> · Mitte = ELEMENT · Weiss = Alle Farben zusammen = KONSENS</p><p>UNMACHT = KONSTELLIEREN ZUR NEUEN MACHT. Kein Löschen. Nur Neu-Stellen.</p></section>
+</main>
+<script>
+"use strict";
+function $(id){return document.getElementById(id);}
+function vec(){
+  var x=Number($("ax").value), y=Number($("ay").value), z=Number($("az").value);
+  $("axv").textContent=x.toFixed(2); $("ayv").textContent=y.toFixed(2); $("azv").textContent=z.toFixed(2);
+  var length=Math.sqrt(x*x+y*y+z*z); var eps=0.005;
+  var vis=[["X",x],["Y",y],["Z",z]];
+  var visibleAxes=vis.filter(function(i){return i[1]>eps}).map(function(i){return i[0]});
+  var openAxes=vis.filter(function(i){return i[1]<=eps}).map(function(i){return i[0]});
+  $("vecOut").textContent="ATOM WACH · ROH\n"+(visibleAxes.length?"SICHT: "+visibleAxes.join(" · "):"SICHT: keine Achse aktiv")+"\n"+(openAxes.length?"UNRAUM: "+openAxes.join(" · ")+" noch ungenutzt":"UNRAUM: keine offene Achse")+"\nVektor [X "+x.toFixed(2)+", Y "+y.toFixed(2)+", Z "+z.toFixed(2)+"]\nBetrag: "+length.toFixed(3)+"\nProjektion: X → rechts · Y → oben · Z → Tiefe";
+  $("vx").setAttribute("x2",200+x*90); $("vx").setAttribute("y2",200);
+  $("vy").setAttribute("x2",200); $("vy").setAttribute("y2",200-y*90);
+  $("vz").setAttribute("x2",200+z*55); $("vz").setAttribute("y2",200+z*45);
+}
+["ax","ay","az"].forEach(function(id){$(id).addEventListener("input",vec);}); vec();
+function axiom(){
+  var m1=Number($("m1").value),m2=Number($("m2").value),m3=Number($("m3").value);
+  $("m1v").textContent=m1;$("m2v").textContent=m2;$("m3v").textContent=m3;
+  var avg=Math.round(((m1+m2+m3)/3)*10)/10;
+  var consensus=m1===m2&&m2===m3?"KONSENS":(m1===m2||m2===m3||m1===m3)?"TEILKONSENS":"OFFEN";
+  var gate=[m1,m2,m3].filter(function(v){return v>=7}).length;
+  $("avg").textContent="Ø "+avg.toFixed(1)+" · P100 "+Math.round(avg*10);
+  var c=$("konsens"); c.textContent=consensus; c.className="status "+(consensus==="KONSENS"?"status-konsens":consensus==="TEILKONSENS"?"status-teil":"status-offen");
+  var g=$("gate"); g.textContent="KOMPETENZ "+gate+"/3 · "+(gate===3?"VERBAUEN":"KONSTELLIEREN"); g.className="gate "+(gate===3?"build":"wait");
+}
+["m1","m2","m3"].forEach(function(id){$(id).addEventListener("input",axiom);}); axiom();
+function setStatus(ok){$("liveStatus").textContent=ok?"Systemstatus: READY — freigegeben.":"Systemstatus: WARN — konstellieren zur neuen Macht.";$("report").textContent=ok?"Validierung erfolgreich.":"UNMACHT = KONSTELLIEREN ZUR NEUEN MACHT";}
+$("macht").addEventListener("click",function(){setStatus(true);}); $("unmacht").addEventListener("click",function(){setStatus(false);});
+// --- VEKTOR-SICHT: /atom, Unraum = Schwelle, Sync mit Vectoring ---
+var ACHSEN={X:{name:"BREITE",v:[1,0,0]},Y:{name:"HÖHE",v:[0,1,0]},Z:{name:"TIEFE",v:[0,0,1]}};
+function lokalVektor(achse,betrag){var a=ACHSEN[achse];return{achse:achse,name:a.name,betrag:betrag,vektor:a.v.map(function(c){return +(c*betrag).toFixed(2)}),quelle:"LOKAL"};}
+function zeigeSicht(d){
+  var eps=0.005;
+  // Voller Vektor aus allen 3 Slidern für SICHT/UNRAUM nach deiner Schwelle
+  var x=Number($("ax").value), y=Number($("ay").value), z=Number($("az").value);
+  // Wenn Sicht ausgelöst: gewählte Achse auf Betrag setzen, andere bleiben
+  if(d && d._setAchse){ if(d._setAchse==="X")x=d.betrag; if(d._setAchse==="Y")y=d.betrag; if(d._setAchse==="Z")z=d.betrag; }
+  var vis=[["X",x],["Y",y],["Z",z]];
+  var sicht=vis.filter(function(i){return i[1]>eps}).map(function(i){return i[0]});
+  var unraum=vis.filter(function(i){return i[1]<=eps}).map(function(i){return i[0]});
+  var v=d.vektor||[];
+  $("sicht-ausgabe").textContent="Sicht: "+(d.achse||"-")+" / "+(d.name||"-")+", Betrag "+(d.betrag!=null?d.betrag:"-")+"\nVektor: "+(v.length?v.join(", "):"-")+"\nSICHT: "+(sicht.length?sicht.join(" · "):"keine Achse aktiv")+"\nUNRAUM: "+(unraum.length?unraum.join(" · ")+" noch ungenutzt":"keine offene Achse")+"\nQuelle: "+(d.quelle||"SERVER /atom");
+  // Sync: Slider + SVG
+  $("ax").value=x; $("ay").value=y; $("az").value=z; vec();
+}
+$("betrag").addEventListener("input",function(){ $("betragV").textContent=(+this.value).toFixed(2); });
+$("ausloesen").addEventListener("click",function(){
+  var achse=$("achse").value, betrag=Number($("betrag").value);
+  fetch("http://127.0.0.1:8765/atom",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({achse:achse,betrag:betrag,m1:8,m2:7,m3:9})})
+  .then(function(r){return r.json();}).then(function(d){
+    if(d.fehler){ var l=lokalVektor(achse,betrag); l._setAchse=achse; zeigeSicht(l); return; }
+    var a=d.atom||d; a.quelle="SERVER /atom"; a._setAchse=achse; zeigeSicht(a);
+  }).catch(function(){ var l=lokalVektor(achse,betrag); l._setAchse=achse; zeigeSicht(l); });
+});
+$("ausloesenLokal").addEventListener("click",function(){ var l=lokalVektor($("achse").value,Number($("betrag").value)); l._setAchse=$("achse").value; zeigeSicht(l); });
+document.addEventListener("keydown",function(e){
+  if(e.altKey||e.ctrlKey||e.metaKey)return;
+  var t=e.target; if(t&&t.matches("input, textarea, select, [contenteditable='true']"))return;
+  var k=e.key.toLowerCase(); if(k==="m")setStatus(true); if(k==="u")setStatus(false);
+});
+</script>
+</body>
+</html>

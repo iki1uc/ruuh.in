@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live-Status</title>
+  <style>
+    :root {
+      --green: #00ff66;
+      --yellow: #ffd166;
+      --red: #ff4444;
+      --blue: #4da3ff;
+      --bg: #080808;
+      --panel: #111;
+      --border: #333;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: #f5f5f5;
+      font: 16px/1.5 system-ui, sans-serif;
+    }
+
+    main { max-width: 760px; margin: 0 auto; }
+
+    h1 { margin-top: 0; }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .card.ready { border-left: 6px solid var(--green); }
+    .card.warn { border-left: 6px solid var(--yellow); }
+
+    .values {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .value {
+      padding: 14px;
+      background: #191919;
+      border-radius: 8px;
+    }
+
+    .value span { display: block; color: #aaa; font-size: .85rem; }
+    .value strong { font-size: 1.35rem; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    button {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:hover { border-color: var(--green); }
+    button.macht { background: var(--green); color: #000; font-weight: 700; }
+
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid var(--yellow);
+      outline-offset: 3px;
+    }
+
+    input:focus-visible { outline: 3px solid var(--blue); }
+
+    #liveStatus { margin: 0 0 16px; }
+    #report { white-space: pre-wrap; color: #ccc; }
+
+    @media (max-width: 480px) {
+      body { padding: 16px; }
+      .values { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Live-Status</h1>
+
+    <p id="liveStatus" aria-live="polite">Systemstatus: READY</p>
+
+    <section id="statusCard" class="card ready" aria-label="Bewertung">
+      <h2>HBT-Bewertung</h2>
+
+      <div class="values">
+        <div class="value"><span>HALT</span><strong id="halt">100%</strong></div>
+        <div class="value"><span>BEWERTUNG</span><strong id="bewertung">100%</strong></div>
+        <div class="value"><span>TIEFE</span><strong id="tiefe">81</strong></div>
+        <div class="value"><span>STATUS</span><strong id="status">READY</strong></div>
+      </div>
+
+      <div class="actions">
+        <button class="macht" id="macht" type="button">Macht — freigeben</button>
+        <button id="unmacht" type="button">Unmacht — nicht freigeben</button>
+      </div>
+    </section>
+
+    <h2>Validierungsbericht</h2>
+    <pre id="report" aria-label="Validierungsbericht">Keine Fehler.</pre>
+
+    <p><small>Tastatur: M = Macht, U = Unmacht</small></p>
+  </main>
+
+  <script>
+    const card = document.getElementById("statusCard");
+    const liveStatus = document.getElementById("liveStatus");
+    const statusText = document.getElementById("status");
+    const bewertung = document.getElementById("bewertung");
+    const report = document.getElementById("report");
+
+    function setStatus(isReady) {
+      card.classList.toggle("ready", isReady);
+      card.classList.toggle("warn", !isReady);
+
+      if (isReady) {
+        statusText.textContent = "READY";
+        bewertung.textContent = "100%";
+        liveStatus.textContent = "Systemstatus: READY — freigegeben.";
+        report.textContent = "Validierung erfolgreich.";
+      } else {
+        statusText.textContent = "WARN";
+        bewertung.textContent = "50%";
+        liveStatus.textContent = "Systemstatus: WARN — nicht freigegeben.";
+        report.textContent = "FEHLER:\nVOLLSTAENDIG";
+      }
+    }
+
+    document.getElementById("macht").addEventListener("click", () => setStatus(true));
+    document.getElementById("unmacht").addEventListener("click", () => setStatus(false));
+
+    document.addEventListener("keydown", (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+
+      const target = event.target;
+      if (target instanceof HTMLInputElement ||
+          target instanceof HTMLTextAreaElement ||
+          target.isContentEditable) return;
+
+      if (event.key.toLowerCase() === "m") setStatus(true);
+      if (event.key.toLowerCase() === "u") setStatus(false);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KONTINUUM + SONNENSYSTEM · PENTAGRAMMED ENGINE</title>
+<style>
+:root{--bg:#050505;--card:#111;--line:#333;--green:#00ff66;--yellow:#ffd166;--text:#f5f5f5}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,Consolas,monospace}
+header,main{width:min(100% - 32px,980px);margin-inline:auto}
+header{padding:24px 0 8px;text-align:center;border-bottom:2px solid var(--green)} h1{margin:0;color:var(--green)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0}
+button{padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:#222;color:#fff;font:inherit;cursor:pointer} button:hover{border-color:var(--green)} button.macht{background:var(--green);color:#000;font-weight:700}
+canvas{width:100%;max-width:640px;display:block;margin:12px auto;background:#020807;border:1px solid var(--line);border-radius:10px}
+pre{background:#111;border:1px solid var(--line);padding:12px;overflow:auto;white-space:pre-wrap;color:#ccc;max-height:160px}
+select{padding:10px;border:1px solid var(--line);border-radius:8px;background:#111;color:#fff;font:inherit}
+</style>
+</head>
+<body>
+<header><h1>KONTINUUM + SONNENSYSTEM</h1><div style="color:#999">PENTAGRAMMED · PRISMATIKUM · VECTORING · Läufer läuft weiter</div></header>
+<main>
+<section class="card">
+<h2>Canvas — Engine</h2>
+<p>Läufer: läuft im Kreis · Kontinuum: sanft verbundene Ringe · Sonnensystem: umlaufende Planeten um die Sonne in der Mitte.</p>
+<canvas id="cv" width="640" height="420"></canvas>
+<p>
+<button onclick="toggleSolar()">☼ Sonnensystem AN/AUS</button>
+<span id="solarOut">Umlaufbahnen: AN</span>
+· Kontinuum: <span id="continuumOut">0</span>
+</p>
+<p style="display:flex;gap:8px;flex-wrap:wrap">
+<label>Lens <select id="lensSel"><option value="skala">skala</option><option value="prisma">prisma</option><option value="vektor">vektor</option></select></label>
+<button onclick="toggleAuto()">⏯ Auto AN/AUS</button>
+<span id="autoOut">Auto: AN</span>
+<span id="stateOut">HALT · forsaken · Level 1</span>
+</p>
+<pre id="logOut">Engine bereit.</pre>
+</section>
+<section class="card"><h2>Was gilt</h2><p>ATOM + ELEMENT nur. UNMACHT = KONSTELLIEREN ZUR NEUEN MACHT. Nichts gelöscht, nur angehängt. Vol.1 / Vol.2 nicht dabei.</p></section>
+</main>
+<script>
+"use strict";
+// --- 2) Variablen-Anfang (ersetzt / gesetzt) ---
+let lens='skala', auto=true, pos=0, rot=0, tx=0, level=1,
+  nakaState='HALT', vehicleState='forsaken', logN=3,
+  solar=true, continuum=0;
+
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
+const W=cv.width, H=cv.height;
+
+function log(msg){
+  const el=document.getElementById('logOut');
+  el.textContent=(el.textContent+"\n"+msg).split("\n").slice(-12).join("\n");
+  document.getElementById('stateOut').textContent=nakaState+" · "+vehicleState+" · Level "+level;
+}
+
+// --- 3) toggleSolar vor draw() ---
+function toggleSolar(){
+  solar = !solar;
+  document.getElementById('solarOut').textContent =
+    solar ? 'Umlaufbahnen: AN' : 'Umlaufbahnen: AUS';
+  draw();
+  log('Sonnensystem: ' + (solar ? 'AN' : 'AUS'));
+}
+function toggleAuto(){
+  auto=!auto;
+  document.getElementById('autoOut').textContent='Auto: '+(auto?'AN':'AUS');
+  log('Auto: '+(auto?'AN':'AUS'));
+}
+document.getElementById('lensSel').addEventListener('change',function(){ lens=this.value; log('Lens: '+lens); draw(); });
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.save();
+  ctx.translate(W/2,H/2);
+
+  // --- 4) Kontinuum + Sonnensystem, direkt vor // Läufer ---
+  // Kontinuum: sanft verbundene Ringe, die sich mit dem Lauf fortsetzen
+  continuum = (continuum + 1) % 10000;
+  const flow = continuum * 0.008;
+
+  ctx.save();
+  ctx.globalAlpha = 0.22;
+  ctx.strokeStyle = '#08f6e5';
+  for(let r=220; r<=300; r+=20){
+    ctx.beginPath();
+    ctx.ellipse(
+      Math.sin(flow + r) * 8,
+      Math.cos(flow + r) * 8,
+      r,
+      r * 0.48,
+      Math.sin(flow) * 0.04,
+      0,
+      Math.PI * 2
+    );
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // Umlaufendes Sonnensystem
+  if(solar){
+    const planets = [
+      {name:'Merkur', orbit:55, size:3, speed:4.15, color:'#b8b8b8'},
+      {name:'Venus',  orbit:82, size:5, speed:1.62, color:'#e6b566'},
+      {name:'Erde',   orbit:112,size:5, speed:1,    color:'#36a3ff'},
+      {name:'Mars',   orbit:145,size:4, speed:0.53, color:'#ff6248'},
+      {name:'Jupiter',orbit:185,size:9, speed:0.084,color:'#e9c28d'}
+    ];
+
+    // Sonne
+    const sunGlow = ctx.createRadialGradient(0,0,3,0,0,24);
+    sunGlow.addColorStop(0,'#fff8b0');
+    sunGlow.addColorStop(0.35,'#ffcc44');
+    sunGlow.addColorStop(1,'rgba(255,150,20,0)');
+    ctx.fillStyle = sunGlow;
+    ctx.beginPath();
+    ctx.arc(0,0,24,0,Math.PI*2);
+    ctx.fill();
+
+    ctx.fillStyle = '#ffcc44';
+    ctx.beginPath();
+    ctx.arc(0,0,9,0,Math.PI*2);
+    ctx.fill();
+
+    planets.forEach(p=>{
+      // Umlaufbahn
+      ctx.beginPath();
+      ctx.ellipse(0,0,p.orbit,p.orbit*0.58,0,0,Math.PI*2);
+      ctx.strokeStyle = 'rgba(180,210,200,0.28)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Planet auf seiner Bahn
+      const a = continuum * 0.012 * p.speed;
+      const x = Math.cos(a) * p.orbit;
+      const y = Math.sin(a) * p.orbit * 0.58;
+
+      ctx.beginPath();
+      ctx.arc(x,y,p.size,0,Math.PI*2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+
+      if(lens === 'prisma' || lens === 'skala'){
+        ctx.fillStyle = '#d8e6da';
+        ctx.font = '10px monospace';
+        ctx.fillText(p.name,x+p.size+4,y+3);
+      }
+    });
+  }
+
+  const continuumEl = document.getElementById('continuumOut');
+  if(continuumEl) continuumEl.textContent = String(continuum);
+
+  // Läufer
+  pos += auto ? 0.02 : 0;
+  rot += auto ? 0.008 : 0;
+  tx = Math.cos(pos) * 150;
+  const lx = Math.cos(pos) * 150;
+  const ly = Math.sin(pos) * 150 * 0.48;
+  // Läufer-Spur
+  ctx.beginPath(); ctx.ellipse(0,0,150,150*0.48,0,0,Math.PI*2); ctx.strokeStyle='rgba(0,255,102,0.25)'; ctx.stroke();
+  // Läufer-Punkt
+  ctx.beginPath(); ctx.arc(lx,ly,7,0,Math.PI*2); ctx.fillStyle='#00ff66'; ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='11px monospace'; ctx.fillText('LÄUFER',lx+10,ly+4);
+  // Mitte = ELEMENT
+  ctx.beginPath(); ctx.arc(0,0,4,0,Math.PI*2); ctx.fillStyle='#c77dff'; ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='10px monospace'; ctx.fillText('ELEMENT',8,18);
+
+  ctx.restore();
+}
+draw();
+setInterval(draw, 50);
+log('Engine läuft: Kontinuum + Sonnensystem im Animationsintervall.');
+</script>
+</body>
+</html>

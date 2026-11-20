@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b10">
+<title>ruuh.in — Un-Mögliches möglich machen</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#080b10;--card:#111720;--line:#293543;--text:#eef4fa;
+  --muted:#a6b3c1;--green:#62f5a5;--yellow:#ffd166;--red:#ff7777;
+  --blue:#77ceff;--purple:#c99aff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,Arial,sans-serif}
+header,main{width:min(100% - 28px,1000px);margin:auto}
+header{padding:26px 0 10px}
+h1{margin:0;color:var(--green);font-size:clamp(26px,5vw,38px)}
+h2{font-size:20px;margin:0 0 8px}
+h3{font-size:16px;margin:12px 0 6px}
+p{margin:7px 0}
+small,.muted{color:var(--muted)}
+main{padding-bottom:36px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0}
+.card.active{border-color:var(--green)}
+.status{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 10px;margin:8px 5px 0 0;font-size:13px}
+.status.ok{color:var(--green);border-color:#28764c}
+.status.wait{color:var(--yellow);border-color:#695827}
+.status.bad{color:var(--red);border-color:#743b3b}
+.step{display:flex;gap:12px;align-items:flex-start}
+.number{flex:0 0 34px;height:34px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;font-weight:800}
+.number.done{background:var(--green);color:#07100b;border-color:var(--green)}
+.content{flex:1;min-width:0}
+label{display:block;margin:12px 0 5px}
+select,input[type=range]{width:100%;font:inherit;color:var(--text);background:#0b1016;border:1px solid var(--line);border-radius:9px;padding:10px}
+input[type=range]{padding:8px}
+button{font:inherit;color:var(--text);background:#202a35;border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer}
+button:hover{border-color:var(--green)}
+button.primary{background:var(--green);border-color:var(--green);color:#07100b;font-weight:800}
+button:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-top:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+canvas{display:block;width:100%;height:auto;aspect-ratio:16/7;background:#060a10;border:1px solid var(--line);border-radius:12px}
+pre{margin:10px 0 0;padding:12px;background:#080c11;border:1px solid var(--line);border-radius:10px;white-space:pre-wrap;overflow-wrap:anywhere;color:#dce8f2;font:13px/1.5 ui-monospace,Consolas,monospace}
+details{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+summary{cursor:pointer;font-weight:700}
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pills span{border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:13px}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.card{padding:14px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>ruuh.in — Un-Mögliches möglich machen</h1>
+  <p class="muted">Große Ideen. Klare Schritte. Ehrliche Ergebnisse – diese Seite führt eine lokale Simulation im Browser aus.</p>
+  <span id="gateBadge" class="status wait">Freigabe AUS · alles gesperrt</span>
+  <span id="stepBadge" class="status">Schritt 1 · Auftrag</span>
+</header>
+
+<main>
+<section class="card active" id="s1">
+  <div class="step"><div class="number" id="n1">1</div><div class="content">
+    <h2>1 · Auftrag — Was soll möglich werden?</h2>
+    <p class="muted">Wähle eine Aktion. Noch wird nichts ausgeführt.</p>
+    <label for="auftrag">Aktion</label>
+    <select id="auftrag">
+      <option value="holo">HOLO · Hologramm anzeigen</option>
+      <option value="beam">BEAM · Lichtstrahl anzeigen</option>
+      <option value="attack">ATTACK · Simulationszähler erhöhen</option>
+      <option value="blitz">BLITZ · schnellen Simulationsimpuls zählen</option>
+      <option value="respo">RESPO · Reflexzustand setzen</option>
+      <option value="org">ORG · Satellitenwerte ordnen</option>
+      <option value="reorg">REORG · Satellitenwerte neu anordnen</option>
+      <option value="ds9">DS9 · Stationsmodus umschalten</option>
+      <option value="run3">RUN3 · drei Läufer anzeigen</option>
+      <option value="vektor">VEKTOR · X/Y/Z-Vektor berechnen</option>
+    </select>
+    <p id="auftragText"></p>
+
+    <div class="grid">
+      <div>
+        <h3>Pentagramm · Vectoring</h3>
+        <div class="pills">
+          <span style="color:#ff7777">BOOT · Rot</span><span style="color:#ffd166">ID · Gelb</span>
+          <span style="color:#62f5a5">HBT · Grün</span><span style="color:#77ceff">PULSE · Blau</span>
+          <span style="color:#c99aff">ATOM · Violett</span><span>Mitte · ELEMENT</span>
+        </div>
+        <label for="ax">X · Breite: <span id="xv">0.90</span></label><input id="ax" type="range" min="0" max="1" step="0.01" value="0.90">
+        <label for="ay">Y · Höhe: <span id="yv">0.50</span></label><input id="ay" type="range" min="0" max="1" step="0.01" value="0.50">
+        <label for="az">Z · Tiefe: <span id="zv">0.70</span></label><input id="az" type="range" min="0" max="1" step="0.01" value="0.70">
+        <pre id="vecOut"></pre>
+      </div>
+      <div>
+        <h3>NC6 · 756-Achsen-Spirale</h3>
+        <canvas id="holoCanvas" width="756" height="330" aria-label="Lokale grafische Simulation einer Spirale"></canvas>
+        <pre id="holoOut"></pre>
+        <p><small>Nur eine Browserzeichnung – kein physikalischer oder externer Beweis.</small></p>
+      </div>
+    </div>
+
+    <details>
+      <summary>Darstellung einstellen</summary>
+      <label for="particles">Gezeichnete Punkte: <span id="partV">300</span> / 756</label>
+      <input id="particles" type="range" min="1" max="756" value="300">
+      <label for="speed">Drehgeschwindigkeit: <span id="speedV">1.0</span></label>
+      <input id="speed" type="range" min="0" max="3" step="0.1" value="1">
+      <label for="atmo">Farbzyklus: <span id="atmoV">1</span></label>
+      <input id="atmo" type="range" min="0" max="9" value="1">
+      <p><small>Das Partikel-Limit beschränkt die tatsächlich gezeichnete Punktzahl.</small></p>
+    </details>
+  </div></div>
+</section>
+
+<section class="card" id="s2">
+  <div class="step"><div class="number" id="n2">2</div><div class="content">
+    <h2>2 · Prüfen — Ist der Auftrag bereit?</h2>
+    <p class="muted">Die Prüfung verändert keine Simulationswerte.</p>
+    <div class="row"><button id="btnPruefen" type="button">Auftrag prüfen</button><span id="pruefBadge" class="status wait">Noch nicht geprüft</span></div>
+    <pre id="pruefOut">Wähle einen Auftrag und prüfe ihn.</pre>
+  </div></div>
+</section>
+
+<section class="card" id="s3">
+  <div class="step"><div class="number" id="n3">3</div><div class="content">
+    <h2>3 · Freigeben — Deine bewusste Entscheidung</h2>
+    <p>Die Freigabe gilt nur für den gerade geprüften Auftrag und wird nach einer Ausführung verbraucht.</p>
+    <div class="row"><button id="btnFreigabe" class="primary" type="button">Freigabe erteilen</button></div>
+  </div></div>
+</section>
+
+<section class="card" id="s4">
+  <div class="step"><div class="number" id="n4">4</div><div class="content">
+    <h2>4 · Ausführen — Einmal und nur nach Freigabe</h2>
+    <div class="row"><button id="btnAusfuehren" class="primary" type="button" disabled>Ausführen</button><span id="execBadge" class="status">Noch nichts ausgeführt</span></div>
+    <pre id="execOut">Der Auftrag wartet auf Prüfung und Freigabe.</pre>
+  </div></div>
+</section>
+
+<section class="card" id="s5">
+  <div class="step"><div class="number" id="n5">5</div><div class="content">
+    <h2>5 · Ergebnis — Was hat sich geändert?</h2>
+    <pre id="ergebnisOut">Noch kein Ergebnis.</pre>
+    <div class="row"><button id="btnBericht" type="button">Lokalen Prüfbericht erstellen</button></div>
+    <pre id="berichtOut">Noch kein Prüfbericht.</pre>
+  </div></div>
+</section>
+
+<section class="card" id="s6">
+  <div class="step"><div class="number" id="n6">6</div><div class="content">
+    <h2>6 · Zurücksetzen</h2>
+    <p><b>Simulation</b> setzt Zustände und Zähler zurück. <b>Einstellungen</b> setzt nur Regler zurück. Beide Aktionen fragen vorher nach.</p>
+    <div class="row">
+      <button id="btnResetSim" type="button">Simulation zurücksetzen</button>
+      <button id="btnResetEinstellung" type="button">Einstellungen zurücksetzen</button>
+    </div>
+    <p id="resetOut" class="muted">Noch kein Reset.</p>
+  </div></div>
+</section>
+
+<p class="muted">Weitere Bereiche: <a href="nc/index.html">nc/index.html</a> · <a href="nc.html">nc.html</a> · <a href="nc/nc.a.s.y.html">nc/nc.a.s.y.html</a></p>
+</main>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const STATE = {
+  auftrag:"holo", geprueft:false, geprueftFuer:"", freigabe:false, freigabeFuer:"",
+  x:.9,y:.5,z:.7,particles:300,speed:1,atmo:1,
+  holoAn:false,beamAn:false,ds9An:false,run3An:false,respoAn:false,
+  attack:0,blitz:0,orgAn:false,reorgAn:false,
+  drehung:0,ausgefuehrt:0,letzteAktion:"keine",sat:[729,81,9,3]
+};
+const beschreibung = {
+  holo:"HOLO zeigt die lokale 756-Achsen-Spirale.",
+  beam:"BEAM zeichnet einen Lichtstrahl in die lokale Simulation.",
+  attack:"ATTACK zählt einen lokalen Simulationsimpuls, höchstens bis 99.",
+  blitz:"BLITZ zählt einen lokalen Blitzimpuls, höchstens bis 99.",
+  respo:"RESPO setzt einen Reflexzustand in der Simulation.",
+  org:"ORG sortiert die Satellitenwerte aufsteigend.",
+  reorg:"REORG ordnet die Satellitenwerte neu an.",
+  ds9:"DS9 schaltet den Stationsmodus um.",
+  run3:"RUN3 zeigt drei Läufer in der Zeichnung.",
+  vektor:"VEKTOR berechnet Betrag, Sicht und Unraum aus X/Y/Z."
+};
+
+function setSchritt(n){
+  const namen=["","Auftrag","Prüfen","Freigeben","Ausführen","Ergebnis","Zurücksetzen"];
+  $("stepBadge").textContent="Schritt "+n+" · "+namen[n];
+  for(let i=1;i<=6;i++){
+    $("n"+i).classList.toggle("done",i<n);
+    $("s"+i).classList.toggle("active",i===n);
+  }
+}
+function aktualisiereFreigabe(){
+  $("gateBadge").textContent=STATE.freigabe
+    ?"Freigabe AN · nur für "+STATE.freigabeFuer
+    :"Freigabe AUS · alles gesperrt";
+  $("gateBadge").className="status "+(STATE.freigabe?"ok":"wait");
+  $("btnFreigabe").textContent=STATE.freigabe?"Freigabe widerrufen":"Freigabe erteilen";
+  $("btnAusfuehren").disabled=!(
+    STATE.geprueft && STATE.geprueftFuer===STATE.auftrag &&
+    STATE.freigabe && STATE.freigabeFuer===STATE.auftrag
+  );
+}
+function vektor(){
+  STATE.x=Number($("ax").value); STATE.y=Number($("ay").value); STATE.z=Number($("az").value);
+  $("xv").textContent=STATE.x.toFixed(2); $("yv").textContent=STATE.y.toFixed(2); $("zv").textContent=STATE.z.toFixed(2);
+  const betrag=Math.hypot(STATE.x,STATE.y,STATE.z);
+  const achsen=[["X",STATE.x],["Y",STATE.y],["Z",STATE.z]];
+  const sichtbar=achsen.filter(([,v])=>v>.005).map(([n])=>n);
+  const unraum=achsen.filter(([,v])=>v<=.005).map(([n])=>n);
+  $("vecOut").textContent=
+    `Vektor [${STATE.x.toFixed(2)}, ${STATE.y.toFixed(2)}, ${STATE.z.toFixed(2)}]\n`+
+    `Betrag: ${betrag.toFixed(3)}\nSicht: ${sichtbar.join(" · ")||"keine Achse aktiv"}\n`+
+    `Unraum: ${unraum.join(" · ")||"keine offene Achse"}`;
+  return {betrag,sichtbar,unraum};
+}
+function zeichne(){
+  const c=$("holoCanvas"),ctx=c.getContext("2d"),w=c.width,h=c.height;
+  ctx.clearRect(0,0,w,h);
+  const n=Math.max(1,Math.min(756,STATE.particles)),cx=w/2,cy=h/2;
+  const palette=["#ff7777","#ffd166","#62f5a5","#77ceff","#c99aff","#ff9c9c","#a5ffd0","#d9b5ff","#b2e5ff","#fff0a6"];
+  for(let i=0;i<n;i++){
+    const angle=i*2.399963+STATE.drehung;
+    const radius=(i/756)*Math.min(w,h)*.47;
+    const hueOffset=STATE.atmo;
+    ctx.fillStyle=palette[(i+hueOffset)%palette.length];
+    ctx.globalAlpha=.88;
+    ctx.beginPath();
+    ctx.arc(cx+Math.cos(angle)*radius,cy+Math.sin(angle)*radius,STATE.holoAn?2.1:1.3,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha=1;
+  if(STATE.beamAn){
+    ctx.strokeStyle="#ffd166";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(w*.86,h*.28);ctx.stroke();
+  }
+  if(STATE.run3An){
+    for(let k=0;k<3;k++){
+      const a=STATE.drehung+k*2.094;
+      ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(cx+Math.cos(a)*85,cy+Math.sin(a)*65,4,0,Math.PI*2);ctx.fill();
+    }
+  }
+  $("holoOut").textContent=
+    `HOLO ${STATE.holoAn?"AN":"AUS"} · ${n} von 756 Punkten gezeichnet`+
+    `\nSatelliten: ${STATE.sat.join(" → ")}`+
+    `\nBEAM ${STATE.beamAn?"AN":"AUS"} · DS9 ${STATE.ds9An?"AN":"AUS"} · RUN3 ${STATE.run3An?"AN":"AUS"}`+
+    `\nATTACK ${STATE.attack}/99 · BLITZ ${STATE.blitz}/99 · RESPO ${STATE.respoAn?"AN":"AUS"}`;
+}
+function verwerfeFreigabe(){
+  STATE.geprueft=false;STATE.geprueftFuer="";
+  STATE.freigabe=false;STATE.freigabeFuer="";
+  aktualisiereFreigabe();
+}
+function auftragGeaendert(){
+  STATE.auftrag=$("auftrag").value;
+  $("auftragText").textContent=beschreibung[STATE.auftrag];
+  verwerfeFreigabe();
+  $("pruefBadge").textContent="Noch nicht geprüft";
+  $("pruefBadge").className="status wait";
+  $("pruefOut").textContent="Neue Auswahl. Bitte diesen Auftrag erneut prüfen.";
+  setSchritt(1);
+}
+function pruefen(){
+  const probleme=[];
+  if(STATE.auftrag==="attack"&&STATE.attack>=99) probleme.push("ATTACK hat bereits den Höchstwert 99.");
+  if(STATE.auftrag==="blitz"&&STATE.blitz>=99) probleme.push("BLITZ hat bereits den Höchstwert 99.");
+  STATE.geprueft=probleme.length===0;
+  STATE.geprueftFuer=STATE.auftrag;
+  STATE.freigabe=false;STATE.freigabeFuer="";
+  $("pruefBadge").textContent=STATE.geprueft?"Bereit":"Nicht bereit";
+  $("pruefBadge").className="status "+(STATE.geprueft?"ok":"bad");
+  $("pruefOut").textContent=STATE.geprueft
+    ?`Prüfung bestanden für „${STATE.auftrag}“.\n${beschreibung[STATE.auftrag]}\nEs wurde noch nichts ausgeführt.`
+    :`Prüfung nicht bestanden:\n• ${probleme.join("\n• ")}`;
+  aktualisiereFreigabe();setSchritt(STATE.geprueft?3:2);
+}
+function freigabeUmschalten(){
+  if(STATE.freigabe){STATE.freigabe=false;STATE.freigabeFuer="";}
+  else{
+    if(!STATE.geprueft||STATE.geprueftFuer!==STATE.auftrag){
+      $("pruefOut").textContent="Freigabe verweigert: Prüfe zuerst den aktuell ausgewählten Auftrag.";
+      setSchritt(2);return;
+    }
+    STATE.freigabe=true;STATE.freigabeFuer=STATE.auftrag;
+  }
+  aktualisiereFreigabe();setSchritt(STATE.freigabe?4:3);
+}
+function ausfuehren(){
+  if(!STATE.geprueft||!STATE.freigabe||
+     STATE.geprueftFuer!==STATE.auftrag||STATE.freigabeFuer!==STATE.auftrag){
+    $("execBadge").textContent="Blockiert · keine passende Freigabe";
+    $("execBadge").className="status bad";
+    $("execOut").textContent="Nichts ausgeführt. Prüfe und gib den gewählten Auftrag frei.";
+    return;
+  }
+  const a=STATE.auftrag,v=vektor();let msg="";
+  switch(a){
+    case "holo": STATE.holoAn=true;msg="HOLO eingeschaltet.";break;
+    case "beam": STATE.holoAn=true;STATE.beamAn=true;msg="HOLO eingeschaltet und BEAM gezeichnet.";break;
+    case "attack": STATE.attack=Math.min(99,STATE.attack+1);msg=`ATTACK gezählt: ${STATE.attack}/99.`;break;
+    case "blitz": STATE.blitz=Math.min(99,STATE.blitz+1);msg=`BLITZ gezählt: ${STATE.blitz}/99.`;break;
+    case "respo": STATE.respoAn=true;msg="RESPO-Zustand gesetzt.";break;
+    case "org": STATE.sat=[3,9,81,729];STATE.orgAn=true;msg="Satellitenwerte geordnet.";break;
+    case "reorg": STATE.sat=[81,3,729,9];STATE.reorgAn=true;msg="Satellitenwerte neu angeordnet.";break;
+    case "ds9": STATE.ds9An=!STATE.ds9An;msg=`DS9 ist ${STATE.ds9An?"AN":"AUS"}.`;break;
+    case "run3": STATE.run3An=true;STATE.holoAn=true;msg="Drei Läufer gestartet; HOLO eingeschaltet.";break;
+    case "vektor": msg=`Vektor berechnet: Betrag ${v.betrag.toFixed(3)}; Sicht ${v.sichtbar.join(", ")||"keine"}; Unraum ${v.unraum.join(", ")||"keiner"}.`;break;
+  }
+  STATE.ausgefuehrt++;STATE.letzteAktion=a;
+  STATE.freigabe=false;STATE.freigabeFuer="";STATE.geprueft=false;STATE.geprueftFuer="";
+  $("execBadge").textContent="Ausgeführt · "+a;$("execBadge").className="status ok";
+  $("execOut").textContent=msg;
+  $("ergebnisOut").textContent=
+    `Ergebnis: ${msg}\nAusgeführte Aktionen: ${STATE.ausgefuehrt}`+
+    `\nHOLO ${STATE.holoAn?"AN":"AUS"} · BEAM ${STATE.beamAn?"AN":"AUS"}`+
+    ` · DS9 ${STATE.ds9An?"AN":"AUS"} · RUN3 ${STATE.run3An?"AN":"AUS"}`+
+    `\nSatelliten: ${STATE.sat.join(" → ")}`+
+    `\nATTACK ${STATE.attack}/99 · BLITZ ${STATE.blitz}/99 · RESPO ${STATE.respoAn?"AN":"AUS"}`;
+  aktualisiereFreigabe();zeichne();setSchritt(5);
+}
+function bericht(){
+  const v=vektor();
+  $("berichtOut").textContent=
+    "LOKALER SIMULATIONSBERICHT — kein externer oder physikalischer Nachweis"+
+    `\nAuftrag: ${STATE.auftrag} · Geprüft: ${STATE.geprueft?"ja":"nein"} · Freigabe: ${STATE.freigabe?"AN":"AUS"}`+
+    `\nLetzte Aktion: ${STATE.letzteAktion} · Gesamt: ${STATE.ausgefuehrt}`+
+    `\nPunkte gezeichnet: ${Math.min(756,STATE.particles)} von 756 · HOLO ${STATE.holoAn?"AN":"AUS"}`+
+    `\nVektor: [${STATE.x.toFixed(2)}, ${STATE.y.toFixed(2)}, ${STATE.z.toFixed(2)}] · Betrag ${v.betrag.toFixed(3)}`+
+    `\nSatelliten: ${STATE.sat.join(" → ")} · ATTACK ${STATE.attack}/99 · BLITZ ${STATE.blitz}/99`;
+}
+function resetSim(){
+  if(!confirm("Simulation zurücksetzen? Einstellungen bleiben erhalten."))return;
+  Object.assign(STATE,{
+    holoAn:false,beamAn:false,ds9An:false,run3An:false,respoAn:false,
+    attack:0,blitz:0,orgAn:false,reorgAn:false,drehung:0,
+    ausgefuehrt:0,letzteAktion:"keine",sat:[729,81,9,3],
+    geprueft:false,geprueftFuer:"",freigabe:false,freigabeFuer:""
+  });
+  $("execBadge").textContent="Noch nichts ausgeführt";$("execBadge").className="status";
+  $("execOut").textContent="Simulation zurückgesetzt.";
+  $("ergebnisOut").textContent="Noch kein Ergebnis.";
+  $("resetOut").textContent="Simulation zurückgesetzt; Darstellungseinstellungen bleiben erhalten.";
+  aktualisiereFreigabe();zeichne();setSchritt(1);
+}
+function resetEinstellungen(){
+  if(!confirm("Darstellungseinstellungen zurücksetzen? Simulationszustände bleiben erhalten."))return;
+  $("particles").value=300;$("speed").value=1;$("atmo").value=1;
+  $("ax").value=.9;$("ay").value=.5;$("az").value=.7;
+  STATE.particles=300;STATE.speed=1;STATE.atmo=1;
+  $("partV").textContent="300";$("speedV").textContent="1.0";$("atmoV").textContent="1";
+  vektor();zeichne();
+  $("resetOut").textContent="Einstellungen zurückgesetzt; Simulationszustände bleiben erhalten.";
+}
+
+$("auftrag").addEventListener("change",auftragGeaendert);
+$("btnPruefen").addEventListener("click",pruefen);
+$("btnFreigabe").addEventListener("click",freigabeUmschalten);
+$("btnAusfuehren").addEventListener("click",ausfuehren);
+$("btnBericht").addEventListener("click",bericht);
+$("btnResetSim").addEventListener("click",resetSim);
+$("btnResetEinstellung").addEventListener("click",resetEinstellungen);
+
+["ax","ay","az"].forEach(id=>$(id).addEventListener("input",vektor));
+$("particles").addEventListener("input",function(){
+  STATE.particles=Number(this.value);$("partV").textContent=this.value;zeichne();
+});
+$("speed").addEventListener("input",function(){
+  STATE.speed=Number(this.value);$("speedV").textContent=STATE.speed.toFixed(1);
+});
+$("atmo").addEventListener("input",function(){
+  STATE.atmo=Number(this.value);$("atmoV").textContent=this.value;zeichne();
+});
+document.addEventListener("keydown",e=>{
+  if(e.altKey||e.ctrlKey||e.metaKey)return;
+  if(e.target&&e.target.matches("input,textarea,select,button"))return;
+  if(e.key.toLowerCase()==="p")pruefen();
+  if(e.key.toLowerCase()==="f")freigabeUmschalten();
+  if(e.key==="Enter"&& ! $("btnAusfuehren").disabled)ausfuehren();
+});
+
+auftragGeaendert();vektor();zeichne();
+setInterval(()=>{
+  if(STATE.holoAn&&STATE.speed>0){STATE.drehung+=.01*STATE.speed;zeichne();}
+},50);
+</script>
+</body>
+</html>

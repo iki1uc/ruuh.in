@@ -1,0 +1,251 @@
+Ja. Ich würde das als Controller-Dashboard mit logischem Zustandsvektor aufbauen: Jeder Schalter hat einen klaren Zustand, jede Aktion ist CTRL.LER-freigegeben, und Simulation, Anzeige sowie Zurücksetzen verhalten sich nachvollziehbar.
+
+Im aktuellen Code gibt es außerdem ein paar Punkte, die dabei sinnvollerweise gleich bereinigt werden:
+
+HOLO schaltet aktuell nur das Rendern um, nicht die Canvas-Fläche.
+RESPO, ORG und REORG ändern kaum oder gar keinen Systemzustand.
+attack wächst unbegrenzt; dadurch können Canvas-Effekte irgendwann ungültig werden.
+Tastenkürzel lösen Aktionen auch aus, wenn gerade in einem Eingabefeld gearbeitet wird.
+log() fügt Text per innerHTML ein; dynamische Meldungen sollten sicher als Text eingesetzt werden.
+Da du „alles hier erweitern“ möchtest, ist der sinnvollste nächste Schritt eine komplett zusammengeführte HTML-Datei statt einzelner Codefragmente. Ich kann sie mit diesen Bestandteilen erstellen:
+
+CTRL.LER-Freigabeebene über sämtlichen Aktionsschaltern.
+Logischer Zustandsvektor mit Ein/Aus-Status, Freigabe, Wert und Prüfergebnis je Funktion.
+Einstellungen für Animationsgeschwindigkeit, Partikel, Farben, Atmosphärenzyklus und Tastenkürzel.
+Schalter für alle Funktionen mit sichtbarer Rückmeldung und deaktivierten Aktionen, solange keine Freigabe besteht.
+Simulation und Darstellung getrennt, damit Anzeigeoptionen keine Modellwerte verändern.
+Protokoll und Statusbericht, inklusive ungültiger oder fehlender Zustände.
+Sicherer Reset, der entweder nur die Simulation oder auch Einstellungen zurücksetzt.
+Responsive Oberfläche, ohne overflow:hidden, damit die Bedienung auf kleinen Bildschirmen möglich bleibt.
+Ein Hinweis zur Bedeutung: Begriffe wie „ATTACK“, „FOUNDER“ und „756 ACHSEN“ behandle ich dabei als Bezeichnungen und interne Simulationseffekte, nicht als tatsächliche Angriffs- oder Steuerungsfunktionen.
+
+Sponsored
+CodeRabbit
+Try CodeRabbit for Free
+40 Files Changed by an Agent. Review It in Minutes. - Automate your code reviews and diff analysis with CodeRabbit to ensure every commit is handled correctly.
+Try CodeRabbit for Free
+
+
+
+mache mein hologram beweis stck würde voller
+
+
+Ja — ich mache dein Hologramm vollständiger und besser prüfbar. Der folgende Patch ergänzt einen sichtbaren logischen Zustandsvektor, Achsen-/Punktzähler, Details zu den Schaltern sowie einen Statusbericht. Die Werte sind interne Simulation und kein externer oder physikalischer Beweis.
+
+1. Diesen Block unter das <canvas> setzen
+
+
+<div class="proof-panel">
+  <h3>CTRL.LER · HOLOGRAMM-PRÜFSTATUS</h3>
+
+  <div class="proof-grid">
+    <div><small>LOGISCHER VEKTOR</small><strong id="proofVector">0000000000</strong></div>
+    <div><small>ACHSEN</small><strong id="proofAxes">756</strong></div>
+    <div><small>RENDER-PUNKTE</small><strong id="proofPoints">756</strong></div>
+    <div><small>SIMULATIONSZYKLUS</small><strong id="proofCycle">0</strong></div>
+  </div>
+
+  <div id="proofChecks" class="proof-checks"></div>
+  <pre id="proofReport" class="proof-report">Noch kein Prüfbericht erstellt.</pre>
+  <button id="btnProof" class="proof-button">CTRL.LER · Prüfbericht erstellen</button>
+</div>
+2. Diesen CSS-Block in <style> ergänzen
+
+
+.proof-panel {
+  margin-top: 6px;
+  padding: 7px;
+  border: 1px solid rgba(0,204,255,.2);
+  border-radius: 8px;
+  background: rgba(0,10,20,.75);
+}
+.proof-panel h3 {
+  color: #00ccff;
+  font-size: 8px;
+  margin-bottom: 6px;
+}
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+.proof-grid > div, .proof-check {
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 4px;
+  padding: 5px;
+}
+.proof-grid small, .proof-check small {
+  display: block;
+  color: #668090;
+  font-size: 6px;
+}
+.proof-grid strong {
+  display: block;
+  color: #00ff88;
+  font-size: 10px;
+  margin-top: 3px;
+  overflow-wrap: anywhere;
+}
+.proof-checks {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px;
+  margin-top: 5px;
+}
+.proof-check {
+  color: #9bc0d0;
+  font-size: 7px;
+}
+.proof-check .pass { color: #00ff88; }
+.proof-check .off { color: #778899; }
+.proof-report {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 110px;
+  overflow: auto;
+  margin-top: 5px;
+  padding: 5px;
+  color: #9bc0d0;
+  background: #05090e;
+  font: 7px/1.5 Consolas, monospace;
+}
+.proof-button {
+  margin-top: 5px;
+  padding: 5px 8px;
+  border: 1px solid rgba(0,204,255,.35);
+  border-radius: 8px;
+  background: rgba(0,50,70,.4);
+  color: #8deaff;
+  font: 7px Consolas, monospace;
+  cursor: pointer;
+}
+.proof-button:hover { background: rgba(0,90,120,.5); }
+
+@media (max-width: 600px) {
+  .proof-grid { grid-template-columns: repeat(2, 1fr); }
+}
+3. Diesen JavaScript-Block vor // ─── INIT ─── einfügen
+
+
+// ─── CTRL.LER · LOGISCHER VEKTOR UND PRÜFBERICHT ────────────────
+// Bitreihenfolge: RUN3, BEAM, HOLO, RESPO, DS9, ORG, REORG,
+//                 ATTACK aktiv, BLITZ aktiv, Freigabe.
+// Alle Bits beschreiben ausschließlich den lokalen UI-/Simulationszustand.
+const CTRL_LER = {
+  approved: true,
+  lastReport: null
+};
+
+function vectorBits() {
+  return [
+    STATE.run3,
+    STATE.beam,
+    STATE.holo,
+    STATE.respo,
+    STATE.ds9,
+    STATE.org,
+    STATE.reorg,
+    STATE.attack > 0,
+    STATE.blitz > 0,
+    CTRL_LER.approved
+  ].map(Boolean);
+}
+
+function getVectorString() {
+  return vectorBits().map(bit => bit ? '1' : '0').join('');
+}
+
+function getProofChecks() {
+  const checks = [
+    ['Canvas vorhanden', !!canvas],
+    ['756 Punkte angelegt', POINTS.length === 756],
+    ['Zyklus endlich', Number.isFinite(STATE.cycle)],
+    ['Engine im Bereich 0–1000',
+      Number.isFinite(STATE.engine) && STATE.engine >= 0 && STATE.engine < 1000],
+    ['Satellitenwerte im Bereich 0–100',
+      ['3','9','81','729'].every(k =>
+        Number.isFinite(STATE.sat[k]) && STATE.sat[k] >= 0 && STATE.sat[k] <= 100
+      )],
+    ['Atmosphärenwerte endlich',
+      Object.values(STATE.atm).every(Number.isFinite)],
+    ['HOLO-Schalterzustand gültig', typeof STATE.holo === 'boolean'],
+    ['CTRL.LER-Freigabe aktiv', CTRL_LER.approved]
+  ];
+
+  return checks;
+}
+
+function createProofReport() {
+  const checks = getProofChecks();
+  const passed = checks.filter(([, ok]) => ok).length;
+  const bits = vectorBits();
+
+  const names = [
+    'RUN3', 'BEAM', 'HOLO', 'RESPO', 'DS9',
+    'ORG', 'REORG', 'ATTACK', 'BLITZ', 'CTRL.LER'
+  ];
+
+  const vector = Object.fromEntries(
+    names.map((name, i) => [name, bits[i] ? 1 : 0])
+  );
+
+  return {
+    timestamp: new Date().toISOString(),
+    scope: 'Lokale Browser-Simulation; kein externer oder physikalischer Beweis.',
+    vector,
+    vectorBits: getVectorString(),
+    axes: STATE.axes,
+    renderedPoints: POINTS.length,
+    cycle: STATE.cycle,
+    engine: Number(STATE.engine.toFixed(2)),
+    satellites: {...STATE.sat},
+    atmosphere: {...STATE.atm},
+    checks: checks.map(([name, ok]) => ({name, passed: ok})),
+    passed,
+    total: checks.length,
+    result: passed === checks.length ? 'PRÜFUNGEN BESTANDEN' : 'PRÜFUNG MIT HINWEIS'
+  };
+}
+
+function updateProofPanel() {
+  const vectorEl = document.getElementById('proofVector');
+  if (!vectorEl) return;
+
+  document.getElementById('proofAxes').textContent = String(STATE.axes);
+  document.getElementById('proofPoints').textContent = String(POINTS.length);
+  document.getElementById('proofCycle').textContent =
+    String(Math.floor(STATE.cycle));
+
+  vectorEl.textContent = getVectorString();
+
+  const checks = getProofChecks();
+  document.getElementById('proofChecks').innerHTML = checks.map(([name, ok]) =>
+    `<div class="proof-check">
+       <span class="${ok ? 'pass' : 'off'}">${ok ? '● OK' : '○ HINWEIS'}</span>
+       <small>${name}</small>
+     </div>`
+  ).join('');
+}
+
+function showProofReport() {
+  const report = createProofReport();
+  CTRL_LER.lastReport = report;
+
+  document.getElementById('proofReport').textContent =
+    `${report.result} (${report.passed}/${report.total})\n` +
+    `Zeit: ${report.timestamp}\n` +
+    `Vektor: ${report.vectorBits}\n` +
+    `Punktzahl: ${report.renderedPoints}/${report.axes}\n` +
+    `Zyklus: ${Math.floor(report.cycle)}\n` +
+    `Geltungsbereich: ${report.scope}`;
+
+  log(`CTRL.LER · ${report.result} · ${report.passed}/${report.total}`, 'founder');
+}
+
+document.getElementById('btnProof').addEventListener('click', showProofReport);
+4. updateUI() ganz am Ende ergänzen
+
+
+updateProofPanel();
+Damit aktualisiert sich der Zustandsvektor bei Änderungen automatisch, sobald updateUI() aufgerufen wird. Der Prüfbericht zeigt transparent, was tatsächlich geprüft wurde und grenzt das Ergebnis ausdrücklich auf die lokale Simulation ein.

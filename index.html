@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PENTAGRAMMED · PRISMATIKUM · VECTORING</title>
+<style>
+:root{--bg:#050505;--card:#111;--line:#333;--green:#00ff66;--yellow:#ffd166;--red:#ff5555;--blue:#66ccff;--violet:#c77dff;--text:#f5f5f5}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,Consolas,monospace}
+header,main{width:min(100% - 32px,980px);margin-inline:auto}
+header{padding:28px 0 8px;text-align:center;border-bottom:2px solid var(--green)}
+h1{margin:0;color:var(--green);letter-spacing:.08em} .sub{color:#999}
+.flow{text-align:center;padding:16px;color:var(--yellow)}
+.grid{display:grid;gap:16px;grid-template-columns:1fr 1fr} @media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card.ready{border-left:6px solid var(--green)} .card.warn{border-left:6px solid var(--yellow)}
+.slider-row{display:flex;gap:10px;align-items:center;margin:8px 0} .slider-row input{flex:1}
+.status{padding:6px 10px;border-radius:6px;display:inline-block;font-weight:700;margin:6px 0}
+.status-konsens{background:#153622;color:#61f58f} .status-teil{background:#3d310d;color:#ffd27a} .status-offen{background:#401919;color:#ff8a80}
+.build{color:#61f58f;font-weight:700} .wait{color:#ffd27a;font-weight:700}
+button{padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:#222;color:#fff;font:inherit;cursor:pointer} button:hover{border-color:var(--green)} button.macht{background:var(--green);color:#000;font-weight:700}
+pre{background:#111;border:1px solid var(--line);padding:12px;overflow:auto;white-space:pre-wrap;color:#ccc}
+.prisma{display:flex;gap:8px;flex-wrap:wrap} .prisma span{padding:6px 10px;border-radius:20px;border:1px solid var(--line)}
+.p1{color:#ff5555}.p2{color:#ffd166}.p3{color:#00ff66}.p4{color:#66ccff}.p5{color:#c77dff}
+a:focus-visible,button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px} input:focus-visible{outline:3px solid var(--blue)}
+</style>
+</head>
+<body>
+<header><h1>PENTAGRAMMED</h1><div class="sub">PRISMATIKUM · VECTORING · ohne Vol.1 / Vol.2 · nur ATOM + ELEMENT</div></header>
+<main>
+<div class="flow">BOOT ↓ ID ↓ HBT ↓ PULSE · PENTA = 5 · PRISMA = Licht bricht · VECTOR = Richtung + Betrag</div>
+
+<div class="card ready">
+<h2>PRISMATIKUM — 5 Spitzen, 1 Mitte</h2>
+<div class="prisma"><span class="p1">● BOOT — Rot</span><span class="p2">● ID — Gelb</span><span class="p3">● HBT — Grün</span><span class="p4">● PULSE — Blau</span><span class="p5">● ATOM — Violett</span><span>◉ MITTE = ELEMENT</span></div>
+<svg viewBox="0 0 400 400" width="100%" style="max-width:520px;display:block;margin:12px auto" role="img" aria-label="Pentagramm Prisma mit 5 Spitzen und Vektoren">
+<polygon points="200,20 360,300 40,300" fill="none" stroke="#66ccff" stroke-width="1.5" opacity="0.7"/>
+<polygon points="200,20 320,150 270,330 130,330 80,150" fill="none" stroke="#00ff66" stroke-width="2"/>
+<polyline points="200,20 130,330 360,300 80,150 320,150 200,20" fill="none" stroke="#ffd166" stroke-width="2"/>
+<circle cx="200" cy="200" r="8" fill="#c77dff"/><text x="200" y="225" fill="#fff" text-anchor="middle" font-size="12">ELEMENT</text>
+<text x="200" y="14" fill="#ff5555" text-anchor="middle">BOOT</text>
+<text x="360" y="315" fill="#66ccff" text-anchor="middle">PULSE</text>
+<text x="40" y="315" fill="#ffd166" text-anchor="middle">ID</text>
+<text x="80" y="140" fill="#c77dff" text-anchor="middle">ATOM</text>
+<text x="320" y="140" fill="#00ff66" text-anchor="middle">HBT</text>
+<line id="vx" x1="200" y1="200" x2="290" y2="200" stroke="#ff5555" stroke-width="3"/><line id="vy" x1="200" y1="200" x2="200" y2="110" stroke="#ffd166" stroke-width="3"/><line id="vz" x1="200" y1="200" x2="260" y2="260" stroke="#66ccff" stroke-width="3"/>
+</svg>
+<p><small>Pentagramm = 5 Punkte verbunden. Prisma = Weiss wird zu 5 Farben gebrochen. Vectoring = ATOM gibt Richtung, ELEMENT gibt WAS.</small></p>
+</div>
+
+<div class="grid">
+<div class="card">
+<h2>VECTORING — ATOM + ELEMENT</h2>
+<div class="slider-row"><label>X · BREITE</label><input id="ax" type="range" min="0" max="1" step="0.01" value="0.9"><span id="axv">0.9</span></div>
+<div class="slider-row"><label>Y · HÖHE</label><input id="ay" type="range" min="0" max="1" step="0.01" value="0.5"><span id="ayv">0.5</span></div>
+<div class="slider-row"><label>Z · TIEFE</label><input id="az" type="range" min="0" max="1" step="0.01" value="0.7"><span id="azv">0.7</span></div>
+<pre id="vecOut"></pre>
+<p><small>Python: <code>python atom_element.py server</code> → <code>python client_atom.py</code> → POST /atom</small></p>
+</div>
+<div class="card">
+<h2>AXIOM — M1 / M2 / M3</h2>
+<div class="slider-row"><label>M1</label><input id="m1" type="range" min="0" max="10" value="8"><span id="m1v">8</span></div>
+<div class="slider-row"><label>M2</label><input id="m2" type="range" min="0" max="10" value="7"><span id="m2v">7</span></div>
+<div class="slider-row"><label>M3</label><input id="m3" type="range" min="0" max="10" value="9"><span id="m3v">9</span></div>
+<div id="avg">Ø 8.0 · P100 80</div>
+<div class="status status-teil" id="konsens">TEILKONSENS</div>
+<div class="gate build" id="gate">KOMPETENZ 3/3 · VERBAUEN</div>
+<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="macht" id="macht">Macht — freigeben</button><button id="unmacht">Unmacht — konstellieren zur neuen Macht</button></div>
+<p id="liveStatus" aria-live="polite">Systemstatus: READY</p>
+<pre id="report">Keine Fehler.</pre>
+<p><small>Tastatur: M = Macht, U = Unmacht, 1=BOOT, 2=ID, 3=HBT, 4=PULSE</small></p>
+</div>
+</div>
+
+<div class="card"><h2>LEGEND — PRISMA</h2>
+<p><span style="color:#ff5555">● ROT = BOOT</span> · <span style="color:#ffd166">● GELB = ID</span> · <span style="color:#00ff66">● GRÜN = HBT</span> · <span style="color:#66ccff">● BLAU = PULSE</span> · <span style="color:#c77dff">● VIOLETT = ATOM</span> · Mitte = ELEMENT · Weiss = Alle Farben zusammen = KONSENS</p>
+<p>UNMACHT = KONSTELLIEREN ZUR NEUEN MACHT. Kein Löschen. Nur Neu-Stellen.</p></div>
+</main>
+<script>
+function $ (id){return document.getElementById(id)}
+function vec(){
+ var x=+ $("ax").value, y=+ $("ay").value, z=+ $("az").value;
+ $("axv").textContent=x; $("ayv").textContent=y; $("azv").textContent=z;
+ var len=Math.sqrt(x*x+y*y+z*z).toFixed(3);
+ $("vecOut").textContent="ATOM WACH · ROH\nX "+x+" · Y "+y+" · Z "+z+"\nVektor ["+x+", "+y+", "+z+"]\nLänge "+len+"\nELEMENT.sec(X,"+x+") → ATOM.setBetrag(X,"+x+")";
+ $("vx").setAttribute("x2",200+x*90); $("vy").setAttribute("y2",200-y*90); $("vz").setAttribute("x2",200+z*60); $("vz").setAttribute("y2",200+z*60);
+}
+["ax","ay","az"].forEach(function(id){$(id).addEventListener("input",vec)}); vec();
+function axiom(){
+ var m1=+ $("m1").value,m2=+ $("m2").value,m3=+ $("m3").value;
+ $("m1v").textContent=m1;$("m2v").textContent=m2;$("m3v").textContent=m3;
+ var avg=Math.round((m1+m2+m3)/3*10)/10;
+ var kons=m1===m2&&m2===m3?"KONSENS":(m1===m2||m2===m3||m1===m3?"TEILKONSENS":"OFFEN");
+ var gate=[m1,m2,m3].filter(function(v){return v>=7}).length;
+ $("avg").textContent="Ø "+avg.toFixed(1)+" · P100 "+Math.round(avg*10);
+ var k=$("konsens");k.textContent=kons;k.className="status "+(kons==="KONSENS"?"status-konsens":kons==="TEILKONSENS"?"status-teil":"status-offen");
+ var g=$("gate");g.textContent="KOMPETENZ "+gate+"/3 · "+(gate===3?"VERBAUEN":"KONSTELLIEREN");g.className="gate "+(gate===3?"build":"wait");
+}
+["m1","m2","m3"].forEach(function(id){$(id).addEventListener("input",axiom)}); axiom();
+function setStatus(ok){
+ $("liveStatus").textContent=ok?"Systemstatus: READY — freigegeben.":"Systemstatus: WARN — konstellieren zur neuen Macht.";
+ $("report").textContent=ok?"Validierung erfolgreich.":"FEHLER:\nVOLLSTAENDIG\nUNMACHT = KONSTELLIEREN ZUR NEUEN MACHT";
+}
+$("macht").addEventListener("click",function(){setStatus(true)});
+$("unmacht").addEventListener("click",function(){setStatus(false)});
+document.addEventListener("keydown",function(e){
+ if(e.altKey||e.ctrlKey||e.metaKey)return;
+ if(e.target.matches("input,textarea,select,[contenteditable='true']"))return;
+ var k=e.key.toLowerCase();
+ if(k==="m")setStatus(true); if(k==="u")setStatus(false);
+});
+</script>
+</body>
+</html>

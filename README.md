@@ -38,3 +38,15 @@ Rufe anschließend `http://localhost:8000` auf.
 - `Esc` – Menü schließen
 
 Tastenkürzel werden nicht ausgelöst, wenn ein Eingabefeld aktiv ist.
+Copyright (c) 2026 iki1uc
+
+Alle Rechte vorbehalten.
+
+Dieses Projekt ist proprietär. 
+Das Kopieren, Klonen, Forken, Verbreiten, Modifizieren oder 
+kommerzielle Nutzen ist ohne schriftliche Erlaubnis verboten.
+
+Nur der Autor iki1uc darf dieses Projekt verwenden, verbreiten 
+oder erweitern.
+
+Externe Nutzung nur mit expliziter Business-Lizenz.

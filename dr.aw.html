@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>
+PENTA.GRAM · 1NS
+</title>
+
+<style>
+
+body{
+margin:0;
+background:#050505;
+color:white;
+font-family:Consolas;
+}
+
+header{
+padding:30px;
+text-align:center;
+border-bottom:
+2px solid #00ff66;
+}
+
+h1{
+color:#00ff66;
+}
+
+#status{
+color:#6cf;
+font-size:20px;
+margin-top:10px;
+}
+
+.flow{
+text-align:center;
+padding:20px;
+color:#ffd27a;
+}
+
+#portal{
+display:grid;
+gap:15px;
+padding:20px;
+grid-template-columns:
+repeat(auto-fit,
+minmax(260px,1fr));
+}
+
+.card{
+text-decoration:none;
+color:white;
+border:1px solid #333;
+background:#111;
+padding:16px;
+}
+
+.ready{
+border-left:
+6px solid #00ff66;
+}
+
+.warn{
+border-left:
+6px solid #ff4444;
+}
+
+.role{
+color:#00ff66;
+font-size:12px;
+}
+
+</style>
+
+</head>
+<body>
+
+<header>
+
+<h1>
+PENTA.GRAM
+</h1>
+
+<div id="status">
+READY
+</div>
+
+</header>
+
+<div class="flow">
+
+BOOT
+↓
+ANKER
+↓
+HBT
+↓
+BUILD
+
+</div>
+
+<div id="portal">
+
+</div>
+
+<script
+type="module"
+src="./portal.js">
+</script>
+
+</body>
+</html>

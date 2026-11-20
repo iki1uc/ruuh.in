@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>◈ G·PUNKT — Konvergenzzentrum · Glanz & Gloria</title>
+<style>
+:root{--bg:#03060c;--fg:#e8f4ff;--gold:#f0d080;--violet:#b388ff;--in:#8cf0d0;--out:#ff9ec4;--user:#6cf;--line:rgba(240,208,128,.25)}
+*{box-sizing:border-box}body{margin:0;background:#03060c;color:var(--fg);font:14px/1.5 Consolas,monospace;overflow-x:hidden}
+canvas#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+#hub{position:relative;z-index:1;max-width:1500px;margin:0 auto;padding:14px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;padding:16px 20px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(120deg,rgba(240,208,128,.14),rgba(179,136,255,.14),rgba(108,204,255,.10));box-shadow:0 0 40px rgba(240,208,128,.25)}
+h1{margin:0;font-size:clamp(22px,4vw,34px);background:linear-gradient(90deg,#ffe9b0,#f0d080,#b388ff,#6cf,#8cf0d0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:#9fb8cc;font-size:12px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px;background:rgba(0,0,0,.4)}
+#triple{display:grid;grid-template-columns:1fr 340px 1fr;gap:14px;margin-top:14px;align-items:start}
+@media(max-width:1100px){#triple{grid-template-columns:1fr}}
+.box{border:1px solid var(--line);border-radius:18px;padding:14px;background:rgba(6,10,18,.78);backdrop-filter:blur(10px);box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.box h2{margin:0 0 10px;font-size:12px;letter-spacing:3px;color:var(--gold);display:flex;justify-content:space-between}
+#spectrum{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;aspect-ratio:1;background:#050a12;padding:6px;border-radius:12px;max-width:480px;margin:auto}
+.scell{border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;color:#3a4a5a;cursor:pointer;position:relative;background:rgba(20,28,40,.7);transition:.15s}
+.scell:hover{transform:scale(1.15);z-index:2}
+.scell.in{background:rgba(140,240,208,.28);color:#c8fff0;box-shadow:0 0 14px rgba(140,240,208,.5)}
+.scell.out{background:rgba(255,158,196,.25);color:#ffd0e0;box-shadow:0 0 14px rgba(255,158,196,.45)}
+.scell.core{outline:2px solid var(--gold);color:#ffe9b0;font-weight:800}
+.scell.gpunkt{background:radial-gradient(circle,#fff3c4,#f0d080 55%,#b388ff);color:#1a0a2a!important;font-size:14px;box-shadow:0 0 22px #f0d080;animation:gp 2s infinite}
+@keyframes gp{50%{transform:scale(1.12)}}
+#engine{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;aspect-ratio:1;background:#0a0614;padding:6px;border-radius:12px;max-width:480px;margin:auto}
+.ecell{border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#4a4a6a;cursor:pointer;background:rgba(20,16,32,.7)}
+.ecell.root{background:rgba(240,208,128,.28);color:#ffe9b0;box-shadow:0 0 12px rgba(240,208,128,.5)}
+.ecell.user{background:rgba(108,204,255,.25);color:#c8e8ff;box-shadow:0 0 12px rgba(108,204,255,.45)}
+.ecell.both{background:linear-gradient(135deg,rgba(240,208,128,.35),rgba(108,204,255,.35));color:#fff}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px}
+.metric{display:flex;justify-content:space-between;padding:7px 9px;background:rgba(0,0,0,.4);border-radius:7px;border-left:3px solid var(--gold);font-size:11px}
+.ctrl{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+button{flex:1;min-width:78px;padding:8px;border-radius:8px;border:1px solid var(--line);background:#16202e;color:#e8f4ff;font:inherit;font-size:11px;cursor:pointer;letter-spacing:1px}
+button:hover{border-color:var(--gold);box-shadow:0 0 14px rgba(240,208,128,.4)}
+button.gold{background:linear-gradient(90deg,#f0d080,#b388ff);color:#1a0a2a;font-weight:800}
+label{display:block;margin:9px 0 3px;font-size:11px;color:#9fb8cc}
+input[type=range]{width:100%;accent-color:#f0d080}
+#gOrb{width:230px;height:230px;margin:6px auto;position:relative;display:flex;align-items:center;justify-content:center}
+#gCenter{width:110px;height:110px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#fff7cc,#f0d080 38%,#b388ff 72%,#1a0a2a);display:flex;align-items:center;justify-content:center;font-size:38px;color:#1a0a2a;box-shadow:0 0 50px rgba(240,208,128,.7),0 0 90px rgba(179,136,255,.5);cursor:pointer;z-index:2;animation:gp 3s infinite}
+.orbit{position:absolute;border:1px dashed rgba(240,208,128,.35);border-radius:50%}
+.orbit.o1{inset:0}.orbit.o2{inset:22px;border-color:rgba(108,204,255,.3)}.orbit.o3{inset:44px;border-color:rgba(255,158,196,.3)}
+.orbit span{position:absolute;top:-9px;left:50%;font-size:14px}
+#log{background:rgba(0,0,0,.55);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:11px;max-height:150px;overflow:auto;margin-top:14px}
+#log div{border-bottom:1px solid rgba(255,255,255,.05);padding:2px 0}
+#fl76{position:fixed;bottom:14px;right:14px;z-index:5;background:rgba(6,10,18,.9);border:1px solid var(--line);border-radius:8px;padding:6px 12px;text-align:center}
+#fl76 b{font-size:18px;color:var(--gold)}
+.scell.figur{outline:3px solid #fff;box-shadow:0 0 20px #fff,0 0 30px #f0d080;transform:scale(1.18);z-index:3}.scell.anker{outline:2px dashed #6cf}
+.fantasy{margin-top:10px;padding:10px;border:1px dashed rgba(240,208,128,.5);border-radius:10px;background:linear-gradient(90deg,rgba(240,208,128,.08),rgba(179,136,255,.08));font-size:12px}
+a{color:var(--user)}
+</style></head>
+<body><canvas id="stars"></canvas>
+<div id="hub">
+<header><div><h1>◈ G·PUNKT — Konvergenzzentrum</h1><div class="sub">Nicht „irgendwo in der Mitte". Der G·PUNKT ist der Thron: 9×9-Mitte = Reihe 5, Spalte 5, Feld 40 = ◈ — und in der Seite die mittlere Säule zwischen Spektrum und Engine. Glanz &amp; Gloria, kein Beige.</div></div>
+<div><span class="pill">IN <b id="hIn">0</b></span> <span class="pill">OUT <b id="hOut">0</b></span> <span class="pill">ROOT <b id="hRoot">0</b></span> <span class="pill">USER <b id="hUser">0</b></span> <span class="pill">G <b id="hG">0.00</b></span></div></header>
+
+<div id="triple">
+<div class="box"><h2>◉ 9×9 · SPEKTRUM <span id="specBadge">0 / 81</span></h2><div id="spectrum"></div>
+<div class="metrics"><div class="metric"><span>IN · Summe</span><b id="mIn">0</b></div><div class="metric"><span>OUT · Summe</span><b id="mOut">0</b></div><div class="metric"><span>Spektrum-Score</span><b id="mSpec">0.00</b></div><div class="metric"><span>Cluster</span><b id="mSpecCl">0</b></div></div>
+<div class="ctrl"><button id="btnIn">⬇ +1 IN</button><button id="btnOut">⬆ +1 OUT</button><button id="btnInAll" class="gold">⚡ ALL IN</button><button id="btnOutAll">⟲ ALL OUT</button><button id="btnSpecReset">⟲ RESET</button></div>
+<p class="sub">FIX: btnIn / btnOut waren tot — jetzt setzen sie je 1 Feld. Klick = IN · Shift+Klick = OUT · Ctrl+Klick = weiterdrehen.</p></div>
+
+<div class="box" style="text-align:center"><h2>G · PUNKT <span id="gBadge">idle</span></h2>
+<div id="gOrb"><div class="orbit o1"><span>切</span></div><div class="orbit o2"><span>内</span></div><div class="orbit o3"><span>我</span></div><div id="gCenter" title="G·PUNKT — Konvergenzzentrum, Feld 40">◈</div></div>
+<div style="letter-spacing:6px;color:var(--gold)">G · PUNKT</div><div class="sub">KONVERGENZZENTRUM · Reihe 5 · Spalte 5 · Feld 40</div>
+<div class="ctrl"><a href="mind.html"><button>🧠 mind.html</button></a><button id="btnRoot">🌱 ROOT</button><button id="btnUser">👤 USER</button><button id="btnG" class="gold">◈ G-START</button></div>
+<div class="fantasy" id="fantasyText">✨ Der G·PUNKT strahlt. Spektrum und Engine knien sich — nicht andersrum.</div>
+<div class="metrics"><div class="metric"><span>Root-Kraft</span><b id="mRootKraft">0</b></div><div class="metric"><span>User-Fluss</span><b id="mUserFluss">0</b></div><div class="metric"><span>G-Score</span><b id="mGScore">0.00</b></div><div class="metric"><span>Kohärenz</span><b id="mKoh">0.00</b></div></div></div>
+
+<div class="box"><h2>⚙ 6×6 · ENGINE <span id="engBadge">0 / 36</span></h2><div id="engine"></div>
+<div class="metrics"><div class="metric"><span>ROOT · Felder</span><b id="mRootF">0</b></div><div class="metric"><span>USER · Felder</span><b id="mUserF">0</b></div><div class="metric"><span>Algo-Index</span><b id="mAlgo">0</b></div><div class="metric"><span>Engine-Kohärenz</span><b id="mEngKoh">0.00</b></div></div>
+<div class="ctrl"><button id="btnEngRoot">🌱 ROOT</button><button id="btnEngUser">👤 USER</button><button id="btnEngAlgo">⚙ ALGO</button><button id="btnEngFlip">⇄ FLIP</button><button id="btnEngRun">▶ RUN</button><button id="btnEngReset">⟲ RESET</button></div></div>
+</div>
+
+<div class="box"><h2>🎛 WERTE SETZEN — nicht nur Linien anstarren <span>Live, ohne Reload</span></h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+<div><label>IN-Stärke (Wert pro IN-Feld): <b id="inWertV">1.0</b></label><input id="inWert" type="range" min="0.5" max="5" step="0.1" value="1">
+<label>OUT-Stärke: <b id="outWertV">1.0</b></label><input id="outWert" type="range" min="0.5" max="5" step="0.1" value="1">
+<label>Auto-Tick Tempo: <b id="rateV">4</b></label><input id="rate" type="range" min="0" max="10" step="1" value="4"></div>
+<div><label>G-Gewicht Spektrum: <b id="wSpecV">0.40</b></label><input id="wSpec" type="range" min="0" max="1" step="0.05" value="0.4">
+<label>G-Gewicht Engine: <b id="wEngV">0.30</b></label><input id="wEng" type="range" min="0" max="1" step="0.05" value="0.3">
+<label>G-Gewicht Balance: <b id="wBalV">0.30</b></label><input id="wBal" type="range" min="0" max="1" step="0.05" value="0.3"></div>
+<div><label>Startfeld für +1 IN / +1 OUT: <b id="startV">Mitte → außen</b></label><input id="startMode" type="range" min="0" max="1" step="1" value="0">
+<p class="sub">0 = von der Mitte (Feld 40) nach außen · 1 = von oben links nach unten rechts.<br>Tasten: <b>R</b> Root · <b>U</b> User · <b>G</b> G-Start · <b>A</b> Algo · <b>Space</b> Run</p></div>
+</div></div>
+
+
+<div class="box"><h2>🤸 G·PUNKT ALS FIGUR — Feld · Zelle · Anker · Achsen · Gelenk <span id="figBadge">Zelle 40 · Anker 40</span></h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+<div><p><b>FIGUR</b> = der bewegliche ◈ im 9×9-Feld.<br><b>ZELLE</b> = wo er gerade steht: <b id="figZelle">Reihe 5 · Spalte 5 · Feld 40</b><br><b>ANKER</b> = fester Ursprung: <b id="figAnker">Feld 40</b> — UR bringt ihn zurück.</p>
+<div class="ctrl"><button id="btnLinks">◀ Links</button><button id="btnRechts">▶ Rechts</button><button id="btnHoch">▲ Hoch</button><button id="btnRunter">▼ Runter</button></div>
+<label>X · Achse (Spalte 1–9): <b id="gxV">5</b></label><input id="gx" type="range" min="1" max="9" value="5">
+<label>Y · Achse (Reihe 1–9): <b id="gyV">5</b></label><input id="gy" type="range" min="1" max="9" value="5">
+<label>Z · Achse (Tiefe / Drehung 0–9): <b id="gzV">5</b></label><input id="gz" type="range" min="0" max="9" value="5"></div>
+<div><p><b>ACHSEN</b><br>X = links ↔ rechts · Y = oben ↕ unten · Z = Tiefe / Drehung.<br><b>VERACHSENDER</b> = die Figur dreht sich um den Anker: Anker bleibt, Figur kreist.</p>
+<div class="ctrl"><button id="btnDreh">↻ Um Anker drehen</button><button id="btnAnker">⚓ Anker = Figur</button><button id="btnAnkerReset">⚓ Anker → Mitte</button></div>
+<label>GELENK: <b id="gelenkV">1 · locker</b></label><input id="gelenk" type="range" min="1" max="3" step="1" value="1">
+<p class="sub">1 = locker (1 Feld pro Schritt) · 2 = fest (2 Felder) · 3 = starr (springt zum Rand)</p></div>
+<div><p><b>BEWEGUNG — UR / RU / NU</b><br><b>UR</b> = Ursprung: zurück zum Anker.<br><b>RU</b> = Ruhe: Figur bleibt stehen, atmet nur.<br><b>NU</b> = Neu: Figur springt auf ein neues, freies Feld.</p>
+<div class="ctrl"><button id="btnUR">🌀 UR · zum Anker</button><button id="btnRU">🧘 RU · Ruhe</button><button id="btnNU">✨ NU · Neu</button></div>
+<button id="btnSchwung" class="gold" style="width:100%;margin-top:10px;padding:12px;font-size:13px">💥 SCHWUNG IN DIE KISTE → 6×6-Engine</button>
+<p class="sub" id="schwungOut">Noch kein Schwung. Die Kiste = die 6×6-Engine rechts.</p></div>
+</div></div>
+<div id="log"><div>◈ G·PUNKT — Glanz &amp; Gloria geladen. btnIn / btnOut repariert.</div></div>
+<p class="sub" style="text-align:center">Zurück zur Basis: <a href="index.html">index.html — Auftrag → Prüfen → Freigeben → Ausführen → Ergebnis</a> · Diese Datei ist die Fantasy-Bühne, nicht der Ersatz für die Basis.</p>
+</div>
+<div id="fl76"><div>FL76 · Kaiser</div><b id="fl76num">76</b><div style="font-size:9px;color:#888">ms</div></div>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const N9=9,N6=6,T9=81,T6=36;
+const SPEC={cells:new Array(T9).fill(0),core:new Set([0,8,72,80,40]),values:new Array(T9).fill(1)};
+for(let i=0;i<T9;i++){const r=Math.floor(i/N9),c=i%N9;SPEC.values[i]=SPEC.core.has(i)?9:((r+c)%9)+1;if(SPEC.core.has(i))SPEC.cells[i]=1;}
+const ENG={cells:new Array(T6).fill(0),rootSeed:new Set([0,7,14,21,28,35])};
+for(const i of ENG.rootSeed)ENG.cells[i]=1;
+const S={tick:0,rootMode:false,userMode:false,lastAuto:0,rate:4,inW:1,outW:1,wSpec:.4,wEng:.3,wBal:.3,startMode:0,inCount:0,outCount:0,inSum:0,outSum:0,specClusters:0,specScore:0,rootFields:0,userFields:0,algoIndex:0,engKoh:0,rootKraft:0,userFluss:0,gScore:0,koh:0,flRaw:76,flSmooth:76,lastFrameT:0};
+function log(m){const b=$("log"),d=document.createElement("div");d.textContent="["+new Date().toLocaleTimeString("de-DE")+"] "+m;b.appendChild(d);b.scrollTop=b.scrollHeight;while(b.children.length>60)b.removeChild(b.firstChild);}
+function renderSpecCell(i){const el=document.querySelector(`.scell[data-i="${i}"]`);if(!el)return;el.classList.toggle("in",SPEC.cells[i]===1);el.classList.toggle("out",SPEC.cells[i]===-1);}
+function measureSpec(){let ic=0,oc=0,is=0,os=0;for(let i=0;i<T9;i++){const v=SPEC.values[i]*(SPEC.cells[i]===1?S.inW:SPEC.cells[i]===-1?S.outW:1);if(SPEC.cells[i]===1){ic++;is+=v;}else if(SPEC.cells[i]===-1){oc++;os+=v;}}S.inCount=ic;S.outCount=oc;S.inSum=is;S.outSum=os;S.specScore=(is-os)/(T9*9);
+const parent=Array.from({length:T9},(_,i)=>i);const find=x=>parent[x]===x?x:(parent[x]=find(parent[x]));const union=(a,b)=>{const ra=find(a),rb=find(b);if(ra!==rb)parent[ra]=rb;};
+for(let r=0;r<N9;r++)for(let c=0;c<N9;c++){const i=r*N9+c;if(SPEC.cells[i]!==1)continue;if(c+1<N9&&SPEC.cells[i+1]===1)union(i,i+1);if(r+1<N9&&SPEC.cells[i+N9]===1)union(i,i+N9);}
+const g=new Set();for(let i=0;i<T9;i++)if(SPEC.cells[i]===1)g.add(find(i));S.specClusters=g.size;
+$("specBadge").textContent=`${ic+oc} / 81 · IN:${ic} · OUT:${oc}`;$("hIn").textContent=ic;$("hOut").textContent=oc;$("mIn").textContent=Math.round(is);$("mOut").textContent=Math.round(os);$("mSpec").textContent=S.specScore.toFixed(3);$("mSpecCl").textContent=S.specClusters;}
+function renderEngCell(i){const el=document.querySelector(`.ecell[data-i="${i}"]`);if(!el)return;const v=ENG.cells[i];el.classList.toggle("root",v===1);el.classList.toggle("user",v===2);el.classList.toggle("both",v===3);el.textContent=v===1?"◆":v===2?"◇":v===3?"◈":"·";}
+function measureEng(){let r=0,u=0,algo=0,set=0;for(let i=0;i<T6;i++){const v=ENG.cells[i],r0=Math.floor(i/N6),c0=i%N6;if(v===1)r++;else if(v===2)u++;else if(v===3){r++;u++;}if(v!==0){set++;algo+=v*((r0===c0||r0+c0===N6-1)?1.5:1)*(1+(r0+c0)*.05);}}S.rootFields=r;S.userFields=u;S.algoIndex=algo;S.engKoh=set/T6;
+$("engBadge").textContent=`${r+u} / 36 · R:${r} · U:${u}`;$("hRoot").textContent=r;$("hUser").textContent=u;$("mRootF").textContent=r;$("mUserF").textContent=u;$("mAlgo").textContent=algo.toFixed(1);$("mEngKoh").textContent=S.engKoh.toFixed(2);}
+function checkG(){S.rootKraft=S.inSum+S.rootFields*3;S.userFluss=S.outSum+S.userFields*3;const bal=S.inSum+S.outSum>0?1-Math.abs(S.inSum-S.outSum)/(S.inSum+S.outSum):0;S.gScore=Math.abs(S.specScore)*S.wSpec+S.engKoh*S.wEng+bal*S.wBal;
+let match=0,total=0;for(let i=0;i<Math.min(T9,T6);i++){const a=SPEC.cells[i]===1,b=ENG.cells[i]===1||ENG.cells[i]===3;if(a||b){total++;if(a&&b)match++;}}S.koh=total?match/total:0;
+$("mRootKraft").textContent=Math.round(S.rootKraft);$("mUserFluss").textContent=Math.round(S.userFluss);$("mGScore").textContent=S.gScore.toFixed(3);$("mKoh").textContent=S.koh.toFixed(3);$("hG").textContent=S.gScore.toFixed(2);
+const badge=$("gBadge");badge.textContent=S.gScore>.7?"👑 RESONANZ — GLORIA":S.gScore>.4?"✨ AKTIV — GLANZ":S.gScore>.1?"🌙 LADEN":"💤 idle";
+$("fantasyText").textContent=S.gScore>.7?"👑 GLORIA! Der G·PUNKT thront — Spektrum und Engine singen im Chor.":S.gScore>.4?"✨ GLANZ! Der G·PUNKT funkt — die Sterne ordnen sich.":S.gScore>.1?"🌙 Der G·PUNKT gähnt noch — gib ihm IN oder ROOT.":"💤 Der G·PUNKT schläft. Weck ihn mit +1 IN oder G-START.";}
+function specToggle(i,mode){if(mode==="in")SPEC.cells[i]=SPEC.cells[i]===1?0:1;else if(mode==="out")SPEC.cells[i]=SPEC.cells[i]===-1?0:-1;else SPEC.cells[i]=SPEC.cells[i]===0?1:SPEC.cells[i]===1?-1:0;renderSpecCell(i);measureSpec();checkG();}
+function engToggle(i,mode){if(mode==="root")ENG.cells[i]=ENG.cells[i]===1?0:ENG.cells[i]===3?2:1;else if(mode==="user")ENG.cells[i]=ENG.cells[i]===2?0:ENG.cells[i]===3?1:2;else ENG.cells[i]=(ENG.cells[i]+1)%4;renderEngCell(i);measureEng();checkG();}
+function buildSpectrum(){const el=$("spectrum");el.innerHTML="";const order=[];if(S.startMode===0){for(let d=0;d<9;d++)for(let i=0;i<T9;i++){const r=Math.floor(i/N9),c=i%N9;if(Math.max(Math.abs(r-4),Math.abs(c-4))===d)order.push(i);}}else for(let i=0;i<T9;i++)order.push(i);
+for(const i of order){const cell=document.createElement("div");cell.className="scell";cell.dataset.i=i;if(SPEC.core.has(i))cell.classList.add("core");if(i===40)cell.classList.add("gpunkt");const glyph=i===0?"Ω":i===8?"◉":i===72?"♚":i===80?"♛":i===40?"◈":String(SPEC.values[i]);cell.textContent=glyph;cell.title="Feld "+i+" · Reihe "+(Math.floor(i/9)+1)+" · Spalte "+(i%9+1)+" · Wert "+SPEC.values[i]+(i===40?" · G·PUNKT":"");cell.addEventListener("click",e=>specToggle(i,e.shiftKey?"out":e.ctrlKey||e.metaKey?null:"in"));el.appendChild(cell);}for(let i=0;i<T9;i++)renderSpecCell(i);}
+function buildEngine(){const el=$("engine");el.innerHTML="";for(let i=0;i<T6;i++){const cell=document.createElement("div");cell.className="ecell";cell.dataset.i=i;cell.title="Engine-Feld "+i;cell.addEventListener("click",e=>engToggle(i,e.shiftKey?"user":e.altKey?null:"root"));el.appendChild(cell);}for(let i=0;i<T6;i++)renderEngCell(i);}
+// FIX: btnIn / btnOut — vorher ohne Handler, jetzt +1 Feld
+function plusOne(mode){const order=S.startMode===0?[...Array(T9).keys()].sort((a,b)=>{const da=Math.max(Math.abs(Math.floor(a/9)-4),Math.abs(a%9-4)),db=Math.max(Math.abs(Math.floor(b/9)-4),Math.abs(b%9-4));return da-db;}):[...Array(T9).keys()];
+const target=order.find(i=>SPEC.cells[i]===0);if(target===undefined){log("⚠ Kein freies Feld mehr — RESET oder ALL OUT.");return;}SPEC.cells[target]=mode==="in"?1:-1;renderSpecCell(target);measureSpec();checkG();log((mode==="in"?"⬇ +1 IN":"⬆ +1 OUT")+" → Feld "+target+" (Reihe "+(Math.floor(target/9)+1)+", Spalte "+(target%9+1)+")");}
+$("btnIn").addEventListener("click",()=>plusOne("in"));
+$("btnOut").addEventListener("click",()=>plusOne("out"));
+$("btnInAll").addEventListener("click",()=>{SPEC.cells.fill(1);buildSpectrum();measureSpec();checkG();log("⚡ ALL IN — Spektrum voll geladen");});
+$("btnOutAll").addEventListener("click",()=>{SPEC.cells.fill(-1);buildSpectrum();measureSpec();checkG();log("⟲ ALL OUT — Spektrum entladen");});
+$("btnSpecReset").addEventListener("click",()=>{SPEC.cells.fill(0);for(const i of SPEC.core)SPEC.cells[i]=1;buildSpectrum();measureSpec();checkG();log("⟲ Spektrum zurückgesetzt — Kern bleibt");});
+$("btnEngRoot").addEventListener("click",()=>{for(let i=0;i<T6;i++){const r=Math.floor(i/N6),c=i%N6;if(r===c||r+c===N6-1)ENG.cells[i]=1;}buildEngine();measureEng();checkG();log("🌱 ENGINE ROOT — Diagonalen");});
+$("btnEngUser").addEventListener("click",()=>{for(let i=0;i<T6;i++){const r=Math.floor(i/N6),c=i%N6;if(r<3&&c<3)ENG.cells[i]=2;}buildEngine();measureEng();checkG();log("👤 ENGINE USER — Quadrant");});
+function runAlgo(){const nc=ENG.cells.slice();for(let r=0;r<N6;r++)for(let c=0;c<N6;c++){const i=r*N6+c;let rn=0,un=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;const nr=r+dr,nc2=c+dc;if(nr<0||nr>=N6||nc2<0||nc2>=N6)continue;const v=ENG.cells[nr*N6+nc2];if(v===1||v===3)rn++;if(v===2||v===3)un++;}const cur=ENG.cells[i];if(cur===0){if(rn>=3&&un>=3)nc[i]=3;else if(rn>=2)nc[i]=1;else if(un>=2)nc[i]=2;}else if(cur===1&&un>=3)nc[i]=3;else if(cur===2&&rn>=3)nc[i]=3;}ENG.cells=nc;buildEngine();measureEng();checkG();log("⚙ ALGO · R:"+S.rootFields+" U:"+S.userFields+" · IDX "+S.algoIndex.toFixed(1));}
+$("btnEngAlgo").addEventListener("click",runAlgo);$("btnEngRun").addEventListener("click",runAlgo);
+$("btnEngFlip").addEventListener("click",()=>{for(let i=0;i<T6;i++){if(ENG.cells[i]===1)ENG.cells[i]=2;else if(ENG.cells[i]===2)ENG.cells[i]=1;else if(ENG.cells[i]===3)ENG.cells[i]=0;}buildEngine();measureEng();checkG();log("⇄ FLIP ROOT ⇄ USER");});
+$("btnEngReset").addEventListener("click",()=>{ENG.cells.fill(0);for(const i of ENG.rootSeed)ENG.cells[i]=1;buildEngine();measureEng();checkG();log("⟲ ENGINE RESET");});
+$("btnRoot").addEventListener("click",()=>{S.rootMode=!S.rootMode;if(S.rootMode){for(let i=0;i<T6;i++){const r=Math.floor(i/N6),c=i%N6;if(r===c||r+c===N6-1)ENG.cells[i]=1;}for(const i of SPEC.core)SPEC.cells[i]=1;log("🌱 ROOT MODUS an");}else log("⚖ ROOT MODUS aus");buildEngine();buildSpectrum();measureSpec();measureEng();checkG();});
+$("btnUser").addEventListener("click",()=>{S.userMode=!S.userMode;if(S.userMode){for(let i=0;i<T6;i++)if(ENG.cells[i]===0&&Math.random()<.4)ENG.cells[i]=2;for(let i=0;i<T9;i++)if(SPEC.cells[i]===0&&Math.random()<.15)SPEC.cells[i]=-1;log("👤 USER MODUS an");}else log("⚖ USER MODUS aus");buildEngine();buildSpectrum();measureSpec();measureEng();checkG();});
+$("btnG").addEventListener("click",()=>{for(let i=0;i<Math.min(T9,T6);i++){if(SPEC.cells[i]===1&&ENG.cells[i]===0)ENG.cells[i]=1;else if(SPEC.cells[i]===-1&&ENG.cells[i]===0)ENG.cells[i]=2;}buildEngine();measureSpec();measureEng();checkG();log("◈ G-START — Spektrum → Engine gekoppelt");});
+$("gCenter").addEventListener("click",()=>$("btnG").click());
+$("inWert").addEventListener("input",e=>{S.inW=Number(e.target.value);$("inWertV").textContent=S.inW.toFixed(1);measureSpec();checkG();});
+$("outWert").addEventListener("input",e=>{S.outW=Number(e.target.value);$("outWertV").textContent=S.outW.toFixed(1);measureSpec();checkG();});
+$("rate").addEventListener("input",e=>{S.rate=Number(e.target.value);$("rateV").textContent=S.rate;});
+$("wSpec").addEventListener("input",e=>{S.wSpec=Number(e.target.value);$("wSpecV").textContent=S.wSpec.toFixed(2);checkG();});
+$("wEng").addEventListener("input",e=>{S.wEng=Number(e.target.value);$("wEngV").textContent=S.wEng.toFixed(2);checkG();});
+$("wBal").addEventListener("input",e=>{S.wBal=Number(e.target.value);$("wBalV").textContent=S.wBal.toFixed(2);checkG();});
+$("startMode").addEventListener("input",e=>{S.startMode=Number(e.target.value);$("startV").textContent=S.startMode===0?"Mitte → außen":"oben links → unten rechts";buildSpectrum();});
+document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;const k=e.key.toLowerCase();if(k==="r")$("btnRoot").click();if(k==="u")$("btnUser").click();if(k==="g")$("btnG").click();if(k==="a")$("btnEngAlgo").click();if(e.key===" "){e.preventDefault();runAlgo();}});
+// Sterne + Fantasy-Himmel
+const sc=$("stars"),ctx=sc.getContext("2d");let stars=[];function sizeStars(){sc.width=innerWidth;sc.height=innerHeight;stars=Array.from({length:220},()=>({x:Math.random()*sc.width,y:Math.random()*sc.height,r:Math.random()*1.6+.3,s:Math.random()*.4+.1,c:["#f0d080","#b388ff","#6cf","#8cf0d0","#ff9ec4"][Math.floor(Math.random()*5)]}));}sizeStars();addEventListener("resize",sizeStars);
+(function drawStars(){ctx.clearRect(0,0,sc.width,sc.height);for(const s of stars){s.y+=s.s;if(s.y>sc.height)s.y=0;ctx.globalAlpha=.25+Math.random()*.5;ctx.fillStyle=s.c;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();}ctx.globalAlpha=1;requestAnimationFrame(drawStars);})();
+let lastAuto=0,lastFrame=0;
+function loop(now){if(S.rate>0&&now-lastAuto>Math.max(180,1000-S.rate*80)){lastAuto=now;const i=Math.floor(Math.random()*T6),v=ENG.cells[i];if(v===0)ENG.cells[i]=Math.random()<.5?1:2;else if(v===1&&Math.random()<.3)ENG.cells[i]=3;else if(v===2&&Math.random()<.3)ENG.cells[i]=3;else if(v===3&&Math.random()<.2)ENG.cells[i]=0;renderEngCell(i);measureEng();checkG();}
+if(lastFrame>0){S.flRaw=now-lastFrame;S.flSmooth=S.flSmooth*.88+S.flRaw*.12;$("fl76num").textContent=Math.round(S.flSmooth);}lastFrame=now;requestAnimationFrame(loop);}
+buildSpectrum();buildEngine();measureSpec();measureEng();checkG();requestAnimationFrame(loop);
+
+// ── G·PUNKT ALS FIGUR ──
+const FIG={x:5,y:5,z:5,ax:5,ay:5,gelenk:1,mode:"UR"};
+function figFeld(){return (FIG.y-1)*9+(FIG.x-1);}
+function figAnkerFeld(){return (FIG.ay-1)*9+(FIG.ax-1);}
+function figUpdate(msg){
+  $("gx").value=FIG.x;$("gy").value=FIG.y;$("gz").value=FIG.z;
+  $("gxV").textContent=FIG.x;$("gyV").textContent=FIG.y;$("gzV").textContent=FIG.z;
+  $("gelenkV").textContent=FIG.gelenk+" · "+(FIG.gelenk===1?"locker":FIG.gelenk===2?"fest":"starr");
+  $("figZelle").textContent="Reihe "+FIG.y+" · Spalte "+FIG.x+" · Feld "+figFeld()+" · Z="+FIG.z;
+  $("figAnker").textContent="Feld "+figAnkerFeld()+" (Reihe "+FIG.ay+", Spalte "+FIG.ax+")";
+  $("figBadge").textContent="Zelle "+figFeld()+" · Anker "+figAnkerFeld()+" · Gelenk "+FIG.gelenk+" · "+FIG.mode;
+  // Figur im Raster markieren: alte Figur-Klasse weg, neue setzen
+  document.querySelectorAll(".scell").forEach(el=>el.classList.remove("figur"));
+  const el=document.querySelector(`.scell[data-i="${figFeld()}"]`); if(el) el.classList.add("figur");
+  document.querySelectorAll(".scell").forEach(el=>el.classList.remove("anker"));
+  const a=document.querySelector(`.scell[data-i="${figAnkerFeld()}"]`); if(a) a.classList.add("anker");
+  if(msg) log(msg);
+}
+function figMove(dx,dy){
+  const step=FIG.gelenk===1?1:FIG.gelenk===2?2:8;
+  FIG.x=Math.max(1,Math.min(9,FIG.x+dx*step)); FIG.y=Math.max(1,Math.min(9,FIG.y+dy*step));
+  FIG.mode=FIG.mode==="RU"?"UR":FIG.mode; figUpdate("🤸 Figur → Feld "+figFeld()+" (Schritt "+step+")");
+}
+$("btnLinks").addEventListener("click",()=>figMove(-1,0));
+$("btnRechts").addEventListener("click",()=>figMove(1,0));
+$("btnHoch").addEventListener("click",()=>figMove(0,-1));
+$("btnRunter").addEventListener("click",()=>figMove(0,1));
+$("gx").addEventListener("input",e=>{FIG.x=Number(e.target.value);figUpdate();});
+$("gy").addEventListener("input",e=>{FIG.y=Number(e.target.value);figUpdate();});
+$("gz").addEventListener("input",e=>{FIG.z=Number(e.target.value);figUpdate();});
+$("gelenk").addEventListener("input",e=>{FIG.gelenk=Number(e.target.value);figUpdate("🔗 Gelenk = "+FIG.gelenk);});
+$("btnDreh").addEventListener("click",()=>{ // um Anker kreisen: 90° um Anker
+  const dx=FIG.x-FIG.ax, dy=FIG.y-FIG.ay; FIG.x=Math.max(1,Math.min(9,FIG.ax-dy)); FIG.y=Math.max(1,Math.min(9,FIG.ay+dx)); FIG.z=(FIG.z+2)%10; figUpdate("↻ Verachs sender: Figur kreist um Anker → Feld "+figFeld());
+});
+$("btnAnker").addEventListener("click",()=>{FIG.ax=FIG.x;FIG.ay=FIG.y;figUpdate("⚓ Anker gesetzt auf Figur → Feld "+figAnkerFeld());});
+$("btnAnkerReset").addEventListener("click",()=>{FIG.ax=5;FIG.ay=5;figUpdate("⚓ Anker zurück in die Mitte (Feld 40)");});
+$("btnUR").addEventListener("click",()=>{FIG.mode="UR";FIG.x=FIG.ax;FIG.y=FIG.ay;figUpdate("🌀 UR — Figur zurück zum Ursprung / Anker");});
+$("btnRU").addEventListener("click",()=>{FIG.mode="RU";figUpdate("🧘 RU — Ruhe. Figur bleibt auf Feld "+figFeld()+", atmet nur.");});
+$("btnNU").addEventListener("click",()=>{FIG.mode="NU";let frei=[];for(let i=0;i<81;i++)if(SPEC.cells[i]===0)frei.push(i);if(!frei.length){log("✨ NU — kein freies Feld, erst ALL OUT oder RESET");return;}const pick=frei[Math.floor(Math.random()*frei.length)];FIG.x=pick%9+1;FIG.y=Math.floor(pick/9)+1;figUpdate("✨ NU — Figur springt auf neues Feld "+figFeld());});
+$("btnSchwung").addEventListener("click",()=>{
+  // SCHWUNG IN DIE KISTE: Figur-Zelle -> Engine-Zelle (Feld % 36), mit Schwung-Animation
+  const g=$("gCenter"); g.style.transition="transform .18s"; let n=0;
+  const anim=setInterval(()=>{g.style.transform=`scale(${1.2+Math.random()*.5}) rotate(${n*40}deg)`; n++; if(n>5){clearInterval(anim); g.style.transform=""; 
+    const ziel=figFeld()%36; const cur=ENG.cells[ziel];
+    ENG.cells[ziel]=SPEC.cells[figFeld()]===1?1:SPEC.cells[figFeld()]()===-1?2:3;
+    buildEngine(); measureEng(); checkG();
+    $("schwungOut").textContent="💥 SCHWUNG! Figur von Feld "+figFeld()+" → in die Kiste, Engine-Feld "+ziel+" (war "+cur+", ist jetzt "+ENG.cells[ziel]+").";
+    log("💥 SCHWUNG IN DIE KISTE — Figur Feld "+figFeld()+" → Engine-Feld "+ziel);
+  }},120);
+});
+figUpdate();
+
+window.G={state:()=>({...S}),gStart:()=>$("btnG").click(),algo:runAlgo,plusIn:()=>plusOne("in"),plusOut:()=>plusOne("out")};
+</script></body></html>

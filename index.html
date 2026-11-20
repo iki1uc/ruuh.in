@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ruuh.in — Neustart · Auftrag → Prüfen → Freigeben → Ausführen → Ergebnis</title>
+<style>
+:root{--bg:#070707;--card:#111;--line:#333;--green:#00e676;--yellow:#ffd166;--red:#ff6b6b;--blue:#66ccff;--violet:#c77dff;--text:#f5f5f5;--dim:#9a9a9a}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,Consolas,monospace}
+header{padding:20px 16px 8px;max-width:960px;margin:0 auto} h1{margin:0;color:var(--green);font-size:26px}
+.sub{color:var(--dim)} main{max-width:960px;margin:0 auto;padding:8px 16px 32px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.card.next{border-color:var(--green)} .step{display:flex;gap:10px;align-items:flex-start}
+.num{flex:0 0 32px;height:32px;border-radius:50%;background:#222;border:1px solid var(--line);display:grid;place-items:center;font-weight:800}
+.num.done{background:var(--green);color:#000} h2{margin:2px 0 6px;font-size:19px} p{margin:6px 0} small{color:var(--dim)}
+label{display:block;margin:10px 0 4px} select,input[type=range]{width:100%;padding:10px;background:#0d0d0d;color:#fff;border:1px solid var(--line);border-radius:8px;font:inherit}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+button{padding:11px 16px;border:1px solid var(--line);border-radius:9px;background:#222;color:#fff;font:inherit;cursor:pointer}
+button:hover{border-color:var(--green)} button.primary{background:var(--green);color:#000;font-weight:800}
+button:disabled{opacity:.45;cursor:not-allowed}
+.badge{display:inline-block;padding:5px 10px;border-radius:20px;border:1px solid var(--line);font-weight:700;font-size:13px}
+.badge.ok{background:#12351f;color:#7dffab} .badge.warn{background:#3a2f10;color:#ffd166} .badge.bad{background:#3d1717;color:#ff8a80}
+pre{background:#050505;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;white-space:pre-wrap;color:#ddd}
+canvas{width:100%;height:280px;display:block;background:#05090e;border:1px solid var(--line);border-radius:10px}
+.penta{display:flex;gap:8px;flex-wrap:wrap} .penta span{padding:6px 10px;border:1px solid var(--line);border-radius:20px}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:10px} summary{cursor:pointer;font-weight:700}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px} @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+</style>
+</head>
+<body>
+<header>
+<h1>ruuh.in — Neustart</h1>
+<div class="sub">Ein Ablauf, ein Zustand, eine Freigabe. Pentagramm / Vectoring + NC6-Hologramm — aber geordnet, nicht als Panel-Wirrwarr.</div>
+<p><span class="badge ok" id="gateBadge">Freigabe: AUS — alle Aktionen gesperrt</span> <span class="badge" id="stepBadge">Schritt: 1 Auftrag</span></p>
+</header>
+<main>
+
+<!-- 1 AUFTRAG -->
+<section class="card next" id="s1">
+<div class="step"><div class="num" id="n1">1</div><div style="flex:1">
+<h2>1. Auftrag — Was möchtest du tun?</h2>
+<p>Wähle einen Vorgang. Die Seite erklärt ihn in normaler Sprache. Es wird noch nichts ausgeführt.</p>
+<label for="auftrag">Vorgang wählen</label>
+<select id="auftrag">
+<option value="holo">HOLO anzeigen — Hologramm-Bild einschalten</option>
+<option value="beam">BEAM — ein Lichtstrahl durch das Hologramm</option>
+<option value="attack">ATTACK — ein Angriffs-Impuls in der Simulation (max. 99)</option>
+<option value="blitz">BLITZ — ein schneller Blitz-Impuls (max. 99)</option>
+<option value="respo">RESPO — Reflex: Simulation stellt sich neu auf</option>
+<option value="org">ORG — Satelliten-Werte ordnen</option>
+<option value="reorg">REORG — Satelliten-Werte neu mischen</option>
+<option value="ds9">DS9 — Station-Modus an / aus</option>
+<option value="run3">RUN3 — drei Läufer laufen lassen</option>
+<option value="vektor">VEKTOR — Pentagramm-Vektor aus den X/Y/Z-Reglern auslösen</option>
+</select>
+<p id="auftragText"></p>
+<div class="grid2">
+<div><h3>Pentagramm / Vectoring</h3>
+<p><span class="penta"><span style="color:#ff6b6b">● BOOT — Rot</span><span style="color:#ffd166">● ID — Gelb</span><span style="color:#00e676">● HBT — Grün</span><span style="color:#66ccff">● PULSE — Blau</span><span style="color:#c77dff">● ATOM — Violett</span><span>◉ Mitte = ELEMENT</span></span></p>
+<label>X · BREITE <span id="xv">0.90</span></label><input id="ax" type="range" min="0" max="1" step="0.01" value="0.90">
+<label>Y · HÖHE <span id="yv">0.50</span></label><input id="ay" type="range" min="0" max="1" step="0.01" value="0.50">
+<label>Z · TIEFE <span id="zv">0.70</span></label><input id="az" type="range" min="0" max="1" step="0.01" value="0.70">
+<pre id="vecOut"></pre></div>
+<div><h3>NC6-Hologramm</h3>
+<canvas id="holoCanvas" width="640" height="280"></canvas>
+<p><small>Hologramm = lokale Simulation im Browser. Kein physikalischer Beweis, kein externer Nachweis. Gezeichnet werden wirklich nur die Punkte, die unter „Darstellung“ eingestellt sind.</small></p>
+<pre id="holoOut"></pre></div>
+</div>
+<details><summary>Darstellung — nur Optik, ändert den Simulationszustand nicht</summary>
+<label>Partikel — wie viele Punkte gezeichnet werden (1–756) <span id="partV">300</span></label><input id="particles" type="range" min="1" max="756" value="300">
+<label>Geschwindigkeit der Drehung <span id="speedV">1.0</span></label><input id="speed" type="range" min="0" max="3" step="0.1" value="1">
+<label>Atmosphäre — nur Farbton <span id="atmoV">1</span></label><input id="atmo" type="range" min="0" max="9" value="1">
+<p><small>Partikel-Limit begrenzt die Darstellung wirklich: Es werden die ersten N Punkte der 756 gezeichnet, nicht mehr.</small></p>
+</details>
+</div></div>
+</section>
+
+<!-- 2 PRÜFEN -->
+<section class="card" id="s2">
+<div class="step"><div class="num" id="n2">2</div><div style="flex:1">
+<h2>2. Prüfen — Ist alles da?</h2>
+<p>Die Prüfung ändert nichts und führt nichts aus. Sie sagt nur: bereit oder was fehlt.</p>
+<div class="row"><button id="btnPruefen" type="button">Prüfen</button><span id="pruefBadge" class="badge warn">Noch nicht geprüft</span></div>
+<pre id="pruefOut">Noch nicht geprüft. Wähle oben einen Auftrag und drücke „Prüfen“.</pre>
+</div></div>
+</section>
+
+<!-- 3 FREIGEBEN -->
+<section class="card" id="s3">
+<div class="step"><div class="num" id="n3">3</div><div style="flex:1">
+<h2>3. Freigeben — Du entscheidest bewusst</h2>
+<p>Freigabe AN = die eine geprüfte Aktion darf ausgeführt werden. Freigabe AUS = alle Aktionen gesperrt. Die Freigabe gilt nur für den geprüften Auftrag.</p>
+<div class="row"><button id="btnFreigabe" type="button" class="primary">Freigabe: AUS — klicke, um freizugeben</button></div>
+<p><small>Ohne Freigabe passiert bei „Ausführen“ nichts. Das ist Absicht.</small></p>
+</div></div>
+</section>
+
+<!-- 4 AUSFÜHREN -->
+<section class="card" id="s4">
+<div class="step"><div class="num" id="n4">4</div><div style="flex:1">
+<h2>4. Ausführen — Nur die freigegebene Aktion läuft</h2>
+<div class="row"><button id="btnAusfuehren" type="button" class="primary" disabled>Ausführen</button><span id="execBadge" class="badge">Bereit: nichts läuft</span></div>
+<pre id="execOut">Noch nichts ausgeführt.</pre>
+</div></div>
+</section>
+
+<!-- 5 ERGEBNIS -->
+<section class="card" id="s5">
+<div class="step"><div class="num" id="n5">5</div><div style="flex:1">
+<h2>5. Ergebnis verstehen — Was hat sich geändert?</h2>
+<pre id="ergebnisOut">Noch kein Ergebnis. Erst Auftrag → Prüfen → Freigeben → Ausführen.</pre>
+<p><small>Ehrlich: Alle Zahlen hier beschreiben nur diese lokale Simulation im Browser. Es gibt keinen externen Beweis, keine Messung außerhalb dieser Seite.</small></p>
+<div class="row"><button id="btnBericht" type="button">Prüfbericht erstellen</button></div>
+<pre id="berichtOut">Noch kein Prüfbericht.</pre>
+</div></div>
+</section>
+
+<!-- 6 ZURÜCKSETZEN -->
+<section class="card" id="s6">
+<div class="step"><div class="num" id="n6">6</div><div style="flex:1">
+<h2>6. Zurücksetzen — Zwei getrennte Aktionen</h2>
+<p><b>Simulation zurücksetzen</b> = Zähler und Zustände auf Anfang. <b>Einstellungen zurücksetzen</b> = nur Regler / Darstellung auf Anfang. Beides fragt vorher nach.</p>
+<div class="row"><button id="btnResetSim" type="button">Simulation zurücksetzen</button><button id="btnResetEinstellung" type="button">Einstellungen zurücksetzen</button></div>
+<p id="resetOut"><small>Noch kein Reset.</small></p>
+</div></div>
+</section>
+
+<p><small>Links: <a href="nc/index.html">nc/index.html</a> · <a href="nc.html">nc.html</a> · <a href="nc/nc.a.s.y.html">nc/nc.a.s.y.html</a> — Alter Stand ist verworfen, diese Datei ist der Neustart.</small></p>
+</main>
+
+<script>
+"use strict";
+/* EIN Zustandsmodell, EINE Freigabe, EIN Skript. Kein zweites CTRL_LER. */
+/* Reihenfolge beachten: Zuerst alle Werte definieren, dann erst Funktionen, die sie nutzen. */
+var STATE = {
+  auftrag: "holo",
+  geprueft: false, geprueftFuer: "",
+  freigabe: false, freigabeFuer: "",
+  schritt: 1,
+  x: 0.90, y: 0.50, z: 0.70,
+  particles: 300, speed: 1.0, atmo: 1,
+  holoAn: false, beamAn: false, ds9An: false, run3An: false, respoAn: false,
+  attack: 0, blitz: 0, orgAn: false, reorgAn: false,
+  drehung: 0, ausgefuehrt: 0, letzteAktion: "keine", fehler: [],
+  sat: [729, 81, 9, 3],
+  satOrg: [3, 9, 81, 729]
+};
+var EPS = 0.005;
+var AUFTRAG_TEXT = {
+  holo: "HOLO: Das Hologramm-Bild wird eingeschaltet. Du siehst dann die 756-Achsen-Spirale als Zeichnung.",
+  beam: "BEAM: Ein Lichtstrahl wird durch die Zeichnung gelegt. Nur Optik, keine echte Messung.",
+  attack: "ATTACK: Ein Angriffs-Impuls in der Simulation. Zähler +1, maximal 99. Nur ein Label in der Simulation, kein echter Angriff.",
+  blitz: "BLITZ: Ein schneller Blitz-Impuls. Zähler +1, maximal 99. Nur Optik.",
+  respo: "RESPO: Die Simulation stellt sich neu auf. Ein Reflex-Zustand wird gesetzt.",
+  org: "ORG: Die vier Satelliten-Zahlen werden geordnet: 3, 9, 81, 729.",
+  reorg: "REORG: Die vier Satelliten-Zahlen werden neu gemischt.",
+  ds9: "DS9: Der Station-Modus wird an- oder ausgeschaltet.",
+  run3: "RUN3: Drei Läufer laufen in der Zeichnung.",
+  vektor: "VEKTOR: Der Vektor aus X/Y/Z wird berechnet und in der Pentagramm-Anzeige ausgewertet. Sicht = Achse über 0.005, Unraum = Achse bei / unter 0.005."
+};
+function $(id){ return document.getElementById(id); }
+function setSchritt(n){ STATE.schritt = n; $("stepBadge").textContent = "Schritt: " + n + " " + ["","Auftrag","Prüfen","Freigeben","Ausführen","Ergebnis","Zurücksetzen"][n];
+  ["n1","n2","n3","n4","n5","n6"].forEach(function(id,i){ $(id).classList.toggle("done", i+1 < n); });
+  ["s1","s2","s3","s4","s5","s6"].forEach(function(id,i){ $(id).classList.toggle("next", i+1 === n); }); }
+function gateBadge(){ $("gateBadge").textContent = STATE.freigabe ? "Freigabe: AN — nur für: " + STATE.freigabeFuer : "Freigabe: AUS — alle Aktionen gesperrt";
+  $("gateBadge").className = "badge " + (STATE.freigabe ? "ok" : "warn");
+  $("btnFreigabe").textContent = STATE.freigabe ? "Freigabe: AN — klicke, um zu sperren" : "Freigabe: AUS — klicke, um freizugeben";
+  $("btnAusfuehren").disabled = !(STATE.geprueft && STATE.freigabe && STATE.freigabeFuer === STATE.auftrag); }
+function vektorAuswertung(){
+  STATE.x = Number($("ax").value); STATE.y = Number($("ay").value); STATE.z = Number($("az").value);
+  $("xv").textContent = STATE.x.toFixed(2); $("yv").textContent = STATE.y.toFixed(2); $("zv").textContent = STATE.z.toFixed(2);
+  var betrag = Math.sqrt(STATE.x*STATE.x + STATE.y*STATE.y + STATE.z*STATE.z);
+  var vis = [["X",STATE.x],["Y",STATE.y],["Z",STATE.z]].filter(function(p){ return p[1] > EPS; }).map(function(p){ return p[0]; });
+  var un = [["X",STATE.x],["Y",STATE.y],["Z",STATE.z]].filter(function(p){ return p[1] <= EPS; }).map(function(p){ return p[0]; });
+  $("vecOut").textContent = "Vektor [X " + STATE.x.toFixed(2) + ", Y " + STATE.y.toFixed(2) + ", Z " + STATE.z.toFixed(2) + "]\nBetrag: " + betrag.toFixed(3)
+    + "\nSICHT: " + (vis.length ? vis.join(" · ") : "keine Achse aktiv") + "\nUNRAUM: " + (un.length ? un.join(" · ") + " noch ungenutzt" : "keine offene Achse");
+  return { betrag: betrag, sichtbar: vis, unraum: un }; }
+function zeichneHolo(){
+  var c = $("holoCanvas"); if(!c) return; var ctx = c.getContext("2d");
+  var w = c.width, h = c.height; ctx.clearRect(0,0,w,h);
+  var cx = w/2, cy = h/2;
+  var gezeigt = Math.max(1, Math.min(756, STATE.particles)); /* Limit begrenzt Darstellung wirklich */
+  var farben = ["#ff6b6b","#ffd166","#00e676","#66ccff","#c77dff","#ff8a80","#7dffab","#b388ff","#80d8ff","#ffe082"];
+  for(var i=0;i<gezeigt;i++){
+    var a = i * 2.39996 + STATE.drehung; var r = (i/gezeigt) * Math.min(w,h)*0.44;
+    var px = cx + Math.cos(a)*r, py = cy + Math.sin(a)*r;
+    ctx.fillStyle = farben[i % farben.length]; ctx.globalAlpha = 0.85;
+    ctx.beginPath(); ctx.arc(px,py, STATE.holoAn ? 2.2 : 1.2, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  if(STATE.beamAn){ ctx.strokeStyle = "#ffd166"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx + 180, cy - 60); ctx.stroke(); }
+  if(STATE.run3An){ ctx.fillStyle = "#fff"; [0,1,2].forEach(function(k){ ctx.beginPath(); ctx.arc(cx + Math.cos(STATE.drehung + k*2.1)*90, cy + Math.sin(STATE.drehung + k*2.1)*90, 4, 0, Math.PI*2); ctx.fill(); }); }
+  $("holoOut").textContent = "Hologramm: " + (STATE.holoAn ? "AN" : "AUS") + " · Gezeichnet: " + gezeigt + " von 756 Punkten (Partikel-Limit wirkt wirklich)"
+    + "\nSatelliten: " + STATE.sat.join(" → ") + " · BEAM: " + (STATE.beamAn?"AN":"AUS") + " · DS9: " + (STATE.ds9An?"AN":"AUS") + " · RUN3: " + (STATE.run3An?"AN":"AUS")
+    + "\nATTACK: " + STATE.attack + " / 99 · BLITZ: " + STATE.blitz + " / 99 · RESPO: " + (STATE.respoAn?"AN":"AUS"); }
+function auftragAnzeigen(){
+  STATE.auftrag = $("auftrag").value; $("auftragText").textContent = AUFTRAG_TEXT[STATE.auftrag];
+  /* Neuer Auftrag = alte Prüfung / Freigabe verfallen. Das ist die eine Freigabe-Logik. */
+  STATE.geprueft = false; STATE.freigabe = false; STATE.freigabeFuer = ""; STATE.geprueftFuer = "";
+  $("pruefBadge").textContent = "Noch nicht geprüft"; $("pruefBadge").className = "badge warn";
+  $("pruefOut").textContent = "Noch nicht geprüft für: " + STATE.auftrag + ". Bitte „Prüfen“ drücken.";
+  gateBadge(); setSchritt(1); }
+function pruefen(){
+  var probleme = [];
+  if(STATE.auftrag === "attack" && STATE.attack >= 99) probleme.push("ATTACK ist schon bei 99. Erst Simulation zurücksetzen.");
+  if(STATE.auftrag === "blitz" && STATE.blitz >= 99) probleme.push("BLITZ ist schon bei 99. Erst Simulation zurücksetzen.");
+  STATE.geprueft = probleme.length === 0; STATE.geprueftFuer = STATE.auftrag;
+  if(STATE.geprueft){ $("pruefBadge").textContent = "Bereit — Freigabe möglich"; $("pruefBadge").className = "badge ok";
+    $("pruefOut").textContent = "PRÜFUNG BESTANDEN für: " + STATE.auftrag + "\n" + AUFTRAG_TEXT[STATE.auftrag] + "\nNichts wurde ausgeführt, nichts wurde geändert. Jetzt darfst du freigeben.";
+    setSchritt(3); }
+  else { $("pruefBadge").textContent = "Nicht bereit"; $("pruefBadge").className = "badge bad";
+    $("pruefOut").textContent = "PRÜFUNG NICHT BESTANDEN für: " + STATE.auftrag + "\n- " + probleme.join("\n- "); setSchritt(2); }
+  gateBadge(); }
+function freigabeUmschalten(){
+  if(!STATE.geprueft || STATE.geprueftFuer !== STATE.auftrag){ alert("Erst prüfen. Ohne Prüfung gibt es keine Freigabe."); setSchritt(2); return; }
+  STATE.freigabe = !STATE.freigabe; STATE.freigabeFuer = STATE.freigabe ? STATE.auftrag : "";
+  gateBadge(); setSchritt(STATE.freigabe ? 4 : 3); }
+function ausfuehren(){
+  /* Freigabe wird hier durchgängig durchgesetzt: ALLE Aktionen gehen nur durch diese eine Funktion. */
+  if(!STATE.geprueft || !STATE.freigabe || STATE.freigabeFuer !== STATE.auftrag){
+    $("execBadge").textContent = "Blockiert: keine gültige Freigabe"; $("execBadge").className = "badge bad";
+    $("execOut").textContent = "BLOCKIERT. Keine gültige Freigabe für: " + STATE.auftrag + ".\nAblauf: Auftrag → Prüfen → Freigeben → Ausführen."; return; }
+  var a = STATE.auftrag, v = vektorAuswertung(), msg = "";
+  if(a === "holo"){ STATE.holoAn = true; msg = "HOLO eingeschaltet."; }
+  else if(a === "beam"){ if(!STATE.holoAn){ STATE.holoAn = true; msg = "HOLO war aus — erst eingeschaltet, dann BEAM gelegt."; } STATE.beamAn = true; msg += " BEAM gelegt."; }
+  else if(a === "attack"){ STATE.attack = Math.min(99, STATE.attack + 1); msg = "ATTACK-Impuls gezählt. Stand jetzt: " + STATE.attack + " / 99."; }
+  else if(a === "blitz"){ STATE.blitz = Math.min(99, STATE.blitz + 1); msg = "BLITZ-Impuls gezählt. Stand jetzt: " + STATE.blitz + " / 99."; }
+  else if(a === "respo"){ STATE.respoAn = true; msg = "RESPO gesetzt. Simulation stellt sich neu auf."; }
+  else if(a === "org"){ STATE.sat = STATE.satOrg.slice(); STATE.orgAn = true; msg = "ORG: Satelliten geordnet: 3, 9, 81, 729."; }
+  else if(a === "reorg"){ STATE.sat = [81, 3, 729, 9]; STATE.reorgAn = true; msg = "REORG: Satelliten neu gemischt: 81, 3, 729, 9."; }
+  else if(a === "ds9"){ STATE.ds9An = !STATE.ds9An; msg = "DS9 ist jetzt: " + (STATE.ds9An ? "AN" : "AUS") + "."; }
+  else if(a === "run3"){ STATE.run3An = true; STATE.holoAn = true; msg = "RUN3: Drei Läufer laufen in der Zeichnung. HOLO dafür eingeschaltet."; }
+  else if(a === "vektor"){ msg = "VEKTOR berechnet. Betrag " + v.betrag.toFixed(3) + ". Sicht: " + (v.sichtbar.length ? v.sichtbar.join(", ") : "keine") + ". Unraum: " + (v.unraum.length ? v.unraum.join(", ") : "keiner") + "."; }
+  STATE.ausgefuehrt += 1; STATE.letzteAktion = a;
+  /* Freigabe verbraucht sich nach einer Ausführung. Nächste Aktion braucht neue Prüfung + Freigabe. */
+  STATE.freigabe = false; STATE.freigabeFuer = ""; STATE.geprueft = false;
+  $("execBadge").textContent = "Ausgeführt: " + a; $("execBadge").className = "badge ok";
+  $("execOut").textContent = msg + "\nAusgeführte Aktionen gesamt: " + STATE.ausgefuehrt + ".";
+  $("ergebnisOut").textContent = "ERGEBNIS — " + msg + "\nLetzte Aktion: " + a + " · Ausgeführt gesamt: " + STATE.ausgefuehrt
+    + "\nHOLO: " + (STATE.holoAn?"AN":"AUS") + " · BEAM: " + (STATE.beamAn?"AN":"AUS") + " · ATTACK: " + STATE.attack + "/99 · BLITZ: " + STATE.blitz + "/99"
+    + "\nSatelliten: " + STATE.sat.join(" → ") + " · RESPO: " + (STATE.respoAn?"AN":"AUS") + " · DS9: " + (STATE.ds9An?"AN":"AUS") + " · RUN3: " + (STATE.run3An?"AN":"AUS");
+  gateBadge(); zeichneHolo(); setSchritt(5); }
+function bericht(){
+  var v = vektorAuswertung();
+  $("berichtOut").textContent = "PRÜFBERICHT — lokale Simulation im Browser, kein externer Beweis\n"
+    + "Auftrag aktuell: " + STATE.auftrag + " · Geprüft: " + (STATE.geprueft ? "ja" : "nein") + " · Freigabe: " + (STATE.freigabe ? "AN" : "AUS")
+    + "\nLetzte Aktion: " + STATE.letzteAktion + " · Ausgeführt gesamt: " + STATE.ausgefuehrt
+    + "\nHOLO: " + (STATE.holoAn?"AN":"AUS") + " · Gezeichnet: " + Math.max(1, Math.min(756, STATE.particles)) + " von 756 Punkten — Partikel-Limit begrenzt die Darstellung wirklich"
+    + "\nVektor: [" + STATE.x.toFixed(2) + ", " + STATE.y.toFixed(2) + ", " + STATE.z.toFixed(2) + "] Betrag " + v.betrag.toFixed(3)
+    + "\nSatelliten: " + STATE.sat.join(" → ") + " · ATTACK " + STATE.attack + "/99 · BLITZ " + STATE.blitz + "/99"
+    + "\nFehler in dieser Sitzung: " + (STATE.fehler.length ? STATE.fehler.join("; ") : "keine");
+}
+function resetSim(){
+  if(!confirm("Simulation wirklich zurücksetzen? Zähler und Zustände gehen auf Anfang. Einstellungen bleiben.")) return;
+  STATE.holoAn = false; STATE.beamAn = false; STATE.ds9An = false; STATE.run3An = false; STATE.respoAn = false;
+  STATE.attack = 0; STATE.blitz = 0; STATE.orgAn = false; STATE.reorgAn = false; STATE.ausgefuehrt = 0;
+  STATE.letzteAktion = "keine"; STATE.sat = [729, 81, 9, 3]; STATE.geprueft = false; STATE.freigabe = false; STATE.freigabeFuer = "";
+  $("resetOut").textContent = "Simulation zurückgesetzt. Jetzt wieder bei Schritt 1."; $("ergebnisOut").textContent = "Zurückgesetzt. Noch kein Ergebnis.";
+  $("execOut").textContent = "Noch nichts ausgeführt."; gateBadge(); zeichneHolo(); setSchritt(1); }
+function resetEinstellung(){
+  if(!confirm("Einstellungen wirklich zurücksetzen? Nur Regler / Darstellung gehen auf Anfang. Simulation bleibt.")) return;
+  $("particles").value = 300; $("speed").value = 1; $("atmo").value = 1; $("ax").value = 0.90; $("ay").value = 0.50; $("az").value = 0.70;
+  STATE.particles = 300; STATE.speed = 1; STATE.atmo = 1;
+  $("partV").textContent = "300"; $("speedV").textContent = "1.0"; $("atmoV").textContent = "1";
+  $("resetOut").textContent = "Einstellungen zurückgesetzt. Simulation unverändert."; vektorAuswertung(); zeichneHolo(); }
+/* Events — alles hängt an den 6 Schritten, keine zweite Logik. */
+$("auftrag").addEventListener("change", auftragAnzeigen);
+$("btnPruefen").addEventListener("click", pruefen);
+$("btnFreigabe").addEventListener("click", freigabeUmschalten);
+$("btnAusfuehren").addEventListener("click", ausfuehren);
+$("btnBericht").addEventListener("click", bericht);
+$("btnResetSim").addEventListener("click", resetSim);
+$("btnResetEinstellung").addEventListener("click", resetEinstellung);
+["ax","ay","az"].forEach(function(id){ $(id).addEventListener("input", vektorAuswertung); });
+$("particles").addEventListener("input", function(){ STATE.particles = Number(this.value); $("partV").textContent = this.value; zeichneHolo(); });
+$("speed").addEventListener("input", function(){ STATE.speed = Number(this.value); $("speedV").textContent = Number(this.value).toFixed(1); });
+$("atmo").addEventListener("input", function(){ STATE.atmo = Number(this.value); $("atmoV").textContent = this.value; });
+document.addEventListener("keydown", function(e){
+  if(e.altKey || e.ctrlKey || e.metaKey) return; var t = e.target; if(t && t.matches("input, textarea, select")) return;
+  var k = e.key.toLowerCase(); if(k === "p") pruefen(); if(k === "f") freigabeUmschalten(); if(k === "enter") ausfuehren(); });
+/* Start: alles definiert, dann erst zeichnen. */
+auftragAnzeigen(); vektorAuswertung(); zeichneHolo();
+setInterval(function(){ if(STATE.holoAn){ STATE.drehung += 0.01 * STATE.speed; zeichneHolo(); } }, 50);
+</script>
+</body>
+</html>

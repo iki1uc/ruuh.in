@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050608">
+  <meta
+    name="description"
+    content="PENTA.GRAM – zentrale Navigation für BOOT, ID, HBT und PULSE."
+  >
+
+  <title>PENTA.GRAM · 1NS</title>
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="PENTA.GRAM Startseite">
+      <h1>PENTA.GRAM</h1>
+    </a>
+    <p class="subtitle">1NS · ONE NAVIGATION SYSTEM</p>
+  </header>
+
+  <main class="container">
+    <button
+      id="navToggle"
+      class="nav-toggle"
+      type="button"
+      aria-controls="nav"
+      aria-expanded="false"
+    >
+      ☰ Menü
+    </button>
+
+    <nav id="nav" class="navbar" aria-label="Hauptnavigation">
+      <a href="index.html" aria-current="page">Start</a>
+      <a href="01.boot.html">BOOT</a>
+      <a href="02.id.html">ID</a>
+      <a href="03.hbt.html">HBT</a>
+      <a href="04.pulse.html">PULSE</a>
+      <a href="mana.html">MANA</a>
+    </nav>
+
+    <section class="hero" aria-labelledby="overview-title">
+      <p class="eyebrow">SYSTEMÜBERSICHT</p>
+      <h2 id="overview-title">Ein Einstieg. Vier Module.</h2>
+      <p class="pipeline">BOOT → ID → HBT → PULSE</p>
+      <p>
+        Wähle ein Modul, um den Ablauf zu starten. Die Navigation bleibt auf
+        allen Seiten verfügbar.
+      </p>
+    </section>
+
+    <section aria-labelledby="modules-title">
+      <h2 id="modules-title">Module</h2>
+
+      <div class="cards">
+        <a class="card" href="01.boot.html">
+          <span class="card-number">01</span>
+          <h3>BOOT</h3>
+          <p>Start, Navigation und Routing.</p>
+          <span class="card-action">Modul öffnen →</span>
+        </a>
+
+        <a class="card" href="02.id.html">
+          <span class="card-number">02</span>
+          <h3>ID</h3>
+          <p>Identität, Ort und Status.</p>
+          <span class="card-action">Modul öffnen →</span>
+        </a>
+
+        <a class="card" href="03.hbt.html">
+          <span class="card-number">03</span>
+          <h3>HBT</h3>
+          <p>Halt, Bewertung und Tiefe.</p>
+          <span class="card-action">Modul öffnen →</span>
+        </a>
+
+        <a class="card" href="04.pulse.html">
+          <span class="card-number">04</span>
+          <h3>PULSE</h3>
+          <p>Historie, Bindung und READY.</p>
+          <span class="card-action">Modul öffnen →</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="card mana-card" aria-labelledby="mana-title">
+      <h2 id="mana-title">MANA</h2>
+      <p>Das separate M1/M2/M3-Modell mit Konsens, P100 und Kompetenz-Gate.</p>
+      <a href="mana.html">MANA öffnen →</a>
+    </section>
+
+    <footer class="site-footer">
+      <p>BOOT → ID → HBT → PULSE</p>
+    </footer>
+  </main>
+
+  <script type="module" src="js/page.js"></script>
+</body>
+</html>

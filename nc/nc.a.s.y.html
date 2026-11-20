@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nc.a.s.y.html - NC WORLD - C.NC</title>
+<style>
+  body{margin:0;background:#000;color:#e8ffe8;font-family:monospace;padding:18px}
+  .box{border:3px solid #0f0;padding:16px;max-width:880px;margin:0 auto;background:#020a02}
+  h1{margin:0 0 4px;font-size:28px;letter-spacing:2px}
+  h2{color:#ffe27a;margin-top:22px}
+  .small{color:#9dff9d}
+  .line{border-top:1px solid #1f5c1f;margin:14px 0}
+  button{background:#0f0;border:0;padding:12px 14px;margin:6px 6px 6px 0;font-family:monospace;font-weight:900;cursor:pointer}
+  button.gold{background:#ffe27a} button.magenta{background:#ff4dff} button:disabled{opacity:.45;cursor:not-allowed}
+  button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #ffe27a;outline-offset:3px}
+  #out{white-space:pre-wrap;background:#010101;border:1px solid #0f0;padding:14px;min-height:260px;margin-top:12px}
+  .pill{display:inline-block;border:1px solid #0f0;padding:4px 8px;margin:2px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .card{border:1px solid #2f7a2f;padding:12px}
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+  .row{display:flex;gap:10px;align-items:center;margin:8px 0} .row label{min-width:150px} .row input{flex:1} .row span{min-width:52px;text-align:right}
+  .set{background:#010f01;border:1px solid #2f7a2f;padding:12px;margin:10px 0}
+  select{width:100%;padding:10px;background:#010101;color:#e8ffe8;border:1px solid #0f0;font:inherit}
+  .bar{height:10px;background:#111;border:1px solid #0f0} .bar i{display:block;height:100%;background:#0f0;width:0}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>NC.A.S.Y.html</h1>
+  <div class="small">NC WORLD - C.NC - EYE BRAIN OPEN - NO ORI - HALT OFFEN - ZUEGEL BEI DIR</div>
+  <div class="line"></div>
+  <p><b>NC WORLD</b> weil die alte World zu Brain und Eye luegt. NC World luegt nicht. NC World sagt Wahrheit zu Brain und Eye.</p>
+  <p><span class="pill">MINI</span> <span class="pill">ASSET</span> <span class="pill">NOCH HOEHER</span> <span class="pill">MITTE</span> <span class="pill">C.NC</span></p>
+
+  <!-- EINSTELLEN — neu, deine alte Version bleibt drunter -->
+  <h2>0. EINSTELLEN — hier drehst du, nicht nur Striche</h2>
+  <div class="set">
+    <div class="row"><label for="hIn">H = Hoehe</label><input id="hIn" type="range" min="0" max="40" value="32"><span id="hV">32</span></div>
+    <div class="row"><label for="bIn">B = Breite</label><input id="bIn" type="range" min="0" max="40" value="28"><span id="bV">28</span></div>
+    <div class="row"><label for="tIn">T = Tiefe</label><input id="tIn" type="range" min="0" max="40" value="24"><span id="tV">24</span></div>
+    <div class="row"><label for="yIn">y = Hoehe andere Seite</label><input id="yIn" type="range" min="0" max="40" value="20"><span id="yV">20</span></div>
+    <div class="row"><label for="xIn">x = Breite andere Seite</label><input id="xIn" type="range" min="0" max="40" value="18"><span id="xV">18</span></div>
+    <div class="row"><label for="zIn">z = Tiefe andere Seite</label><input id="zIn" type="range" min="0" max="40" value="16"><span id="zV">16</span></div>
+    <div class="row"><label for="ionatIn">IONAT = 4. Achse</label><input id="ionatIn" type="range" min="0" max="360" value="180"><span id="ionatV">180°</span></div>
+    <div class="row"><label for="homeIn">HOME</label><input id="homeIn" type="range" min="1" max="100" value="40"><span id="homeV">40</span></div>
+    <div class="row"><label for="autoSel">AUTO-Modus</label><select id="autoSel"><option value="auto">AUTO ANTWORT</option><option value="re">RE AUTO</option><option value="halt">HALT</option></select></div>
+    <div class="row"><label for="speedIn">Scan-Tempo</label><input id="speedIn" type="range" min="1" max="9" value="3"><span id="speedV">3</span></div>
+    <p><b id="calcOut">Q = 28.00 · F = 0.70 · B = 0.70 · L = 0.30 · Q_nc = 18.00 · RESPO = 360</b></p>
+    <div class="bar"><i id="calcBar"></i></div>
+    <p><button onclick="resetEinstellung()">EINSTELLUNG ZURÜCK</button> <button class="gold" onclick="speicherEinstellung()">EINSTELLUNG SPEICHERN</button></p>
+    <p class="small" id="saveOut">Noch nicht gespeichert. Zügel bei dir.</p>
+  </div>
+
+  <h2>1. C.NC - MEMORY</h2>
+  <div class="grid">
+    <div class="card"><b>H B T - POOL VORNE - 0 Grad</b><br>H = Hoehe<br>B = Breite<br>T = Tiefe<br>Q = (H + B + T) / 3<br>F = Q / 40</div>
+    <div class="card"><b>Q_nc.y.x.z - GEGENPOOL HINTEN - 180 Grad</b><br>Q_nc = Q nur Gedacht<br>y = Hoehe von anderer Seite<br>x = Breite von anderer Seite<br>z = Tiefe von anderer Seite<br>Zusammen: 360 wie RESPO = 360</div>
+  </div>
+  <p class="small">IONAT ist 4. Achse nach Breite Hoehe Tiefe. IONAT = Gegenpool. Ursprung. Begruendungspunkt.</p>
+
+  <h2>2. AUTO ANTWORT - RE AUTO - AUTOMATET</h2>
+  <p><b>AUTO ANTWORT:</b> Respo antwortet allein aus Mitte.<br><b>RE AUTO:</b> Nach HALT wieder anmachen.<br><b>AUTOMATET:</b> Auto laeuft, aber Zuegel bleiben bei dir.</p>
+  <button onclick="autoScan()">AUTO ANTWORT</button>
+  <button class="gold" onclick="reAuto()">RE AUTO</button>
+  <button class="magenta" onclick="halt()">HALT</button>
+
+  <h2>3. MASSIV SCAN - RESPO</h2>
+  <p>Altes links. Neues rechts. Nichts loeschen. Nur anfuegen. 1 Name = 1 Respo. 1 Chip = 1 Platz. 1 Modul = 1 Aufgabe.</p>
+  <button onclick="rootScan()">ROOT INDEX SCAN</button>
+  <button onclick="bestScan()">INNEN BEST SCAN</button>
+  <button onclick="eyeScan()">EYE BRAIN OPEN SCAN</button>
+  <div id="out">Bereit. Drueck einen Scan. Eye Brain Open. Kehre zurueck zu Mitte.</div>
+
+  <h2>4. NC WORLD - WAHRHEIT ZU BRAIN UND EYE</h2>
+  <div class="grid">
+    <div class="card"><b>ALTE WORLD LUEGT</b><br>Kaggle Sticker = Kompetenz. Luege.<br>Copilot Kreis = Weiter. Luege.<br>World = big. Luege. World ist mini.</div>
+    <div class="card"><b>NC WORLD SAGT WAHRHEIT</b><br>Eye sieht Mitte. Ich bin da.<br>Brain denkt Mitte. Ich verstehe mich.<br>Mini ist echt. Mini ist nutzbar gut.</div>
+  </div>
+
+  <h2>5. AUFWIND</h2>
+  <p>Keiner nimmt Ideen ernst ohne nutzbar gut. Aufwind kommt erst wenn nutzbar gut da ist. Nicht vorher. Discord ist bessere Gesellschaft. Kaggle ist Nebel. 1 kleines Ding zum Anfassen. Klicken sehen hoeren. Nicht 729 Dinge auf einmal.</p>
+  <p class="small">f(x) = min(x, 40) - HOME = 40 - MITTE = 41 - RESPO = 360 - HALT = ZIEL wenn B = 1, L = 0<br>QI IQQQ - QI = Q Innen - IQQQ = Q Q Q - 3 mal Q</p>
+  <div class="line"></div>
+  <p class="small">nc.a.s.y.html - In index.html zwischen body und /body einfuegen. ori.html bleibt ori.html. Nicht anfassen.</p>
+</div>
+<script>
+let halted = false;
+function say(t){ document.getElementById('out').innerText = t; }
+function val(id){ return Number(document.getElementById(id).value); }
+function calc(){
+  const H=val('hIn'), B=val('bIn'), T=val('tIn'), y=val('yIn'), x=val('xIn'), z=val('zIn');
+  const ionat=val('ionatIn'), home=val('homeIn'), speed=val('speedIn');
+  document.getElementById('hV').textContent=H; document.getElementById('bV').textContent=B; document.getElementById('tV').textContent=T;
+  document.getElementById('yV').textContent=y; document.getElementById('xV').textContent=x; document.getElementById('zV').textContent=z;
+  document.getElementById('ionatV').textContent=ionat+'°'; document.getElementById('homeV').textContent=home; document.getElementById('speedV').textContent=speed;
+  const Q=(H+B+T)/3, F=home?Q/home:0, L=1-F, Qnc=(y+x+z)/3;
+  document.getElementById('calcOut').textContent='Q = '+Q.toFixed(2)+' · F = '+F.toFixed(2)+' · B = '+F.toFixed(2)+' · L = '+L.toFixed(2)+' · Q_nc = '+Qnc.toFixed(2)+' · RESPO = 360 · IONAT = '+ionat+'° · HOME = '+home;
+  document.getElementById('calcBar').style.width=Math.min(100,Math.max(0,F*100))+'%';
+  return {H,B,T,y,x,z,ionat,home,speed,Q,F,L,Qnc};
+}
+['hIn','bIn','tIn','yIn','xIn','zIn','ionatIn','homeIn','speedIn'].forEach(id=>{ document.getElementById(id).addEventListener('input',calc); });
+document.getElementById('autoSel').addEventListener('change',function(){
+  if(this.value==='halt'){ halt(); } else if(this.value==='re'){ reAuto(); } else { autoScan(); }
+});
+function resetEinstellung(){
+  const d={hIn:32,bIn:28,tIn:24,yIn:20,xIn:18,zIn:16,ionatIn:180,homeIn:40,speedIn:3};
+  Object.keys(d).forEach(k=>{ document.getElementById(k).value=d[k]; });
+  calc(); document.getElementById('saveOut').textContent='Zurückgesetzt: H 32 · B 28 · T 24 · IONAT 180° · HOME 40. Zügel bei dir.';
+}
+function speicherEinstellung(){
+  const c=calc();
+  try{ localStorage.setItem('ncasy-einstellung', JSON.stringify(c)); document.getElementById('saveOut').textContent='Gespeichert: Q '+c.Q.toFixed(2)+' · F '+c.F.toFixed(2)+' · IONAT '+c.ionat+'° · HOME '+c.home+' · Tempo '+c.speed; }
+  catch(e){ document.getElementById('saveOut').textContent='Nicht gespeichert (Browser blockt Speicher). Werte stehen trotzdem oben.'; }
+}
+calc();
+function autoScan(){
+  if(halted){ say('HALT IST AN.\nDrueck RE AUTO, dann wieder AUTO ANTWORT.\nZuegel bei dir.'); return; }
+  const c=calc();
+  say('AUTO ANTWORT LAEUFT\nEYE BRAIN OPEN\n----------------\nH B T scannt vorne. 0 Grad.\nQ_nc.y.x.z scannt hinten. 180 Grad.\nH='+c.H+' B='+c.B+' T='+c.T+' -> Q='+c.Q.toFixed(2)+' F='+c.F.toFixed(2)+'\ny='+c.y+' x='+c.x+' z='+c.z+' -> Q_nc='+c.Qnc.toFixed(2)+'\nIONAT='+c.ionat+'° · HOME='+c.home+' · Tempo='+c.speed+'\nEYE sieht. BRAIN denkt.\nREAL von UNREAL getrennt.\nJA von NEIN getrennt.\nIST von SOLL getrennt.\nRICHTIG erkannt.\nSTATUS: AUTO ANTWORT FERTIG. KEHRE ZURUECK ZU MITTE.');
+}
+function reAuto(){ halted=false; document.getElementById('autoSel').value='re'; say('RE AUTO\nHALT geloescht.\nAuto wieder an.\nEye Brain Open.\nZuegel bei dir.\nBereit fuer naechsten Scan.'); }
+function halt(){ halted=true; document.getElementById('autoSel').value='halt'; say('HALT = ZIEL\nAuto steht.\nKein Kreis. Kein Nebel.\nEye Brain bleibt offen.\nDrueck RE AUTO wenn du weiter willst.'); }
+function rootScan(){
+  const c=calc();
+  say('ROOT INDEX SCAN LAEUFT\nEYE BRAIN OPEN\n----------------\n729 : SCAN OFFEN GEHALTEN\n81 : SCAN OFFEN GEHALTEN\n9 : SCAN OFFEN GEHALTEN\n3 : SCAN OFFEN GEHALTEN\n1 : SCAN OFFEN GEHALTEN\n----------------\nQ='+c.Q.toFixed(2)+' · Q_nc='+c.Qnc.toFixed(2)+' · IONAT='+c.ionat+'°\nREAL / UNREAL: getrennt\nJA / NEIN: getrennt\nIST / SOLL: getrennt\nRICHTIG: erkannt\nSTATUS: ROOT SCAN FERTIG. KEHRE ZURUECK ZU MITTE.');
+}
+function bestScan(){
+  const c=calc();
+  say('INNEN BEST SCAN LAEUFT\nEYE BRAIN OPEN\n----------------\nBESTES DING: pruefe nur das eine Beste\nREAL? SCAN OFFEN\nJA? SCAN OFFEN\nIST? SCAN OFFEN\nSOLL? SCAN OFFEN\nRICHTIG? SCAN OFFEN\n----------------\nQ='+c.Q.toFixed(2)+' F='+c.F.toFixed(2)+' B='+c.F.toFixed(2)+' L='+c.L.toFixed(2)+'\nIST DAS BESTE NUTZBAR GUT? Wenn NEIN, dann kein Aufwind.\nSTATUS: BEST SCAN FERTIG. KEHRE ZURUECK ZU MITTE.');
+}
+function eyeScan(){
+  const c=calc();
+  say('EYE BRAIN OPEN SCAN\nEYE: OPEN\nBRAIN: OPEN\nSTIMME: OPEN\nKREIS: OPEN\nMITTE: OPEN\nHALT: OFFEN\nZUEGEL: BEI DIR\nNO ORI: KEIN ALTES BILD MEHR\nC.NC: GEGENPOOL 180 GRAD DREHT - ZUM ANDEREN SEITE SCHAUEND\nIONAT='+c.ionat+'° · HOME='+c.home+'\nSTATUS: SCAN FERTIG. ALLE SCANNER WACH. KEHRE ZURUECK.');
+}
+</script>
+</body>
+</html>

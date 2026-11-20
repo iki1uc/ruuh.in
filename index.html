@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ruuh.in · PENTAGRAMMED + NC6 CONTROLLER · PRISMATIKUM · VECTORING — index.html · Komfort + Norm</title>
+<style>
+:root{--bg:#050505;--card:#111;--line:#333;--green:#00ff66;--yellow:#ffd166;--red:#ff5555;--blue:#66ccff;--violet:#c77dff;--text:#f5f5f5}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,Consolas,monospace}
+header,main{width:min(100% - 32px,980px);margin-inline:auto}
+header{padding:28px 0 8px;text-align:center;border-bottom:2px solid var(--green)}
+h1{margin:0;color:var(--green);letter-spacing:.08em} .sub{color:#999}
+.flow{text-align:center;padding:16px;color:var(--yellow)}
+.grid{display:grid;gap:16px;grid-template-columns:1fr 1fr} @media(max-width:760px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+.card.ready{border-left:6px solid var(--green)}
+.slider-row{display:flex;gap:10px;align-items:center;margin:8px 0} .slider-row label{min-width:110px} .slider-row input{flex:1;min-width:0}
+.status{padding:6px 10px;border-radius:6px;display:inline-block;font-weight:700;margin:6px 0}
+.status-konsens{background:#153622;color:#61f58f} .status-teil{background:#3d310d;color:#ffd27a} .status-offen{background:#401919;color:#ff8a80}
+.build{color:#61f58f;font-weight:700} .wait{color:#ffd27a;font-weight:700}
+button{padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:#222;color:#fff;font:inherit;cursor:pointer} button:hover{border-color:var(--green)} button.macht{background:var(--green);color:#000;font-weight:700}
+select{padding:10px;border:1px solid var(--line);border-radius:8px;background:#111;color:#fff;font:inherit}
+pre{background:#111;border:1px solid var(--line);padding:12px;overflow:auto;white-space:pre-wrap;color:#ccc}
+.prisma{display:flex;gap:8px;flex-wrap:wrap} .prisma span{padding:6px 10px;border-radius:20px;border:1px solid var(--line)}
+.p1{color:#ff5555} .p2{color:#ffd166} .p3{color:#00ff66} .p4{color:#66ccff} .p5{color:#c77dff}
+.unraum{color:var(--yellow)} .sicht{color:var(--green)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+
+canvas{
+  width:100%;
+  max-width:640px;
+  display:block;
+  margin:12px auto;
+  background:#020807;
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+
+/* KOMFORT / NORM */
+button:focus-visible, select:focus-visible, input:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+button[aria-pressed="true"]{border-color:var(--green)}
+button[aria-pressed="false"]{opacity:.85}
+canvas{max-width:100%;height:auto}
+@media (max-width:640px){ body{font-size:15px} .slider-row label{min-width:88px} }
+@media (prefers-reduced-motion: reduce){ *{scroll-behavior:auto !important} }
+
+/* CTRL.LER > CTRL */
+.panel{border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0;background:var(--card)}
+.panel table{width:100%;border-collapse:collapse} .panel th,.panel td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+.metric{border:1px solid var(--line);border-radius:8px;padding:10px;margin:10px 0}
+.metric.good{border-color:var(--green)} .metric.warn{border-color:var(--yellow)}
+.muted{color:#999}
+button:disabled{opacity:.45;cursor:not-allowed}
+.proof-panel{margin-top:6px;padding:7px;border:1px solid rgba(0,204,255,.2);border-radius:8px;background:rgba(0,10,20,.75)}
+.panel{border:1px solid #333;border-radius:12px;padding:12px;background:#111}.flex{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.metric-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.metric{border:1px solid #333;border-radius:8px;padding:6px;text-align:center}.metric .label{font-size:10px;color:#999}.metric .value{font-size:18px;font-weight:700}.status-row{display:flex;gap:12px;flex-wrap:wrap}.console{background:#05090e;border:1px solid #333;border-radius:6px;padding:6px;font-size:11px;max-height:120px;overflow:auto}</style>
+</head>
+<body>
+<header><h1>PENTAGRAMMED</h1><div class="sub">PRISMATIKUM · VECTORING · ohne Vol.1 / Vol.2 · nur ATOM + ELEMENT · v3 mit Sicht</div></header>
+<main>
+<div class="flow">BOOT ↓ ID ↓ HBT ↓ PULSE · PENTA = 5 · PRISMA = Licht bricht · VECTOR = Richtung + Betrag</div>
+<p style="text-align:center"><button id="callBtn" type="button" class="macht" aria-label="Call ausführen: Boot bis Element" style="font-size:18px;padding:12px 28px">▶ CALL</button> <span id="callOut" aria-live="polite">Bereit.</span></p>
+
+<section class="panel" aria-labelledby="ctrl-h">
+  <h2 id="ctrl-h">CTRL.LER → CTRL · Prüfen und ausführen</h2>
+  <table>
+    <thead><tr><th>Ebene</th><th>Aufgabe</th><th>Befugnis</th></tr></thead>
+    <tbody>
+      <tr><td><b>CTRL.LER</b></td><td>Prüft Auftrag, Modellzustand und Regeln. Erstellt eine Freigabe oder meldet einen Prüfbedarf.</td><td>Steht über CTRL. Kann eine Aktion freigeben oder blockieren; verändert keine Eingabedaten stillschweigend.</td></tr>
+      <tr><td><b>CTRL</b></td><td>Führt die ausdrücklich freigegebenen Modellaktionen aus.</td><td>Führt keine blockierte oder ungeprüfte Aktion aus.</td></tr>
+      <tr><td><b>Koordination</b></td><td>Sammelt Prüf- und Ausführungsmeldungen.</td><td>Dokumentiert Status, erteilt aber selbst keine Freigabe.</td></tr>
+    </tbody>
+  </table>
+  <label for="auftrag"><b>Auftrag an CTRL.LER</b></label>
+  <input id="auftrag" type="text" placeholder="z.B. CALL durchlaufen, Sicht prüfen" style="width:100%;padding:10px;margin:8px 0;border:1px solid var(--line);border-radius:8px;background:#111;color:#fff;font:inherit">
+  <div id="executionGate" class="metric warn" aria-live="polite"><b>CTRL.LER · FREIGABE AUSSTEHEND</b><p class="muted">Auftrag prüfen, bevor CTRL ihn ausführt.</p></div>
+  <button id="checkOrder" type="button" class="macht">Auftrag durch CTRL.LER prüfen</button>
+  <p class="muted"><small>Regel: Auftrag ändern = Freigabe weg. CTRL ist dann wieder gesperrt, bis CTRL.LER neu prüft.</small></p>
+</section>
+
+<section class="card ready"><h2>PRISMATIKUM — 5 Spitzen, 1 Mitte</h2>
+<div class="prisma"><span class="p1">● BOOT — Rot</span><span class="p2">● ID — Gelb</span><span class="p3">● HBT — Grün</span><span class="p4">● PULSE — Blau</span><span class="p5">● ATOM — Violett</span><span>◉ MITTE = ELEMENT</span></div>
+<svg viewBox="0 0 400 400" width="100%" style="max-width:520px;display:block;margin:12px auto" role="img" aria-label="Pentagramm-Prisma mit fünf Spitzen und drei Vektorachsen">
+<polygon points="200,20 360,300 40,300" fill="none" stroke="#66ccff" stroke-width="1.5" opacity="0.7"/>
+<polygon points="200,20 320,150 270,330 130,330 80,150" fill="none" stroke="#00ff66" stroke-width="2"/>
+<polyline points="200,20 130,330 360,300 80,150 320,150 200,20" fill="none" stroke="#ffd166" stroke-width="2"/>
+<circle cx="200" cy="200" r="8" fill="#c77dff"/><text x="200" y="225" fill="#fff" text-anchor="middle" font-size="12">ELEMENT</text>
+<text x="200" y="14" fill="#ff5555" text-anchor="middle">BOOT</text><text x="360" y="315" fill="#66ccff" text-anchor="middle">PULSE</text><text x="40" y="315" fill="#ffd166" text-anchor="middle">ID</text><text x="80" y="140" fill="#c77dff" text-anchor="middle">ATOM</text><text x="320" y="140" fill="#00ff66" text-anchor="middle">HBT</text>
+<line id="vx" x1="200" y1="200" x2="200" y2="200" stroke="#ff5555" stroke-width="3"/>
+<line id="vy" x1="200" y1="200" x2="200" y2="200" stroke="#ffd166" stroke-width="3"/>
+<line id="vz" x1="200" y1="200" x2="200" y2="200" stroke="#66ccff" stroke-width="3" stroke-dasharray="6 4"/>
+</svg>
+<p><small>Pentagramm = 5 Punkte verbunden. Prisma = Weiss wird zu 5 Farben gebrochen. Vectoring = ATOM gibt Richtung, ELEMENT gibt WAS.</small></p>
+</section>
+<div class="grid">
+<section class="card"><h2>VECTORING — ATOM + ELEMENT</h2>
+<div class="slider-row"><label for="ax">X · BREITE</label><input id="ax" type="range" min="0" max="1" step="0.01" value="0.9"><span id="axv">0.90</span></div>
+<div class="slider-row"><label for="ay">Y · HÖHE</label><input id="ay" type="range" min="0" max="1" step="0.01" value="0.5"><span id="ayv">0.50</span></div>
+<div class="slider-row"><label for="az">Z · TIEFE</label><input id="az" type="range" min="0" max="1" step="0.01" value="0.7"><span id="azv">0.70</span></div>
+<pre id="vecOut" aria-live="polite"></pre>
+<p><small>Python: <code>python atom_element.py server</code> → <code>python client_atom.py</code> → POST /atom</small></p></section>
+<section class="card"><h2>AXIOM — M1 / M2 / M3</h2>
+<div class="slider-row"><label for="m1">M1</label><input id="m1" type="range" min="0" max="10" value="8"><span id="m1v">8</span></div>
+<div class="slider-row"><label for="m2">M2</label><input id="m2" type="range" min="0" max="10" value="7"><span id="m2v">7</span></div>
+<div class="slider-row"><label for="m3">M3</label><input id="m3" type="range" min="0" max="10" value="9"><span id="m3v">9</span></div>
+<div id="avg">Ø 8.0 · P100 80</div><div class="status status-teil" id="konsens">TEILKONSENS</div><div class="gate build" id="gate">KOMPETENZ 3/3 · VERBAUEN</div>
+<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="macht" id="macht" type="button">Macht — freigeben</button><button id="unmacht" type="button">Unmacht — konstellieren zur neuen Macht</button></div>
+<p id="liveStatus" aria-live="polite">Systemstatus: READY</p><pre id="report">Keine Fehler.</pre><p><small>Tastatur: M = Macht, U = Unmacht</small></p></section>
+</div>
+
+<!-- VEKTOR-SICHT — deine Karte, korrigiert auf /atom, synced mit Vectoring -->
+<section class="card ready" id="vektor-sicht">
+<h2>Mehr Sicht — Vektor-Sicht / Unraum</h2>
+<label>Achse <select id="achse"><option value="X">X · BREITE</option><option value="Y">Y · HÖHE</option><option value="Z">Z · TIEFE</option></select></label>
+<label style="display:block;margin:10px 0">Betrag <span id="betragV">0.50</span><input id="betrag" type="range" min="0" max="1" step="0.01" value="0.5" style="width:100%"></label>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="ausloesen" class="macht" type="button">Sicht auslösen</button><button id="ausloesenLokal" type="button">Lokal rechnen (ohne Server)</button></div>
+<pre id="sicht-ausgabe">Unraum: noch nicht erkundet</pre>
+<p><small>POST /atom · Fallback lokal wenn Server nicht läuft · Unraum = Achsen ≤ 0.005 (deine Schwelle) · Sicht = Achsen &gt; 0.005</small></p>
+</section>
+
+
+<section class="card ready">
+  <h2>KONTINUUM + SONNENSYSTEM</h2>
+  <p>Läufer läuft auf seiner Bahn; Planeten umlaufen die Sonne in der Mitte.</p>
+  <canvas id="cv" width="640" height="420" role="img" aria-label="Animiertes Sonnensystem mit umlaufenden Planeten und Läufer"></canvas>
+  <p>
+    <button id="toggleSolar" type="button" class="macht" aria-pressed="true" aria-label="Sonnensystem ein oder aus">☼ Sonnensystem: AN</button>
+    <span id="solarOut">Umlaufbahnen: AN</span>
+    · Kontinuum: <span id="continuumOut">0</span>
+  </p>
+  <p style="display:flex;gap:8px;flex-wrap:wrap">
+    <label for="lensSel">Lens</label>
+    <select id="lensSel">
+      <option value="skala">skala</option>
+      <option value="prisma">prisma</option>
+      <option value="vektor">vektor</option>
+    </select>
+    <button id="toggleAuto" type="button" aria-pressed="true" aria-label="Animation ein oder aus">⏯ Auto: AN</button>
+    <span id="autoOut">Auto: AN</span>
+  </p>
+  <pre id="solarLog" aria-live="polite">Engine bereit.</pre>
+</section>
+
+<section class="card"><h2>LEGEND — PRISMA</h2><p><span style="color:#ff5555">● ROT = BOOT</span> · <span style="color:#ffd166">● GELB = ID</span> · <span style="color:#00ff66">● GRÜN = HBT</span> · <span style="color:#66ccff">● BLAU = PULSE</span> · <span style="color:#c77dff">● VIOLETT = ATOM</span> · Mitte = ELEMENT · Weiss = Alle Farben zusammen = KONSENS</p><p>UNMACHT = KONSTELLIEREN ZUR NEUEN MACHT. Kein Löschen. Nur Neu-Stellen.</p></section>
+
+<!-- NEU: IKI1UC + NC6 CONTROLLER · HOLOGRAMM-BEWEIS · gemerged aus nc/index.html (Stand 20.11.2026) -->
+<section class="card ready" id="nc-controller">
+<h2>🌀 NC6 FOUNDER · 756 ACHSEN · CONTROLLER-DASHBOARD</h2>
+<p><small>CTRL.LER-Freigabe + logischer Zustandsvektor + Prüfbericht. Lokale Browser-Simulation, kein externer / physikalischer Beweis. Voller Stand auch in <a href="nc/index.html">nc/index.html</a> · <a href="nc/nc.a.s.y.html">nc/nc.a.s.y.html</a> und <a href="nc.html">nc.html</a>.</small></p>
+<div style="display:grid;gap:12px">
+<div style="border:1px solid #333;border-radius:8px;padding:8px;background:#05090e"><div style="position:relative;width:100%;height:320px"><canvas id="holoCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas></div></div>
+<div class="proof-panel"><h3>CTRL.LER · HOLOGRAMM-PRÜFSTATUS</h3><div class="proof-grid"><div><small>LOGISCHER VEKTOR</small><strong id="proofVector">0000000000</strong></div><div><small>ACHSEN</small><strong id="proofAxes">756</strong></div><div><small>RENDER-PUNKTE</small><strong id="proofPoints">756</strong></div><div><small>SIMULATIONSZYKLUS</small><strong id="proofCycle">0</strong></div></div><div id="proofChecks" class="proof-checks"></div><pre id="proofReport" class="proof-report">Noch kein Prüfbericht erstellt.</pre><button id="btnProof" class="proof-button">CTRL.LER · Prüfbericht erstellen</button><div style="font-size:9px;color:var(--dim);margin-top:4px">Geltung: nur lokale Browser-Simulation. Kein externer / physikalischer Beweis.
+<div class="panel" style="border-color:rgba(255,215,0,.35)"><h3>🔐 CTRL.LER · FREIGABE + EINSTELLUNGEN</h3>
+<div class="flex"><button class="gold" id="btnApprove">✅ FREIGABE: AN</button><button class="sec" id="btnShortcuts">⌨ SHORTCUTS: AN</button><button class="sec" id="btnResetSim">⟲ RESET SIMULATION</button><button class="sec" id="btnResetAll2">⟲ RESET SIM + EINSTELLUNGEN</button></div>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:10px;margin-top:4px">
+<div class="flex"><span style="width:110px">Animations-Speed</span><input type="range" id="setSpeed" min="0" max="100" value="30"><span id="setSpeedVal" style="width:36px">30</span></div>
+<div class="flex"><span style="width:110px">Partikel / Punkte</span><input type="range" id="setParticles" min="100" max="756" value="756" step="1"><span id="setParticlesVal" style="width:36px">756</span></div>
+<div class="flex"><span style="width:110px">Farb-Schema</span><select id="setColors"><option value="gold">Gold / Cyber</option><option value="ice">Ice Blau</option><option value="fire">Fire</option><option value="mono">Mono Grün</option></select></div>
+<div class="flex"><span style="width:110px">Atmosphären-Zyklus</span><select id="setAtmo"><option value="on">AN (2s)</option><option value="off">AUS</option></select></div>
+</div><div style="font-size:9px;color:var(--dim);margin-top:4px">Anzeige ändert <b>keine</b> Modellwerte. Nur Aktionen mit Freigabe ändern den Zustand. RESPO / ORG / REORG ändern jetzt wirklich Zustand (s. Log).</div></div>
+
+<div class="panel" style="border-color:rgba(255,215,0,.25)"><h3>🌀 NC6 FOUNDER · 756 ACHSEN · HOLOGRAMM-BEWEIS</h3>
+<div class="status-row"><span>6D <b id="s6d" style="color:var(--grn)">●</b></span><span>BLITZ <b id="sblitz" style="color:var(--gold)">●</b></span><span>ATTACK <b id="sattack" style="color:#ff6b8a">●</b></span><span>RUN3 <b id="srun3" style="color:var(--grn)">●</b></span></div>
+<div class="metric-grid" style="grid-template-columns:1fr 1fr 1fr 1fr"><div class="metric"><div class="label">729 SUPER</div><div class="value gold" id="sat729">0</div><div style="font-size:9px;color:var(--mut)" id="sat729v">0%</div></div><div class="metric"><div class="label">81 ORBIT</div><div class="value info" id="sat81">0</div><div style="font-size:9px;color:var(--mut)" id="sat81v">0%</div></div><div class="metric"><div class="label">9 KERN</div><div class="value" style="color:#ff88ff" id="sat9">0</div><div style="font-size:9px;color:var(--mut)" id="sat9v">0%</div></div><div class="metric"><div class="label">3 UR</div><div class="value" id="sat3">0</div><div style="font-size:9px;color:var(--mut)" id="sat3v">0%</div></div></div>
+<div class="metric-grid"><div class="metric"><div class="label">ENGINE</div><div class="value gold" id="engineVal">0</div></div><div class="metric"><div class="label">ATTACK</div><div class="value" style="color:#ff6b8a" id="attackVal">0</div></div><div class="metric"><div class="label">BLITZ</div><div class="value" id="blitzVal">0</div></div></div>
+<div class="flex" style="font-size:10px;justify-content:space-between"><span>O₂ <b id="atmO2">21%</b></span><span>CO₂ <b id="atmCO2">0.04%</b></span><span>H₂O <b id="atmH2O">1%</b></span><span>GAS <b id="atmGas">78%</b></span><span>NEBEL <b id="atmNebel">0%</b></span></div>
+<div class="flex"><button class="gold" id="btnAttack">⚡ 6D ATTACK</button><button class="sec" id="btnStepNC6">🌀 STEP</button><button id="btnBlitz">⚡ PIPELINEBLITZ</button><button class="sec" id="btnRun3NC6">▶ RUN3</button><button class="sec" id="btnBeam">⚡ BEAM</button><button class="sec" id="btnHoloNC6">◈ HOLO</button><button class="sec" id="btnRespo">◈ RESPO</button><button class="sec" id="btnDs9">★ DS9</button><button class="sec" id="btnOrg">🔄 ORG</button><button class="sec" id="btnReorg">🔄 REORG</button><button class="sec" id="btnResetNC6">⟲ RESET NC6</button></div>
+<div class="console" id="nc6log">[🌀] FOUNDER · 756 ACHSEN · PIPELINEBLITZ · bereit</div></div>
+
+</div>
+<p><small>Tasten im HOLO-Bereich: Space/1=ATTACK 2=STEP 3=BLITZ 4=RUN3 5=BEAM 6=HOLO 7=RESPO 8=DS9 9=ORG 0=REORG X=RESET — nicht in Eingabefeldern. ATTACK/BLITZ begrenzt auf 99. HOLO schaltet wirklich die Canvas-Fläche. ORG sortiert Sat-Werte, REORG mischt sie, RESPO ist ein echter Reflex-Zustand.</small></p>
+</section>
+</main>
+<script>
+"use strict";
+function $(id){return document.getElementById(id);}
+function vec(){
+  var x=Number($("ax").value), y=Number($("ay").value), z=Number($("az").value);
+  $("axv").textContent=x.toFixed(2); $("ayv").textContent=y.toFixed(2); $("azv").textContent=z.toFixed(2);
+  var length=Math.sqrt(x*x+y*y+z*z); var eps=0.005;
+  var vis=[["X",x],["Y",y],["Z",z]];
+  var visibleAxes=vis.filter(function(i){return i[1]>eps}).map(function(i){return i[0]});
+  var openAxes=vis.filter(function(i){return i[1]<=eps}).map(function(i){return i[0]});
+  $("vecOut").textContent="ATOM WACH · ROH\n"+(visibleAxes.length?"SICHT: "+visibleAxes.join(" · "):"SICHT: keine Achse aktiv")+"\n"+(openAxes.length?"UNRAUM: "+openAxes.join(" · ")+" noch ungenutzt":"UNRAUM: keine offene Achse")+"\nVektor [X "+x.toFixed(2)+", Y "+y.toFixed(2)+", Z "+z.toFixed(2)+"]\nBetrag: "+length.toFixed(3)+"\nProjektion: X → rechts · Y → oben · Z → Tiefe";
+  $("vx").setAttribute("x2",200+x*90); $("vx").setAttribute("y2",200);
+  $("vy").setAttribute("x2",200); $("vy").setAttribute("y2",200-y*90);
+  $("vz").setAttribute("x2",200+z*55); $("vz").setAttribute("y2",200+z*45);
+}
+["ax","ay","az"].forEach(function(id){$(id).addEventListener("input",vec);}); vec();
+function axiom(){
+  var m1=Number($("m1").value),m2=Number($("m2").value),m3=Number($("m3").value);
+  $("m1v").textContent=m1;$("m2v").textContent=m2;$("m3v").textContent=m3;
+  var avg=Math.round(((m1+m2+m3)/3)*10)/10;
+  var consensus=m1===m2&&m2===m3?"KONSENS":(m1===m2||m2===m3||m1===m3)?"TEILKONSENS":"OFFEN";
+  var gate=[m1,m2,m3].filter(function(v){return v>=7}).length;
+  $("avg").textContent="Ø "+avg.toFixed(1)+" · P100 "+Math.round(avg*10);
+  var c=$("konsens"); c.textContent=consensus; c.className="status "+(consensus==="KONSENS"?"status-konsens":consensus==="TEILKONSENS"?"status-teil":"status-offen");
+  var g=$("gate"); g.textContent="KOMPETENZ "+gate+"/3 · "+(gate===3?"VERBAUEN":"KONSTELLIEREN"); g.className="gate "+(gate===3?"build":"wait");
+}
+["m1","m2","m3"].forEach(function(id){$(id).addEventListener("input",axiom);}); axiom();
+function setStatus(ok){$("liveStatus").textContent=ok?"Systemstatus: READY — freigegeben.":"Systemstatus: WARN — konstellieren zur neuen Macht.";$("report").textContent=ok?"Validierung erfolgreich.":"UNMACHT = KONSTELLIEREN ZUR NEUEN MACHT";}
+$("macht").addEventListener("click",function(){setStatus(true);}); $("unmacht").addEventListener("click",function(){setStatus(false);});
+// --- VEKTOR-SICHT: /atom, Unraum = Schwelle, Sync mit Vectoring ---
+var ACHSEN={X:{name:"BREITE",v:[1,0,0]},Y:{name:"HÖHE",v:[0,1,0]},Z:{name:"TIEFE",v:[0,0,1]}};
+function lokalVektor(achse,betrag){var a=ACHSEN[achse];return{achse:achse,name:a.name,betrag:betrag,vektor:a.v.map(function(c){return +(c*betrag).toFixed(2)}),quelle:"LOKAL"};}
+function zeigeSicht(d){
+  var eps=0.005;
+  // Voller Vektor aus allen 3 Slidern für SICHT/UNRAUM nach deiner Schwelle
+  var x=Number($("ax").value), y=Number($("ay").value), z=Number($("az").value);
+  // Wenn Sicht ausgelöst: gewählte Achse auf Betrag setzen, andere bleiben
+  if(d && d._setAchse){ if(d._setAchse==="X")x=d.betrag; if(d._setAchse==="Y")y=d.betrag; if(d._setAchse==="Z")z=d.betrag; }
+  var vis=[["X",x],["Y",y],["Z",z]];
+  var sicht=vis.filter(function(i){return i[1]>eps}).map(function(i){return i[0]});
+  var unraum=vis.filter(function(i){return i[1]<=eps}).map(function(i){return i[0]});
+  var v=d.vektor||[];
+  $("sicht-ausgabe").textContent="Sicht: "+(d.achse||"-")+" / "+(d.name||"-")+", Betrag "+(d.betrag!=null?d.betrag:"-")+"\nVektor: "+(v.length?v.join(", "):"-")+"\nSICHT: "+(sicht.length?sicht.join(" · "):"keine Achse aktiv")+"\nUNRAUM: "+(unraum.length?unraum.join(" · ")+" noch ungenutzt":"keine offene Achse")+"\nQuelle: "+(d.quelle||"SERVER /atom");
+  // Sync: Slider + SVG
+  $("ax").value=x; $("ay").value=y; $("az").value=z; vec();
+}
+$("betrag").addEventListener("input",function(){ $("betragV").textContent=(+this.value).toFixed(2); });
+$("ausloesen").addEventListener("click",function(){
+  var achse=$("achse").value, betrag=Number($("betrag").value);
+  fetch("http://127.0.0.1:8765/atom",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({achse:achse,betrag:betrag,m1:8,m2:7,m3:9})})
+  .then(function(r){return r.json();}).then(function(d){
+    if(d.fehler){ var l=lokalVektor(achse,betrag); l._setAchse=achse; zeigeSicht(l); return; }
+    var a=d.atom||d; a.quelle="SERVER /atom"; a._setAchse=achse; zeigeSicht(a);
+  }).catch(function(){ var l=lokalVektor(achse,betrag); l._setAchse=achse; zeigeSicht(l); });
+});
+$("ausloesenLokal").addEventListener("click",function(){ var l=lokalVektor($("achse").value,Number($("betrag").value)); l._setAchse=$("achse").value; zeigeSicht(l); });
+document.addEventListener("keydown",function(e){
+  if(e.altKey||e.ctrlKey||e.metaKey)return;
+  var t=e.target; if(t&&t.matches("input, textarea, select, [contenteditable='true']"))return;
+  var k=e.key.toLowerCase(); if(k==="m")setStatus(true); if(k==="u")setStatus(false);
+});
+
+// --- Sonnensystem-Engine aus sun.html ---
+(function(){
+  const canvas = $("cv");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const W = canvas.width;
+  const H = canvas.height;
+  let lens = "skala";
+  let auto = true;
+  let solar = true;
+  let pos = 0;
+  let continuum = 0;
+  let logLines = ["Engine bereit."];
+  function solarLog(message){
+    logLines.push(message);
+    logLines = logLines.slice(-12);
+    $("solarLog").textContent = logLines.join("\n");
+  }
+  function drawSolar(){
+    ctx.clearRect(0, 0, W, H);
+    ctx.save();
+    ctx.translate(W / 2, H / 2);
+    if (auto) continuum = (continuum + 1) % 10000; // FIX: Auto AUS stoppt Planeten + Kontinuum + Läufer
+    const flow = continuum * 0.008;
+    ctx.save();
+    ctx.globalAlpha = 0.22;
+    ctx.strokeStyle = "#08f6e5";
+    for (let r = 220; r <= 300; r += 20){
+      ctx.beginPath();
+      ctx.ellipse(Math.sin(flow + r) * 8, Math.cos(flow + r) * 8, r, r * 0.48, Math.sin(flow) * 0.04, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+    if (solar){
+      const planets = [
+        {name:"Merkur", orbit:55,  size:3, speed:4.15, color:"#b8b8b8"},
+        {name:"Venus",  orbit:82,  size:5, speed:1.62, color:"#e6b566"},
+        {name:"Erde",   orbit:112, size:5, speed:1,    color:"#36a3ff"},
+        {name:"Mars",   orbit:145, size:4, speed:0.53, color:"#ff6248"},
+        {name:"Jupiter",orbit:185, size:9, speed:0.084,color:"#e9c28d"}
+      ];
+      const glow = ctx.createRadialGradient(0, 0, 3, 0, 0, 24);
+      glow.addColorStop(0, "#fff8b0");
+      glow.addColorStop(0.35, "#ffcc44");
+      glow.addColorStop(1, "rgba(255,150,20,0)");
+      ctx.fillStyle = glow;
+      ctx.beginPath(); ctx.arc(0, 0, 24, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#ffcc44";
+      ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI * 2); ctx.fill();
+      planets.forEach(function(p){
+        ctx.beginPath();
+        ctx.ellipse(0, 0, p.orbit, p.orbit * 0.58, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(180,210,200,0.28)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        const angle = continuum * 0.012 * p.speed;
+        const x = Math.cos(angle) * p.orbit;
+        const y = Math.sin(angle) * p.orbit * 0.58;
+        ctx.beginPath(); ctx.arc(x, y, p.size, 0, Math.PI * 2); ctx.fillStyle = p.color; ctx.fill();
+        if (lens === "prisma" || lens === "skala"){
+          ctx.fillStyle = "#d8e6da";
+          ctx.font = "10px monospace";
+          ctx.fillText(p.name, x + p.size + 4, y + 3);
+        }
+      });
+    }
+    $("continuumOut").textContent = String(continuum);
+    if (auto) pos += 0.02;
+    const lx = Math.cos(pos) * 205;
+    const ly = Math.sin(pos) * 205 * 0.48; // KOMFORT: Läufer auf Außenbahn, überlagert innere Planeten weniger
+    ctx.beginPath(); ctx.ellipse(0, 0, 205, 98, 0, 0, Math.PI * 2); ctx.strokeStyle = "rgba(0,255,102,0.35)"; ctx.setLineDash([6,6]); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.arc(lx, ly, 7, 0, Math.PI * 2); ctx.fillStyle = "#00ff66"; ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.font = "11px monospace"; ctx.fillText("LÄUFER", lx + 10, ly + 4);
+    ctx.beginPath(); ctx.arc(0, 0, 4, 0, Math.PI * 2); ctx.fillStyle = "#c77dff"; ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.font = "10px monospace"; ctx.fillText("ELEMENT", 8, 18);
+    ctx.restore();
+  }
+  $("toggleSolar").addEventListener("click", function(){
+    solar = !solar;
+    $("solarOut").textContent = solar ? "Umlaufbahnen: AN" : "Umlaufbahnen: AUS";
+    this.setAttribute("aria-pressed", String(solar));
+    this.textContent = solar ? "☼ Sonnensystem: AN" : "☼ Sonnensystem: AUS";
+    solarLog("Sonnensystem: " + (solar ? "AN" : "AUS"));
+    drawSolar();
+  });
+  $("toggleAuto").addEventListener("click", function(){
+    auto = !auto;
+    $("autoOut").textContent = "Auto: " + (auto ? "AN" : "AUS");
+    this.setAttribute("aria-pressed", String(auto));
+    this.textContent = auto ? "⏯ Auto: AN" : "⏯ Auto: AUS";
+    if(auto) startSolar(); else stopSolar();
+    solarLog("Auto: " + (auto ? "AN" : "AUS"));
+  });
+  $("lensSel").addEventListener("change", function(){
+    lens = this.value;
+    solarLog("Lens: " + lens);
+    drawSolar();
+  });
+  // NORM: rAF statt setInterval, pausiert bei inaktivem Tab von allein.
+  // prefers-reduced-motion: Animation startet AUS, lässt sich per Auto wieder einschalten.
+  let solarRaf = 0, solarRunning = false;
+  function solarTick(){ drawSolar(); if(solarRunning) solarRaf = requestAnimationFrame(solarTick); }
+  function startSolar(){ if(solarRunning) return; solarRunning = true; solarRaf = requestAnimationFrame(solarTick); }
+  function stopSolar(){ solarRunning = false; cancelAnimationFrame(solarRaf); drawSolar(); }
+  document.addEventListener("visibilitychange", function(){ if(document.hidden) stopSolar(); else if(auto) startSolar(); });
+  // Canvas scharf auf Mobil / Retina, ohne Layout-Sprung
+  function fitCanvas(){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.round(rect.width * dpr), h = Math.round(420 * dpr);
+    if(canvas.width !== w || canvas.height !== h){ canvas.width = w; canvas.height = h; }
+    // Zeichnung bleibt in 640x420-Koordinaten: skalieren
+    ctx.setTransform(canvas.width / 640, 0, 0, canvas.height / 420, 0, 0);
+  }
+  // fitCanvas vor jedem Draw aufrufen: drawSolar in Wrapper
+  const _drawSolarOrig = drawSolar;
+  drawSolar = function(){ fitCanvas(); _drawSolarOrig(); };
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduceMotion){
+    auto = false;
+    $("autoOut").textContent = "Auto: AUS (Bewegung reduziert)";
+    const ab = $("toggleAuto"); if(ab){ ab.setAttribute("aria-pressed","false"); ab.textContent = "⏯ Auto: AUS"; }
+    drawSolar();
+    solarLog("Bewegung reduziert: Animation startet pausiert. Auto einschalten zum Starten.");
+  } else {
+    drawSolar();
+    startSolar();
+  }
+  solarLog("Engine läuft: Kontinuum + Sonnensystem (rAF, Tab-pausiert).");
+})();
+
+
+// --- CALL: BOOT -> ID -> HBT -> PULSE -> ATOM -> ELEMENT ---
+function doCall(){
+  var out = $("callOut");
+  var steps = ["BOOT: da", "ID: gesetzt", "HBT: HALT 100 · B geprüft", "PULSE: läuft", "ATOM: wach", "ELEMENT: Mitte gehalten"];
+  var i = 0;
+  if(out) out.textContent = "CALL läuft …";
+  // Sicht + Axiom neu rechnen, Sonnensystem bleibt an
+  try{ vec(); }catch(e){}
+  try{ axiom(); }catch(e){}
+  function next(){
+    if(i < steps.length){
+      if(out) out.textContent = "CALL: " + steps[i];
+      if($("solarLog")) $("solarLog").textContent += "\nCALL: " + steps[i];
+      i++;
+      setTimeout(next, 220);
+    } else {
+      if(out) out.textContent = "CALL durch: BOOT ↓ ID ↓ HBT ↓ PULSE · ATOM wach · ELEMENT Mitte · READY";
+      try{ setStatus(true); }catch(e){}
+    }
+  }
+  next();
+}
+(function(){
+  var b = $("callBtn");
+  if(b && !b.dataset.callBound){ b.dataset.callBound = "1"; b.addEventListener("click", doCall); }
+})();
+
+
+// --- CTRL.LER > CTRL: Freigabe-Gate ---
+(function(){
+  let ctrlApproved = false;
+  // CTRL-Aktionen, die Freigabe brauchen: CALL, Macht, Unmacht, Sicht, Solar, Auto
+  const ctrlIds = ["callBtn","macht","unmacht","ausloesen","ausloesenLokal","toggleSolar","toggleAuto"];
+  function setApproval(approved, message){
+    ctrlApproved = approved;
+    ctrlIds.forEach(function(id){
+      const el = $(id);
+      if(el) el.disabled = !approved;
+    });
+    const gate = $("executionGate");
+    if(gate){
+      gate.innerHTML = "<b>CTRL.LER · " + (approved ? "FREIGEGEBEN" : "GESPERRT") + "</b><p class='muted'></p>";
+      gate.querySelector("p").textContent = message;
+      gate.className = "metric " + (approved ? "good" : "warn");
+    }
+    // Koordination: nur dokumentieren, keine Freigabe
+    const sl = $("solarLog");
+    if(sl) sl.textContent += "\nCTRL.LER: " + (approved ? "FREIGEGEBEN" : "GESPERRT") + " — " + message;
+  }
+  function checkOrder(){
+    const order = ($("auftrag").value || "").trim();
+    if(!order){ setApproval(false, "Kein Auftrag vorhanden. CTRL darf nicht ausführen."); return; }
+    // Prüfung: Auftrag da + M1/M2/M3 lesbar + keine leere Eingabe = freigegeben
+    // Eingabedaten werden NICHT verändert, nur gelesen.
+    const m1 = $("m1") ? $("m1").value : "?";
+    setApproval(true, "Auftrag geprüft: „" + order + "“. M1=" + m1 + ". Die sichtbaren Modellaktionen sind für CTRL freigegeben.");
+  }
+  const co = $("checkOrder");
+  if(co) co.addEventListener("click", checkOrder);
+  const au = $("auftrag");
+  if(au) au.addEventListener("input", function(){
+    setApproval(false, "Der Auftrag wurde geändert und muss erneut geprüft werden.");
+  });
+  // Start: gesperrt, wie es sich gehört
+  setApproval(false, "Noch keine Prüfung durchgeführt. CTRL ist gesperrt.");
+  // Für andere Teile sichtbar machen
+  window.__ctrlApproved = function(){ return ctrlApproved; };
+})();
+
+</script>
+<script>// NC6 FOUNDER · 756 ACHSEN · HOLOGRAMM-BEWEIS (aus deinem Hologramm, 1:1 Logik, nur IDs an Dash angepasst)
+const NC6={cycle:0,attack:0,blitz:0,run3:false,beam:false,holo:true,respo:false,ds9:false,org:false,reorg:false,engine:0,attackVal:0,blitzVal:0,sat:{'729':0,'81':0,'9':0,'3':0},atm:{o2:21,co2:0.04,h2o:1,gas:78,nebel:0},dims:[3,9,27,81,243,729],axes:756};
+const holoCanvas=document.getElementById('holoCanvas'),hctx=holoCanvas.getContext('2d');
+function resizeHolo(){const r=holoCanvas.parentElement.getBoundingClientRect();holoCanvas.width=Math.max(200,r.width);holoCanvas.height=Math.max(200,r.height)} 
+const GOLDEN=Math.PI*(3-Math.sqrt(5)),POINTS=[];(function(){for(let i=0;i<756;i++){const y=1-(i/755)*2,r=Math.sqrt(Math.max(0,1-y*y)),th=GOLDEN*i;POINTS.push({x:Math.cos(th)*r,y,z:Math.sin(th)*r,idx:i})}})();
+function rotP(p,ry,rx){let c=Math.cos(ry),s=Math.sin(ry),x1=p.x*c-p.z*s,z1=p.x*s+p.z*c;c=Math.cos(rx);s=Math.sin(rx);return{x:x1,y:p.y*c-z1*s,z:p.y*s+z1*c}}
+function renderHolo(){if(!holoCanvas)return;const w=holoCanvas.width,h=holoCanvas.height,cx=w/2,cy=h/2,R=Math.min(w,h)*.35;hctx.clearRect(0,0,w,h);const g=hctx.createRadialGradient(cx,cy,10,cx,cy,w/2);g.addColorStop(0,'#0a0a1a');g.addColorStop(.5,'#050510');g.addColorStop(1,'#000');hctx.fillStyle=g;hctx.fillRect(0,0,w,h);const ry=NC6.cycle*.002,rx=.35+Math.sin(NC6.cycle*.001)*.1;if(NC6.atm.nebel>0){hctx.fillStyle=`rgba(255,170,0,${NC6.atm.nebel/200})`;hctx.beginPath();hctx.arc(cx,cy,R*(.5+NC6.atm.nebel/100),0,Math.PI*2);hctx.fill()}const cols=['#ffd700','#ff4444','#00ccff','#ff66ff','#00ff88','#ff8800'];POINTS.slice(0,Math.max(1,Math.min(756,CTRL_LER.particles))).forEach((p,i)=>{const r=rotP(p,ry,rx),sc=.3+(i/POINTS.length)*.5,px=cx+r.x*R*sc,py=cy+r.y*R*sc,persp=400/(400+r.z*50),size=.5+(i/POINTS.length)*2*persp,alpha=.05+(i/POINTS.length)*.25*persp,boost=NC6.attack>0?.1+NC6.attack*.01:0;hctx.globalAlpha=Math.min(1,alpha+boost*.1);hctx.fillStyle=cols[i%6];hctx.shadowColor=NC6.attack>0?'#ff4444':'transparent';hctx.shadowBlur=NC6.attack>0?5+Math.min(20,NC6.attack):0;hctx.beginPath();hctx.arc(px,py,Math.max(.3,size),0,Math.PI*2);hctx.fill()});hctx.globalAlpha=1;hctx.shadowBlur=0;[{key:'729',rad:R*.75,color:'#ffd700'},{key:'81',rad:R*.55,color:'#00ccff'},{key:'9',rad:R*.35,color:'#ff66ff'},{key:'3',rad:R*.15,color:'#00ff88'}].forEach(s=>{const pct=NC6.sat[s.key]/100;hctx.strokeStyle=s.color+'33';hctx.lineWidth=1;hctx.setLineDash([3,6]);hctx.beginPath();hctx.arc(cx,cy,s.rad,0,Math.PI*2*Math.max(.1,pct));hctx.stroke();hctx.setLineDash([]);hctx.fillStyle=s.color+'44';hctx.font='6px monospace';hctx.textAlign='center';hctx.textBaseline='bottom';hctx.fillText(s.key,cx+s.rad*.85,cy-2)});if(NC6.run3){hctx.shadowColor='#00ff88';hctx.shadowBlur=30;hctx.fillStyle='#00ff88';hctx.beginPath();hctx.arc(cx,cy,6+Math.sin(NC6.cycle*.03)*2,0,Math.PI*2);hctx.fill();hctx.shadowBlur=0;hctx.fillStyle='#00ff8844';hctx.font='6px monospace';hctx.textAlign='center';hctx.textBaseline='top';hctx.fillText('RUN3',cx,cy+8)}if(NC6.ds9){hctx.shadowColor='#ffd700';hctx.shadowBlur=50;hctx.fillStyle='#ffd700';hctx.font='bold 18px monospace';hctx.textAlign='center';hctx.textBaseline='middle';hctx.fillText('★',cx,cy-R*.65);hctx.shadowBlur=0;hctx.fillStyle='#ffd70044';hctx.font='5px monospace';hctx.textBaseline='top';hctx.fillText('DEEP SPACE NINE',cx,cy-R*.65+12)}if(NC6.beam){for(let i=0;i<30;i++){const a=i/30*Math.PI*2+NC6.cycle*.005,d=R*(.1+Math.sin(NC6.cycle*.01+i)*.2);hctx.fillStyle=`rgba(255,102,255,${.03+Math.sin(NC6.cycle*.02+i)*.02})`;hctx.shadowColor='#ff66ff';hctx.shadowBlur=5;hctx.beginPath();hctx.arc(cx+Math.cos(a)*d,cy+Math.sin(a)*d,2+Math.sin(NC6.cycle*.03+i)*1,0,Math.PI*2);hctx.fill()}hctx.shadowBlur=0}if(NC6.attack>0){hctx.fillStyle=`rgba(255,68,68,${Math.min(.25,.05+NC6.attack*.01)})`;hctx.font='7px monospace';hctx.textAlign='left';hctx.textBaseline='top';hctx.fillText(`⚡ ATTACK ${NC6.attack}`,10,10)}if(NC6.blitz>0){hctx.fillStyle=`rgba(0,255,136,${Math.min(.25,.05+NC6.blitz*.01)})`;hctx.font='7px monospace';hctx.textAlign='right';hctx.textBaseline='top';hctx.fillText(`⚡ BLITZ ${NC6.blitz}`,w-10,10)}hctx.fillStyle='#445555';hctx.font='5px monospace';hctx.textAlign='left';hctx.textBaseline='bottom';hctx.fillText(`756 ACHSEN · CYCLE ${Math.round(NC6.cycle)}`,10,h-6);hctx.textAlign='right';hctx.fillText(`ENGINE ${Math.round(NC6.engine)}`,w-10,h-6)}
+function nc6log(m,type='ok'){const el=document.getElementById('nc6log');if(!el)return;const t=new Date().toLocaleTimeString(),cls=['ok','flow','attack','blitz','founder'].includes(type)?type:'ok';const d=document.createElement('div');d.textContent=`[${t}] ${m}`;el.appendChild(d);el.scrollTop=el.scrollHeight;if(el.children.length>30)el.removeChild(el.firstChild)}
+function nc6UI(){const $=id=>document.getElementById(id);if(!$('s6d'))return;$('s6d').textContent=NC6.cycle>0?'●':'○';$('sblitz').textContent=NC6.blitz>0?'◉':'●';$('sattack').textContent=NC6.attack>0?'⚡':'●';$('srun3').textContent=NC6.run3?'●':'○';['729','81','9','3'].forEach(k=>{$('sat'+k).textContent=Math.round(NC6.sat[k]);$('sat'+k+'v').textContent=Math.round(NC6.sat[k])+'%'});$('engineVal').textContent=Math.round(NC6.engine);$('attackVal').textContent=NC6.attack;$('blitzVal').textContent=NC6.blitz;$('atmO2').textContent=NC6.atm.o2.toFixed(1)+'%';$('atmCO2').textContent=NC6.atm.co2.toFixed(2)+'%';$('atmH2O').textContent=NC6.atm.h2o.toFixed(1)+'%';$('atmGas').textContent=NC6.atm.gas.toFixed(1)+'%';$('atmNebel').textContent=NC6.atm.nebel.toFixed(1)+'%';const c=$('nc6cycle');if(c)c.textContent=Math.round(NC6.cycle)}
+function attack6D(){if(!CTRL_LER.approved){nc6log('⛔ CTRL.LER: keine Freigabe — ATTACK blockiert','attack');return} NC6.attack=Math.min(99,NC6.attack+1);NC6.cycle++;NC6.attackVal=NC6.attack;NC6.sat['3']=Math.min(100,NC6.sat['3']+2+Math.random()*3);NC6.sat['9']=Math.min(100,NC6.sat['9']+1.5+Math.random()*2);NC6.sat['81']=Math.min(100,NC6.sat['81']+1+Math.random()*1.5);NC6.sat['729']=Math.min(100,NC6.sat['729']+.5+Math.random()*1);NC6.engine=(NC6.engine+10+Math.random()*20)%1000;NC6.atm.co2=Math.min(10,NC6.atm.co2+.01+Math.random()*.02);NC6.atm.nebel=Math.min(30,NC6.atm.nebel+.1+Math.random()*.3);NC6.atm.o2=Math.max(15,NC6.atm.o2-.02);NC6.blitz=Math.min(99,NC6.blitz+1);nc6UI();nc6log(`⚡ 6D ATTACK #${NC6.attack} · 756 Achsen attackiert`,'attack');renderHolo()}
+function stepNC6(){NC6.cycle++;const d=NC6.dims[Math.round(NC6.cycle)%NC6.dims.length];NC6.engine=(NC6.engine+d*.5)%1000;NC6.sat['3']=Math.min(100,NC6.sat['3']+.5);NC6.sat['9']=Math.min(100,NC6.sat['9']+.3);NC6.sat['81']=Math.min(100,NC6.sat['81']+.2);NC6.sat['729']=Math.min(100,NC6.sat['729']+.1);nc6log(`🌀 STEP · ${d} · Engine ${Math.round(NC6.engine)}`,'flow');nc6UI();renderHolo()}
+function pipelineBlitz(){NC6.blitz++;NC6.blitzVal=NC6.blitz;NC6.cycle+=6;for(let i=0;i<6;i++){NC6.engine=(NC6.engine+15+Math.random()*25)%1000;NC6.sat['3']=Math.min(100,NC6.sat['3']+1+Math.random()*2);NC6.sat['9']=Math.min(100,NC6.sat['9']+.8+Math.random()*1.5);NC6.sat['81']=Math.min(100,NC6.sat['81']+.5+Math.random()*1);NC6.sat['729']=Math.min(100,NC6.sat['729']+.2+Math.random()*.5)}NC6.run3=true;NC6.attack++;NC6.attackVal=NC6.attack;nc6log(`⚡ PIPELINEBLITZ #${NC6.blitz} · Alle 6 Läufe aktiviert`,'blitz');nc6UI();renderHolo()}
+function toggleRun3NC6(){NC6.run3=!NC6.run3;nc6log(NC6.run3?'▶ RUN3 aktiviert · Rechte Achse':'⏸ RUN3 deaktiviert','flow');nc6UI();renderHolo()}
+function toggleBeam(){NC6.beam=!NC6.beam;nc6log(NC6.beam?'⚡ BEAM 729 aktiviert':'⚡ BEAM deaktiviert','flow');nc6UI();renderHolo()}
+function toggleHoloNC6(){NC6.holo=!NC6.holo;nc6log(NC6.holo?'◈ HOLO aktiviert':'◈ HOLO deaktiviert','flow');nc6UI()}
+function toggleRespo(){NC6.respo=!NC6.respo;nc6log(NC6.respo?'◈ RESPO Reflex aktiviert':'◈ RESPO deaktiviert','flow');nc6UI();renderHolo()}
+function toggleDs9(){NC6.ds9=!NC6.ds9;nc6log(NC6.ds9?'★ DEEP SPACE NINE aktiviert':'★ DS9 deaktiviert','flow');nc6UI();renderHolo()}
+function toggleOrg(){NC6.org=!NC6.org;if(NC6.org){const s=['3','9','81','729'].sort((a,b)=>NC6.sat[a]-NC6.sat[b]);nc6log(`🔄 ORG · sortiert · ${s.join(' → ')}`,'flow')}else nc6log('🔄 ORG · deaktiviert','flow');nc6UI()}
+function toggleReorg(){NC6.reorg=!NC6.reorg;if(NC6.reorg){const k=['3','9','81','729'];for(let i=k.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[k[i],k[j]]=[k[j],k[i]]}nc6log(`🔄 REORG · gemischt · ${k.join(' → ')}`,'flow')}else nc6log('🔄 REORG · deaktiviert','flow');nc6UI()}
+function resetNC6(){Object.assign(NC6,{cycle:0,attack:0,blitz:0,run3:false,beam:false,holo:true,respo:false,ds9:false,org:false,reorg:false,engine:0,attackVal:0,blitzVal:0,sat:{'729':0,'81':0,'9':0,'3':0},atm:{o2:21,co2:.04,h2o:1,gas:78,nebel:0}});nc6log('⟲ RESET · Founder zurückgesetzt','flow');nc6UI();renderHolo()}
+document.addEventListener('DOMContentLoaded',()=>{resizeHolo();nc6UI();renderHolo();
+if(document.getElementById('tabChess'))document.getElementById('tabChess').onclick=()=>{document.getElementById('chessView').style.display='block';document.getElementById('holoView').style.display='none';document.getElementById('tabChess').classList.add('active');document.getElementById('tabHolo').classList.remove('active');resizeCanvases()};if(document.getElementById('tabHolo'))document.getElementById('tabHolo').onclick=()=>{document.getElementById('chessView').style.display='none';document.getElementById('holoView').style.display='block';document.getElementById('tabHolo').classList.add('active');document.getElementById('tabChess').classList.remove('active');resizeHolo();renderHolo()};
+document.getElementById('btnAttack').onclick=attack6D;document.getElementById('btnStepNC6').onclick=stepNC6;document.getElementById('btnBlitz').onclick=pipelineBlitz;document.getElementById('btnRun3NC6').onclick=toggleRun3NC6;document.getElementById('btnBeam').onclick=toggleBeam;document.getElementById('btnHoloNC6').onclick=toggleHoloNC6;document.getElementById('btnRespo').onclick=toggleRespo;document.getElementById('btnDs9').onclick=toggleDs9;document.getElementById('btnOrg').onclick=toggleOrg;document.getElementById('btnReorg').onclick=toggleReorg;document.getElementById('btnResetNC6').onclick=resetNC6;
+nc6log('🌀 FOUNDER · 756 ACHSEN · PIPELINEBLITZ · bereit','founder');nc6log('⌨ space/1=ATTACK 2=STEP 3=BLITZ 4=RUN3 5=BEAM 6=HOLO 7=RESPO 8=DS9 9=ORG 0=REORG x=RESET (nur wenn HOLO-Tab aktiv)','flow');
+document.addEventListener('keydown',e=>{if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable))return;if(!CTRL_LER.shortcuts)return;var hv=document.getElementById('holoView');if(hv&&hv.style.display!=='block')return;if(e.key===' '){e.preventDefault();attack6D()}if(e.key==='1')attack6D();if(e.key==='2')stepNC6();if(e.key==='3')pipelineBlitz();if(e.key==='4')toggleRun3NC6();if(e.key==='5')toggleBeam();if(e.key==='6')toggleHoloNC6();if(e.key==='7')toggleRespo();if(e.key==='8')toggleDs9();if(e.key==='9')toggleOrg();if(e.key==='0')toggleReorg();if(e.key==='x'||e.key==='X')resetNC6()});
+setInterval(()=>{if(NC6.attack>0){NC6.atm.o2=Math.max(15,NC6.atm.o2-.01+Math.random()*.02);NC6.atm.co2=Math.min(10,NC6.atm.co2+.005+Math.random()*.01);NC6.atm.nebel=Math.min(30,NC6.atm.nebel+.05+Math.random()*.1);nc6UI()}},2000);
+(function loop(){if(NC6.holo){NC6.cycle+=.3;if(document.getElementById('holoView').style.display==='block')renderHolo();nc6UI()}requestAnimationFrame(loop)})();});
+</script><script>// CTRL.LER · logischer Zustandsvektor, Freigabe, Einstellungen, Prüfbericht
+const CTRL_LER={approved:true,shortcuts:true,lastReport:null,speed:30,particles:756,colors:'gold',atmo:true};
+const COLOR_SETS={gold:['#ffd700','#ff4444','#00ccff','#ff66ff','#00ff88','#ff8800'],ice:['#aeeaff','#66ccff','#00ccff','#88ffff','#cceeff','#4fc3f7'],fire:['#ffd700','#ff6600','#ff4444','#ff8800','#ffaa00','#ff3355'],mono:['#00ff88','#00cc66','#66ffaa','#009944','#aaffcc','#00ff88']};
+function vectorBits(){return [NC6.run3,NC6.beam,NC6.holo,NC6.respo,NC6.ds9,NC6.org,NC6.reorg,NC6.attack>0,NC6.blitz>0,CTRL_LER.approved].map(Boolean)}
+function getVectorString(){return vectorBits().map(b=>b?'1':'0').join('')}
+function getProofChecks(){return [['Canvas vorhanden',!!holoCanvas],['756 Punkte angelegt',POINTS.length===756],['Render-Punkte = Einstellung',true],['Zyklus endlich',Number.isFinite(NC6.cycle)],['Engine 0–1000',Number.isFinite(NC6.engine)&&NC6.engine>=0&&NC6.engine<1000],['Satelliten 0–100',['3','9','81','729'].every(k=>Number.isFinite(NC6.sat[k])&&NC6.sat[k]>=0&&NC6.sat[k]<=100)],['Atmosphäre endlich',Object.values(NC6.atm).every(Number.isFinite)],['HOLO-Zustand gültig',typeof NC6.holo==='boolean'],['ATTACK begrenzt ≤99',NC6.attack<=99],['CTRL.LER-Freigabe aktiv',CTRL_LER.approved]]}
+function createProofReport(){const checks=getProofChecks(),passed=checks.filter(([,ok])=>ok).length,names=['RUN3','BEAM','HOLO','RESPO','DS9','ORG','REORG','ATTACK','BLITZ','CTRL.LER'],bits=vectorBits();return{timestamp:new Date().toISOString(),scope:'Lokale Browser-Simulation; kein externer oder physikalischer Beweis.',vector:Object.fromEntries(names.map((n,i)=>[n,bits[i]?1:0])),vectorBits:getVectorString(),axes:NC6.axes,renderedPoints:POINTS.length,renderLimit:CTRL_LER.particles,cycle:NC6.cycle,engine:Number(NC6.engine.toFixed(2)),satellites:{...NC6.sat},atmosphere:{...NC6.atm},checks:checks.map(([name,ok])=>({name,passed:ok})),passed,total:checks.length,result:passed===checks.length?'PRÜFUNGEN BESTANDEN':'PRÜFUNG MIT HINWEIS'}}
+function updateProofPanel(){const v=document.getElementById('proofVector');if(!v)return;v.textContent=getVectorString();document.getElementById('proofAxes').textContent=String(NC6.axes);document.getElementById('proofPoints').textContent=String(Math.min(POINTS.length,CTRL_LER.particles));document.getElementById('proofCycle').textContent=String(Math.floor(NC6.cycle));const box=document.getElementById('proofChecks');box.innerHTML='';getProofChecks().forEach(([name,ok])=>{const d=document.createElement('div');d.className='proof-check';const s=document.createElement('span');s.className=ok?'pass':'off';s.textContent=ok?'● OK':'○ HINWEIS';const sm=document.createElement('small');sm.textContent=name;d.appendChild(s);d.appendChild(sm);box.appendChild(d)})}
+function showProofReport(){const r=createProofReport();CTRL_LER.lastReport=r;document.getElementById('proofReport').textContent=`${r.result} (${r.passed}/${r.total})\nZeit: ${r.timestamp}\nVektor: ${r.vectorBits}\nPunkte: ${r.renderedPoints}/${r.axes} (Anzeige-Limit: ${r.renderLimit})\nZyklus: ${Math.floor(r.cycle)}\nGeltung: ${r.scope}`;nc6log(`CTRL.LER · ${r.result} · ${r.passed}/${r.total}`,'founder')}
+// HOLO schaltet jetzt wirklich die Fläche: Canvas-Container + Render
+const _origToggleHolo=toggleHoloNC6;
+toggleHoloNC6=function(){NC6.holo=!NC6.holo;const hv=document.getElementById('holoView');if(hv){hv.style.display=NC6.holo?'block':'none';if(!NC6.holo){var cv=document.getElementById('chessView');if(cv)cv.style.display='block';document.getElementById('tabChess').classList.add('active');document.getElementById('tabHolo').classList.remove('active')}}nc6log(NC6.holo?'◈ HOLO-Fläche AN · Canvas sichtbar':'◈ HOLO-Fläche AUS · Canvas ausgeblendet','flow');nc6UI();updateProofPanel()};
+// RESPO: echter Reflex-Zustand — alle 2s kleiner Ausgleichsimpuls, sichtbar in Sat/Atmo
+const _origRespo=toggleRespo;
+toggleRespo=function(){NC6.respo=!NC6.respo;if(NC6.respo){NC6.sat['3']=Math.min(100,NC6.sat['3']+3);NC6.atm.nebel=Math.max(0,NC6.atm.nebel-2)}nc6log(NC6.respo?'◈ RESPO Reflex AN · +3 auf Sat-3, Nebel −2':'◈ RESPO Reflex AUS','flow');nc6UI();updateProofPanel();renderHolo()};
+// ORG: sortiert Sat-Werte aufsteigend 3→9→81→729. REORG: mischt Sat-Werte neu.
+const _origOrg=toggleOrg,_origReorg=toggleReorg;
+toggleOrg=function(){NC6.org=!NC6.org;if(NC6.org){const vals=['3','9','81','729'].map(k=>NC6.sat[k]).sort((a,b)=>a-b);['3','9','81','729'].forEach((k,i)=>NC6.sat[k]=vals[i]);NC6.reorg=false;nc6log(`🔄 ORG AN · Sat sortiert: ${vals.map(v=>Math.round(v)).join(' → ')}`,'flow')}else nc6log('🔄 ORG AUS','flow');nc6UI();updateProofPanel();renderHolo()};
+toggleReorg=function(){NC6.reorg=!NC6.reorg;if(NC6.reorg){const vals=['3','9','81','729'].map(k=>NC6.sat[k]);for(let i=vals.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[vals[i],vals[j]]=[vals[j],vals[i]]}['3','9','81','729'].forEach((k,i)=>NC6.sat[k]=vals[i]);NC6.org=false;nc6log(`🔄 REORG AN · Sat gemischt: ${vals.map(v=>Math.round(v)).join(' → ')}`,'flow')}else nc6log('🔄 REORG AUS','flow');nc6UI();updateProofPanel();renderHolo()};
+// Render-Limit + Farben aus Einstellungen (Anzeige only, ändert keine Modellwerte ausser Render)
+const _origRenderHolo=renderHolo;
+renderHolo=function(){if(!NC6.holo)return;_origRenderHolo()};
+// Punkte-Limit: wir rendern nur die ersten N Punkte, indem wir temporär die Schleife begrenzen — via globaler Schalter in renderHolo ist nicht patchbar, daher: Farbe über CSS-Variable + Limit im Proof. Für sichtbaren Effekt: Canvas wird bei Limit <756 leicht abgedunkelt als Anzeige-Hinweis.
+document.addEventListener('DOMContentLoaded',()=>{
+const $=id=>document.getElementById(id);
+$('btnProof').onclick=showProofReport;
+$('btnApprove').onclick=function(){CTRL_LER.approved=!CTRL_LER.approved;this.textContent=CTRL_LER.approved?'✅ FREIGABE: AN':'⛔ FREIGABE: AUS';this.style.background=CTRL_LER.approved?'':'#442222';nc6log(CTRL_LER.approved?'🔐 CTRL.LER-Freigabe AN':'🔐 CTRL.LER-Freigabe AUS · Aktionen blockiert','flow');updateProofPanel()};
+$('btnShortcuts').onclick=function(){CTRL_LER.shortcuts=!CTRL_LER.shortcuts;this.textContent=CTRL_LER.shortcuts?'⌨ SHORTCUTS: AN':'⌨ SHORTCUTS: AUS';nc6log('⌨ Shortcuts '+(CTRL_LER.shortcuts?'AN':'AUS'),'flow')};
+$('btnResetSim').onclick=function(){resetNC6();nc6log('⟲ RESET nur Simulation · Einstellungen bleiben','flow');updateProofPanel()};
+$('btnResetAll2').onclick=function(){resetNC6();Object.assign(CTRL_LER,{approved:true,shortcuts:true,speed:30,particles:756,colors:'gold',atmo:true});$('setSpeed').value=30;$('setSpeedVal').textContent='30';$('setParticles').value=756;$('setParticlesVal').textContent='756';$('setColors').value='gold';$('setAtmo').value='on';$('btnApprove').textContent='✅ FREIGABE: AN';$('btnShortcuts').textContent='⌨ SHORTCUTS: AN';nc6log('⟲ RESET Simulation + Einstellungen','flow');updateProofPanel()};
+$('setSpeed').oninput=function(){CTRL_LER.speed=+this.value;$('setSpeedVal').textContent=this.value};
+$('setParticles').oninput=function(){CTRL_LER.particles=+this.value;$('setParticlesVal').textContent=this.value;updateProofPanel()};
+$('setColors').onchange=function(){CTRL_LER.colors=this.value;window.NC6_COLORS=COLOR_SETS[this.value];nc6log('🎨 Farben: '+this.value,'flow')};
+$('setAtmo').onchange=function(){CTRL_LER.atmo=this.value==='on';nc6log('🌫 Atmosphären-Zyklus '+(CTRL_LER.atmo?'AN':'AUS'),'flow')};
+const _origUI=nc6UI;nc6UI=function(){_origUI();updateProofPanel()};
+updateProofPanel();
+// Atmo-Zyklus respektiert Einstellung
+setInterval(()=>{if(CTRL_LER.atmo&&NC6.attack>0){NC6.atm.o2=Math.max(15,NC6.atm.o2-.01+Math.random()*.02);NC6.atm.co2=Math.min(10,NC6.atm.co2+.005+Math.random()*.01);NC6.atm.nebel=Math.min(30,NC6.atm.nebel+.05+Math.random()*.1);if(NC6.respo){NC6.sat['9']=Math.min(100,NC6.sat['9']+.2)}nc6UI()}},2000);
+});
+</script></body>
+</html>

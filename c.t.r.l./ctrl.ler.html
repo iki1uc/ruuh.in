@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CTRL.LER — steht über CTRL</title>
+<style>
+:root{--bg:#050505;--card:#111;--line:#333;--green:#00ff66;--yellow:#ffd166;--text:#f5f5f5}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,Consolas,monospace}
+header,main{width:min(100% - 32px,980px);margin-inline:auto}
+header{padding:24px 0 8px;text-align:center;border-bottom:2px solid var(--green)} h1{margin:0;color:var(--green)}
+.panel,.card{border:1px solid var(--line);border-radius:12px;padding:16px;margin:16px 0;background:var(--card)}
+table{width:100%;border-collapse:collapse} th,td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+button{padding:10px 16px;border:1px solid var(--line);border-radius:8px;background:#222;color:#fff;font:inherit;cursor:pointer} button:hover{border-color:var(--green)} button:disabled{opacity:.45;cursor:not-allowed} button.active{border-color:var(--green);background:#153622}
+input[type=text],input[type=number]{width:100%;padding:10px;margin:8px 0;border:1px solid var(--line);border-radius:8px;background:#111;color:#fff;font:inherit}
+.metric{border:1px solid var(--line);border-radius:8px;padding:10px;margin:10px 0} .metric.good{border-color:var(--green)} .metric.warn{border-color:var(--yellow)}
+.muted{color:#999} .good{color:#61f58f} .warn{color:#ffd27a}
+#cells{display:grid;grid-template-columns:repeat(9,1fr);gap:6px} .cell{aspect-ratio:1;border:1px solid var(--line);border-radius:6px;background:#1a1a1a;cursor:pointer} .cell.on{background:var(--green)}
+.bar{height:10px;background:#222;border-radius:5px;overflow:hidden} .bar i{display:block;height:100%;background:var(--green);width:0}
+pre{background:#0a0a0a;border:1px solid var(--line);padding:12px;overflow:auto;white-space:pre-wrap;color:#ccc}
+button:focus-visible,input:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header><h1>CTRL.LER → CTRL</h1><div class="muted">CTRL.LER überwacht und prüft. CTRL führt freigegebene, definierte Schritte aus. CTRL.LER kann eine Ausführung als offen, gültig oder fehlerhaft kennzeichnen; es verändert Eingabedaten nicht stillschweigend.</div></header>
+<main>
+<div class="panel"><h2>CTRL.LER → CTRL · Prüfen und ausführen</h2>
+<table><thead><tr><th>Ebene</th><th>Aufgabe</th><th>Befugnis</th></tr></thead><tbody>
+<tr><td><b>CTRL.LER</b></td><td>Prüft Auftrag, Modellzustand und Regeln. Erstellt eine Freigabe oder meldet einen Prüfbedarf.</td><td>Steht über CTRL. Kann eine Aktion freigeben oder blockieren; verändert keine Eingabedaten stillschweigend.</td></tr>
+<tr><td><b>CTRL</b></td><td>Führt die ausdrücklich freigegebenen Modellaktionen aus.</td><td>Führt keine blockierte oder ungeprüfte Aktion aus.</td></tr>
+<tr><td><b>Koordination</b></td><td>Sammelt Prüf- und Ausführungsmeldungen.</td><td>Dokumentiert Status, erteilt aber selbst keine Freigabe.</td></tr>
+</tbody></table></div>
+
+<section class="panel"><h2>CTRL · Ausführung</h2>
+<label for="auftrag"><b>Auftrag</b></label>
+<input id="auftrag" type="text" placeholder="z.B. 3 Zellen aktivieren, Figur prüfen">
+<div id="executionGate" class="metric warn" aria-live="polite"><b>CTRL.LER · FREIGABE AUSSTEHEND</b><p class="muted">Auftrag prüfen, bevor CTRL ihn ausführt.</p></div>
+<button id="checkOrder" type="button">Auftrag durch CTRL.LER prüfen</button>
+<nav style="margin-top:12px" aria-label="Ansichten">
+<button data-tab="feld" class="active" type="button">Feld 81</button>
+<button data-tab="figur" type="button">Figur 3</button>
+<button data-tab="tiefe" type="button">Tiefe 729</button>
+<button data-tab="checker" type="button">Checker</button>
+<button data-tab="bericht" type="button">Bericht</button>
+</nav>
+</section>
+
+<section class="view card" id="feld"><h2>Feld — 81 Zellen</h2>
+<p id="fieldCount">0/81 Zellen aktiviert</p><div class="bar"><i id="fieldBar"></i></div>
+<p style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button id="first3" disabled type="button">3 Zellen aktivieren</button><button id="clearField" disabled type="button">Feld zurücksetzen</button></p>
+<div id="cells" style="margin-top:10px"></div><p class="muted"><small>Zellen klickbar nur nach Freigabe. Ohne Freigabe: gesperrt.</small></p></section>
+
+<section class="view card" id="figur" hidden><h2>Figur — 3 Elemente</h2>
+<label><input class="element" type="checkbox"> Element 1</label><br>
+<label><input class="element" type="checkbox"> Element 2</label><br>
+<label><input class="element" type="checkbox"> Element 3</label>
+<p id="figureStatus" class="warn">MODELLSTATUS: OFFEN</p></section>
+
+<section class="view card" id="tiefe" hidden><h2>Tiefe — 9 Layer à 81 = 729</h2>
+<p id="depthCount">0/729 Zellen aktiviert</p><div class="bar"><i id="depthBar"></i></div>
+<p><button id="activateDepth" disabled type="button">Beispiel: 3 Zellen in Layer 1 aktivieren</button></p></section>
+
+<section class="view card" id="checker" hidden><h2>Checker</h2>
+<label for="rawValue">Wert (HOME = 40, f(x) = min(x, 40))</label>
+<input id="rawValue" type="number" value="50">
+<p id="boundedResult"></p>
+<button id="refreshChecks" type="button">Checker aktualisieren</button>
+<div id="checks"></div></section>
+
+<section class="view card" id="bericht" hidden><h2>Bericht</h2>
+<p><button id="runSummary" type="button">Statusbericht in Log</button> <button id="makeReport" type="button">Statusbericht erstellen</button></p>
+<pre id="executionLog">Noch kein Log.</pre><pre id="report">Noch kein Bericht.</pre><p id="feedbackStatus"></p></section>
+</main>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+const HOME = 40;
+let field = Array(81).fill(false);
+let depth = Array.from({length:9},()=>Array(81).fill(false));
+let ctrlApproved = false;
+function setApproval(approved, message){
+  ctrlApproved = approved;
+  ["first3","clearField","activateDepth"].forEach(id => { $(id).disabled = !approved; });
+  const gate = $("executionGate");
+  // textContent, kein innerHTML mit Nutzer-Eingabe
+  gate.textContent = "";
+  const b = document.createElement("b");
+  b.textContent = "CTRL.LER · " + (approved ? "FREIGEGEBEN" : "GESPERRT");
+  const p = document.createElement("p"); p.className = "muted"; p.textContent = message;
+  gate.append(b, p);
+  gate.className = "metric " + (approved ? "good" : "warn");
+}
+function checkOrder(){
+  const order = $("auftrag").value.trim();
+  if(!order){ setApproval(false, "Kein Auftrag vorhanden. CTRL darf nicht ausführen."); return; }
+  setApproval(true, "Auftrag geprüft: „" + order + "“. Die sichtbaren Modellaktionen sind für CTRL freigegeben.");
+}
+function showTab(name){
+  $$(".view").forEach(v => v.hidden = v.id !== name);
+  $$("nav button").forEach(b => b.classList.toggle("active", b.dataset.tab === name));
+  if(name === "checker") refreshChecks();
+}
+$$("nav button").forEach(b => b.addEventListener("click", () => showTab(b.dataset.tab)));
+function renderCells(){
+  const root = $("cells"); root.textContent = "";
+  field.forEach((on, i) => {
+    const b = document.createElement("button");
+    b.className = "cell" + (on ? " on" : "");
+    b.title = "Zelle " + (i+1) + ": " + (on ? "aktiviert" : "nicht aktiviert");
+    b.setAttribute("aria-label", b.title);
+    b.setAttribute("aria-pressed", String(on));
+    b.disabled = !ctrlApproved;
+    b.type = "button";
+    b.addEventListener("click", () => { if(!ctrlApproved) return; field[i] = !field[i]; renderCells(); });
+    root.appendChild(b);
+  });
+  const n = field.filter(Boolean).length;
+  $("fieldCount").textContent = n + "/81 Zellen aktiviert";
+  $("fieldBar").style.width = (n/81*100) + "%";
+}
+function updateDepth(){
+  const n = depth.flat().filter(Boolean).length;
+  $("depthCount").textContent = n + "/729 Zellen aktiviert";
+  $("depthBar").style.width = (n/729*100) + "%";
+}
+function updateFigure(){
+  const n = $$(".element").filter(x => x.checked).length;
+  const b = n/3, l = 1-b;
+  $("figureStatus").textContent = b === 1 ? "MODELLSTATUS: VOLLSTÄNDIG — Alle drei Modellbedingungen erfüllt" : "MODELLSTATUS: OFFEN — B=" + b.toFixed(2) + ", L=" + l.toFixed(2);
+  $("figureStatus").className = b === 1 ? "good" : "warn";
+}
+function bounded(){
+  const x = Number($("rawValue").value);
+  if(!Number.isFinite(x)){ $("boundedResult").textContent = "Bitte einen gültigen Zahlenwert eingeben."; return; }
+  $("boundedResult").textContent = "Ausgabewert: " + Math.min(x, HOME) + " · Ursprungswert: " + x;
+}
+function checksData(){
+  const active = field.filter(Boolean).length;
+  const d = depth.flat().filter(Boolean).length;
+  const elems = $$(".element").filter(x => x.checked).length;
+  return [
+    ["Freigabe CTRL", ctrlApproved ? "freigegeben" : "gesperrt", "CTRL.LER entscheidet vor der Ausführung"],
+    ["Feldgröße", "81 Zellen angelegt", "81"],
+    ["Feldstatus", active + "/81 aktiviert", active + " von 81"],
+    // FIX: Anführungszeichen korrigiert — war: `${elems}/3 Elemente aktiviert',
+    ["Figur", elems + "/3 Elemente aktiviert", "3 von 3 für VOLLSTÄNDIG"],
+    ["Tiefe", depth.length + " Layer · " + d + "/729 aktiviert", "9 Layer à 81 Zellen"],
+    ["Wertbegrenzung", "f(x) = min(x, 40)", "HOME = 40"]
+  ];
+}
+function refreshChecks(){
+  $("checks").textContent = "";
+  checksData().forEach(([a,b,c]) => {
+    const div = document.createElement("div"); div.className = "metric";
+    const s1 = document.createElement("small"); s1.textContent = a;
+    const st = document.createElement("strong"); st.style.fontSize = "18px"; st.textContent = b;
+    const s2 = document.createElement("small"); s2.textContent = c;
+    div.append(s1, document.createElement("br"), st, document.createElement("br"), s2);
+    $("checks").appendChild(div);
+  });
+}
+function statusReport(){
+  const x = Number($("rawValue").value);
+  return [
+    "AUFTRAG: " + ($("auftrag").value || "(kein Auftragstext)"),
+    "CTRL.LER-FREIGABE: " + (ctrlApproved ? "freigegeben" : "gesperrt"),
+    "FELD: " + field.filter(Boolean).length + "/81 Zellen aktiviert",
+    "FIGUR: " + $$(".element").filter(x => x.checked).length + "/3 Elemente aktiviert",
+    "TIEFE: " + depth.flat().filter(Boolean).length + "/729 Zellen aktiviert",
+    "WERT: Ursprungswert " + x + "; Ausgabe " + (Number.isFinite(x) ? Math.min(x, HOME) : "ungültig"),
+    "PRÜFSTATUS: Werte erfasst; externe Bedeutung nicht bewertet."
+  ].join("\n");
+}
+$("checkOrder").addEventListener("click", checkOrder);
+$("auftrag").addEventListener("input", () => { setApproval(false, "Der Auftrag wurde geändert und muss erneut geprüft werden."); });
+$("first3").addEventListener("click", () => { if(!ctrlApproved) return; for(let i=0;i<3;i++) field[i]=true; renderCells(); });
+$("clearField").addEventListener("click", () => { if(!ctrlApproved) return; field.fill(false); renderCells(); });
+$("activateDepth").addEventListener("click", () => { if(!ctrlApproved) return; for(let i=0;i<3;i++) depth[0][i]=true; updateDepth(); });
+$$(".element").forEach(x => x.addEventListener("change", updateFigure));
+$("rawValue").addEventListener("input", bounded);
+$("refreshChecks").addEventListener("click", refreshChecks);
+$("runSummary").addEventListener("click", () => { $("executionLog").textContent = statusReport(); });
+$("makeReport").addEventListener("click", () => { $("report").textContent = statusReport(); $("feedbackStatus").textContent = "Rückmeldung: Statusbericht erstellt"; $("feedbackStatus").className = "good"; });
+renderCells(); updateDepth(); updateFigure(); bounded(); refreshChecks();
+setApproval(false, "Noch keine Prüfung durchgeführt. CTRL ist gesperrt.");
+</script>
+</body>
+</html>

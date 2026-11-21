@@ -37,16 +37,22 @@ Rufe anschließend `http://localhost:8000` auf.
 - `M` – mobiles Menü öffnen
 - `Esc` – Menü schließen
 
-Tastenkürzel werden nicht ausgelöst, wenn ein Eingabefeld aktiv ist.
-Copyright (c) 2026 iki1uc
+LICENSE
 
-Alle Rechte vorbehalten.
+NC · iki1uc · Eye Brain Open
+Copyright (c) 2026 iki1uc — Alle Rechte vorbehalten.
 
-Dieses Projekt ist proprietär. 
-Das Kopieren, Klonen, Forken, Verbreiten, Modifizieren oder 
-kommerzielle Nutzen ist ohne schriftliche Erlaubnis verboten.
+dis.cord open = 1.e4 e5 2.Lc4 Sc6 3.Dh5 Sf6 4.Dxf7# = nur wieimmer server und partner
 
-Nur der Autor iki1uc darf dieses Projekt verwenden, verbreiten 
-oder erweitern.
+Dieses Projekt ist proprietär.
+Kopieren, Klonen, Forken, Verbreiten, Modifizieren oder kommerzielles Nutzen ohne schriftliche Erlaubnis verboten.
+
+Nur Autor iki1uc darf verwenden, verbreiten, erweitern.
+Externe Nutzung nur mit expliziter Business-Lizenz.
+
+Eye Brain Open · SAM führt · DEEP macht · PC befiehlt · PQ erinnert
+Discord: wie immer · offen
+Team: open
+HALT = ZIEL · SEEK liest, ordnet, hängt an · Löscht nie
 
 Externe Nutzung nur mit expliziter Business-Lizenz.

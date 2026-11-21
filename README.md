@@ -54,5 +54,6 @@ Eye Brain Open · SAM führt · DEEP macht · PC befiehlt · PQ erinnert
 Discord: wie immer · offen
 Team: open
 HALT = ZIEL · SEEK liest, ordnet, hängt an · Löscht nie
+Copyright (c) 2026 iki1uc — Alle Rechte vorbehalten.
 
 Externe Nutzung nur mit expliziter Business-Lizenz.
